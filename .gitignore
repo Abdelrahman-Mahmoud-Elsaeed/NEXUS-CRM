@@ -1,0 +1,119 @@
+# =========================
+# ROOT
+# =========================
+.DS_Store
+Thumbs.db
+*.log
+logs
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# FRONTEND
+# =========================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.angular/
+frontend/.cache/
+frontend/.vite/
+frontend/coverage/
+frontend/.eslintcache
+
+# React
+frontend/.next/
+frontend/out/
+
+# =========================
+# BACKEND
+# =========================
+backend/node_modules/
+backend/dist/
+backend/build/
+backend/coverage/
+backend/uploads/
+backend/tmp/
+backend/.cache/
+
+# =========================
+# N8N
+# =========================
+n8n/node_modules/
+n8n/.n8n/
+n8n/database.sqlite
+n8n/database.sqlite-shm
+n8n/database.sqlite-wal
+
+# Binary data
+n8n/binaryData/
+
+# Runtime exports/imports
+n8n/tmp/
+n8n/.cache/
+
+# Keep workflows tracked
+!n8n/workflows/
+!n8n/workflows/*.json
+
+# =========================
+# DATABASE
+# =========================
+database/data/
+database/backups/
+database/*.sqlite
+database/*.db
+
+# =========================
+# DOCKER
+# =========================
+docker/volumes/
+docker/data/
+
+# =========================
+# NGINX
+# =========================
+nginx/logs/
+
+# =========================
+# SCRIPTS
+# =========================
+scripts/tmp/
+scripts/logs/
+
+# =========================
+# INFRA
+# =========================
+infra/.terraform/
+infra/*.tfstate
+infra/*.tfstate.*
+infra/secrets/
+infra/.env
+
+# =========================
+# REDIS
+# =========================
+dump.rdb
+appendonly.aof
+
+# =========================
+# PM2
+# =========================
+.pm2/
+
+# =========================
+# TESTS
+# =========================
+coverage/
+.nyc_output/
+
+# =========================
+# OS FILES
+# =========================
+Desktop.ini
