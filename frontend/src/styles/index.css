@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@import "tw-animate-css";
+
+@import "@fontsource-variable/inter";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-inter: Inter, sans-serif;
+
+  --background: #fcf8ff;
+
+  --foreground: #1b1b24;
+
+  --surface: #fcf8ff;
+
+  --surface-container: #f0ecf9;
+
+  --primary: #3525cd;
+
+  --primary-container: #4f46e5;
+
+  --on-primary: #ffffff;
+
+  --on-primary-container: #dad7ff;
+
+  --secondary: #58579b;
+
+  --tertiary: #7e3000;
+
+  --error: #ba1a1a;
+
+  --outline: #777587;
+
+  --outline-variant: #c7c4d8;
+
+  --radius-md: 0.25rem;
+}
+
+@theme {
+  --font-sans: var(--font-inter);
+
+  --color-background: var(--background);
+
+  --color-foreground: var(--foreground);
+
+  --color-surface: var(--surface);
+
+  --color-surface-container: var(--surface-container);
+
+  --color-primary: var(--primary);
+
+  --color-primary-container: var(--primary-container);
+
+  --color-on-primary: var(--on-primary);
+
+  --color-on-primary-container: var(--on-primary-container);
+
+  --color-secondary: var(--secondary);
+
+  --color-tertiary: var(--tertiary);
+
+  --color-error: var(--error);
+
+  --color-outline: var(--outline);
+
+  --color-outline-variant: var(--outline-variant);
+
+  --radius-md: var(--radius-md);
+}
+
+.dark {
+  --background: #0c1324;
+
+  --foreground: #dce1fb;
+
+  --surface: #0c1324;
+
+  --surface-container: #191f31;
+
+  --primary: #c0c1ff;
+
+  --primary-container: #8083ff;
+
+  --on-primary: #1000a9;
+
+  --on-primary-container: #0d0096;
+
+  --secondary: #bec6e0;
+
+  --tertiary: #ffb783;
+
+  --error: #ffb4ab;
+
+  --outline: #908fa0;
+
+  --outline-variant: #464554;
+}

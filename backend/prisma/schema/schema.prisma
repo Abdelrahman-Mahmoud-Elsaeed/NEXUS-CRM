@@ -1,0 +1,9 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../../src/shared/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+

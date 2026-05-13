@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "CommonJS", 
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "@modules/*": ["src/modules/*"],
+
+      "@config/*": ["src/shared/config/*"],
+      "@libs/*": ["src/shared/libs/*"],
+
+      "@queries/*": ["src/shared/queries/*"],
+      "@queues/*": ["src/shared/queues/*"],
+
+      "@middlewares/*": ["src/shared/middlewares/*"],
+      "@types/*": ["src/shared/types/*"],
+      "@utils/*": ["src/shared/utils/*"],
+
+      "@events/*": ["src/shared/events/*"],
+
+      "@prisma-client": ["src/shared/generated/client/client"]
+    },
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["src/**/*", "index.ts","src/**/*.d.ts"],
+  "exclude": ["node_modules"]
+}

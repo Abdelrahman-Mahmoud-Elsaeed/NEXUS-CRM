@@ -1,0 +1,5 @@
+enum LeadPriority {
+  LOW
+  MEDIUM
+  HIGH
+}

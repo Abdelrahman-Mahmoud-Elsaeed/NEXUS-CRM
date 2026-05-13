@@ -1,0 +1,29 @@
+model Lead {
+  id             String       @id @default(uuid()) @db.Uuid
+  name           String
+  email          String
+  phone          String?      
+  jobTitle       String?      @map("job_title")
+  company        String?      
+  website        String?
+  
+  status         LeadStatus   @default(NEW)
+  priority       LeadPriority @default(MEDIUM)
+  
+  source         String       @default("Manual")
+  notes          String?      @db.Text
+
+  organizationId String       @db.Uuid @map("organization_id")
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  createdById    String?      @db.Uuid @map("created_by_id")
+  creator        User?        @relation("LeadCreator", fields: [createdById], references: [id], onDelete: SetNull)
+
+  assignedToId   String?      @db.Uuid @map("assigned_to_id")
+  assignee       User?        @relation("LeadAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  @@map("leads")
+}

@@ -6,6 +6,32 @@
     "module": "esnext",
     "types": ["vite/client"],
     "skipLibCheck": true,
+    "ignoreDeprecations": "6.0",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@public/*": ["public/*"],
+      "@app/*": ["src/app/*"],
+      "@providers/*": ["src/app/providers/*"],
+      "@router/*": ["src/app/router/*"],
+      "@store/*": ["src/app/store/*"],
+      "@layouts/*": ["src/app/layouts/*"],
+      "@modules/*": ["src/modules/*"],
+      "@shared/*": ["src/shared/*"],
+      "@components/*": ["src/shared/components/*"],
+      "@ui/*": ["src/shared/ui/*"],
+      "@hooks/*": ["src/shared/hooks/*"],
+      "@utils/*": ["src/shared/utils/*"],
+      "@services/*": ["src/shared/services/*"],
+      "@constants/*": ["src/shared/constants/*"],
+      "@types/*": ["src/shared/types/*"],
+      "@validations/*": ["src/shared/validations/*"],
+      "@guards/*": ["src/shared/guards/*"],
+      "@assets/*": ["src/assets/*"],
+      "@styles/*": ["src/styles/*"],
+      "@config/*": ["src/config/*"],
+      "@lib/*": ["src/lib/*"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -19,7 +45,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny":true
   },
   "include": ["src"]
 }

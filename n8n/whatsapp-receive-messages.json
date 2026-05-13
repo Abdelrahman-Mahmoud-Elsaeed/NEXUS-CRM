@@ -1,0 +1,82 @@
+{
+  "name": "whatsapp-receive-messages",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "796e055a-7b03-42fb-a512-3065219914b5",
+      "name": "WhatsApp Trigger",
+      "webhookId": "2b936a38-4957-4b08-bd97-bd12688739c9",
+      "notesInFlow": false,
+      "alwaysOutputData": false,
+      "retryOnFail": false,
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "6o5OfrdSTNRBbMzF",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1056413120895000",
+        "recipientPhoneNumber": "201095160726",
+        "textBody": "hi",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        -16
+      ],
+      "id": "73b0a690-1555-4df6-ba94-2b47c13417dc",
+      "name": "Send message",
+      "webhookId": "f6a026b6-690a-43f5-8410-4a732e9982b7",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "7Fzk59GlgAJEdxq4",
+          "name": "WhatsApp account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "804c76f0-9fb3-4b57-a190-3dd287bc5363",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "14e82f4cd8453c5cb57d16c38e8ddf131154b4bb84112726ed1d7e583bc881fe"
+  },
+  "id": "d4Im3lH1qjuePQiW",
+  "tags": []
+}
