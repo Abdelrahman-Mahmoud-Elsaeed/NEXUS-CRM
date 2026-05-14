@@ -2,8 +2,8 @@ import bcrypt from "bcrypt";
 import { prisma } from "@config/db/prisma";
 import { createUserQuery } from "@queries/auth/auth.queries";
 import { mapUser } from "@/modules/auth/dto/User.mapper";
-import { LoginRequestDto, LoginResult } from "./dto/LoginDto";
-import { RegisterRequistDto, RegisterResponseDto } from "./dto/RegisterDto";
+import { LoginRequestDto, LoginResult, LoginServiceResult } from "./dto/LoginDto";
+import { RegisterRequistDto, RegisterServiceResult } from "./dto/RegisterDto";
 import { userWithOrganizationsInclude } from "@queries/auth/auth.include";
 import {
   ForgetPasswordResult,
@@ -22,7 +22,7 @@ import {
 } from "./security/password-reset.util";
 
 export class AuthService {
-  async register(data: RegisterRequistDto): Promise<RegisterResponseDto> {
+  async register(data: RegisterRequistDto): Promise<RegisterServiceResult> {
     const hashed = await bcrypt.hash(data.password, 10);
 
     const user = await prisma.user.findUnique({
@@ -43,14 +43,15 @@ export class AuthService {
     await storeOtp(`email_verify:${result.id}`, OTP, 5 * 60);
 
     await emailService.sendOtp(result.email, result.name, OTP);
-    console.log(OTP);
+
     return {
       success: true,
       data: mapUser(result),
     };
   }
 
-  async login(data: LoginRequestDto): Promise<LoginResult> {
+
+  async login(data: LoginRequestDto): Promise<LoginServiceResult> {
     const user = await prisma.user.findUnique({
       where: { email: data.email },
       include: userWithOrganizationsInclude,
@@ -61,11 +62,9 @@ export class AuthService {
     }
 
     const valid = await bcrypt.compare(data.password, user.password);
-
     if (!valid) {
       return { success: false, reason: "INVALID_CREDENTIALS" };
     }
-
     return {
       success: true,
       data: mapUser(user),
@@ -82,12 +81,11 @@ export class AuthService {
     }
 
     const token = generateResetToken();
-
     await storeResetToken(user.id, token, 60 * 15);
 
     await emailService.sendResetPassword(user.email, user.name, token);
 
-    return { success: true };
+    return { success: true, data: undefined };
   }
 
   async resetPassword(
@@ -115,42 +113,31 @@ export class AuthService {
     }
 
     const isSameAsCurrent = await bcrypt.compare(newPassword, user.password);
-
     if (isSameAsCurrent) {
       return { success: false, reason: "PASSWORD_REUSE_NOT_ALLOWED" };
     }
 
     for (const old of user.passwordHistory) {
       const isReused = await bcrypt.compare(newPassword, old.password);
-
       if (isReused) {
         return { success: false, reason: "PASSWORD_REUSE_NOT_ALLOWED" };
       }
     }
-
-    const sessionKeys = await redis.keys(`refresh_token:${userId}:*`);
-
-    if (sessionKeys.length > 0) {
-      await redis.del(sessionKeys);
-    }
-
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-
     await prisma.$transaction([
       prisma.user.update({
         where: { id: userId },
         data: {
           password: hashedPassword,
           passwordHistory: {
-            create: {
-              password: hashedPassword,
-            },
+            create: { password: hashedPassword },
           },
         },
       }),
     ]);
 
-    return { success: true };
+
+    return { success: true, data: undefined };
   }
 
   async verifyEmail(user: User, OTP: string): Promise<VerifyEmailResult> {
@@ -166,7 +153,7 @@ export class AuthService {
     if (!otpResult.success) {
       return {
         success: false,
-        reason: otpResult.reason as  "INVALID_OTP" | "OTP_EXPIRED" | "USER_ALREADY_VERIFIED"
+        reason: otpResult.reason as "INVALID_OTP" | "OTP_EXPIRED" | "USER_ALREADY_VERIFIED"
       };
     }
 
@@ -177,7 +164,7 @@ export class AuthService {
 
     await redis.del(`email_verify:${user.id}`);
 
-    return { success: true };
+    return { success: true , data:undefined };
   }
 
   async requestEmailVerificationOTP(user: User): Promise<RequestOtpResult> {
@@ -194,7 +181,7 @@ export class AuthService {
 
     await emailService.sendOtp(user.email, user.name, OTP);
     console.log(OTP);
-    return { success: true };
+    return { success: true, data:undefined};
   }
 }
 

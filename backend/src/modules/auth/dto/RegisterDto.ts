@@ -1,4 +1,5 @@
-import { Role as PrismaRole } from "@prisma-client";
+import { ApiResponse } from "@/shared/types/api.types";
+import { UserProfileDto } from "./user-profile.dto";
 
 export interface RegisterRequistDto {
   email: string;
@@ -6,25 +7,6 @@ export interface RegisterRequistDto {
   name?: string;
 }
 
-export type RegisterResponseDto =
-  | {
-      success: true;
-      data: {
-        id: string;
-        email: string;
-        name: string | null;
-        isVerified: boolean;
 
-        organizations: {
-          id: string;
-          role: PrismaRole;
-          name: string;
-        }[];
-
-        createdAt: Date;
-      };
-    }
-  | {
-      success: false;
-      reason: "EMAIL_IS_USED";
-    };
+export type RegisterServiceResult = ApiResponse<UserProfileDto, "EMAIL_IS_USED" >;
+export type RegisterResult = ApiResponse<{user: UserProfileDto, tokens: { accessToken: string };}, "EMAIL_IS_USED" | "WEAK_PASSWORD">;

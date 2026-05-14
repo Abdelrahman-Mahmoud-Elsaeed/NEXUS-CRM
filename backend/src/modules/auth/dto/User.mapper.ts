@@ -1,6 +1,6 @@
-import { LoginResponseDto } from "./LoginDto";
+import { UserProfileDto } from "./user-profile.dto";
 
-export function mapUser(user: any): LoginResponseDto {
+export function mapUser(user: any): UserProfileDto {
   return {
     id: user.id,
     email: user.email,

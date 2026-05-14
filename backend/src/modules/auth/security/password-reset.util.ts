@@ -26,8 +26,16 @@ export const storeResetToken = async (
 
 export const consumeResetToken = async (token: string) => {
   const hashed = hashToken(token);
-
-  return await redis.getdel(
+  const userId = await redis.getdel(
     `password_reset:${hashed}`
   );
+
+  if (userId) {
+    const sessionKeys = await redis.keys(`refresh_token:${userId}:*`);
+    if (sessionKeys.length > 0) {
+      await redis.del(sessionKeys);
+    }
+  }
+  
+  return userId
 };

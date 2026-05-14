@@ -1,7 +1,8 @@
-export type VerifyEmailResult =
-  | { success: true }
-  | { success: false; reason: "INVALID_OTP" | "OTP_EXPIRED" | "USER_ALREADY_VERIFIED" };
+import { ApiResponse } from "@/shared/types/api.types";
 
-  export type RequestOtpResult =
-  | { success: true }
-  | { success: false; reason: "USER_NOT_FOUND" };
+export type VerifyEmailResult = ApiResponse<void, 
+  | "INVALID_OTP" 
+  | "OTP_EXPIRED" 
+  | "USER_ALREADY_VERIFIED"
+>;
+export type RequestOtpResult = ApiResponse<void, "USER_NOT_FOUND">;
