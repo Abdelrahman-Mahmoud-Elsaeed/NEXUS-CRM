@@ -1,40 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { KeyRound, ArrowLeft } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { AuthCard } from "@modules/auth/components/AuthCard/AuthCard";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthService } from "@services/auth.service";
-import { forgotPasswordSchema, type ForgotPasswordValues } from "../../validations/auth";
+import { Link } from "react-router-dom";
+import { useForgotPassword } from "@modules/auth/hooks/useForgotPassword";
 
 export default function ForgotPassword() {
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ForgotPasswordValues>({
-    resolver: zodResolver(forgotPasswordSchema),
-  });
-
-  const onSubmit = async (values: ForgotPasswordValues) => {
-    setLoading(true);
-    try {
-      await AuthService.forgotPassword(values.email);
-      // Pass the email to the next page so we can show "We sent a link to user@email.com"
-      navigate("/check-email", { state: { email: values.email } });
-    } catch (error) {
-      // Error handling logic (interceptor handles the logs)
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { form, loading, error, onSubmit } = useForgotPassword();
+  const { register, formState: { errors } } = form;
 
   return (
     <AuthCard
@@ -42,7 +16,7 @@ export default function ForgotPassword() {
       description="Enter your email address and we'll send you a reset link."
       icon={<KeyRound className="h-6 w-6" />}
     >
-      <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-6" onSubmit={onSubmit}>
         <div className="space-y-2">
           <Label htmlFor="email">Email address</Label>
           <Input
@@ -59,6 +33,13 @@ export default function ForgotPassword() {
             <p className="text-xs text-destructive">{errors.email.message}</p>
           )}
         </div>
+
+        {/* Display backend errors (like USER_NOT_FOUND) */}
+        {error && (
+          <div className="text-sm text-destructive font-medium text-center">
+            {error}
+          </div>
+        )}
 
         <div className="space-y-2">
           <Button

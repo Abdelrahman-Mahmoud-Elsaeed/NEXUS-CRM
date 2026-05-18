@@ -1,11 +1,16 @@
 model Organization {
-  id           String             @id @default(uuid()) @db.Uuid
-  name         String
-  billingPlan  String             @default("free") @map("billing_plan")
-  createdAt    DateTime           @default(now()) @map("created_at")
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  billingPlan String   @default("free") @map("billing_plan")
+  createdAt   DateTime @default(now()) @map("created_at")
 
-  members OrganizationUser[]
-  leads   Lead[]
+  members     OrganizationUser[]
+  leads       Lead[]
+
+  pipelines      Pipeline[]
+  pipelineStages PipelineStage[]
+  tasks          Task[]
+  automations    Automation[]
 
   @@map("organizations")
 }

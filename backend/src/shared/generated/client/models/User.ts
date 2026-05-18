@@ -30,6 +30,8 @@ export type UserMinAggregateOutputType = {
   password: string | null
   name: string | null
   isVerified: boolean | null
+  isDisabled: boolean | null
+  isDeleted: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -40,6 +42,8 @@ export type UserMaxAggregateOutputType = {
   password: string | null
   name: string | null
   isVerified: boolean | null
+  isDisabled: boolean | null
+  isDeleted: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +54,8 @@ export type UserCountAggregateOutputType = {
   password: number
   name: number
   isVerified: number
+  isDisabled: number
+  isDeleted: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -62,6 +68,8 @@ export type UserMinAggregateInputType = {
   password?: true
   name?: true
   isVerified?: true
+  isDisabled?: true
+  isDeleted?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -72,6 +80,8 @@ export type UserMaxAggregateInputType = {
   password?: true
   name?: true
   isVerified?: true
+  isDisabled?: true
+  isDeleted?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +92,8 @@ export type UserCountAggregateInputType = {
   password?: true
   name?: true
   isVerified?: true
+  isDisabled?: true
+  isDeleted?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -165,6 +177,8 @@ export type UserGroupByOutputType = {
   password: string
   name: string | null
   isVerified: boolean
+  isDisabled: boolean
+  isDeleted: boolean
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -196,10 +210,11 @@ export type UserWhereInput = {
   password?: Prisma.StringFilter<"User"> | string
   name?: Prisma.StringNullableFilter<"User"> | string | null
   isVerified?: Prisma.BoolFilter<"User"> | boolean
+  isDisabled?: Prisma.BoolFilter<"User"> | boolean
+  isDeleted?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   passwordHistory?: Prisma.PasswordHistoryListRelationFilter
-  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
   organizations?: Prisma.OrganizationUserListRelationFilter
   assignedLeads?: Prisma.LeadListRelationFilter
   createdLeads?: Prisma.LeadListRelationFilter
@@ -211,10 +226,11 @@ export type UserOrderByWithRelationInput = {
   password?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  isDisabled?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   passwordHistory?: Prisma.PasswordHistoryOrderByRelationAggregateInput
-  passwordResetTokens?: Prisma.PasswordResetTokenOrderByRelationAggregateInput
   organizations?: Prisma.OrganizationUserOrderByRelationAggregateInput
   assignedLeads?: Prisma.LeadOrderByRelationAggregateInput
   createdLeads?: Prisma.LeadOrderByRelationAggregateInput
@@ -229,10 +245,11 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   password?: Prisma.StringFilter<"User"> | string
   name?: Prisma.StringNullableFilter<"User"> | string | null
   isVerified?: Prisma.BoolFilter<"User"> | boolean
+  isDisabled?: Prisma.BoolFilter<"User"> | boolean
+  isDeleted?: Prisma.BoolFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   passwordHistory?: Prisma.PasswordHistoryListRelationFilter
-  passwordResetTokens?: Prisma.PasswordResetTokenListRelationFilter
   organizations?: Prisma.OrganizationUserListRelationFilter
   assignedLeads?: Prisma.LeadListRelationFilter
   createdLeads?: Prisma.LeadListRelationFilter
@@ -244,6 +261,8 @@ export type UserOrderByWithAggregationInput = {
   password?: Prisma.SortOrder
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  isDisabled?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -260,6 +279,8 @@ export type UserScalarWhereWithAggregatesInput = {
   password?: Prisma.StringWithAggregatesFilter<"User"> | string
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   isVerified?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  isDisabled?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
+  isDeleted?: Prisma.BoolWithAggregatesFilter<"User"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -270,10 +291,11 @@ export type UserCreateInput = {
   password: string
   name?: string | null
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
-  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
   assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
   createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
@@ -285,10 +307,11 @@ export type UserUncheckedCreateInput = {
   password: string
   name?: string | null
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
   assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
   createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
@@ -300,10 +323,11 @@ export type UserUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
   assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
   createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
@@ -315,10 +339,11 @@ export type UserUncheckedUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
   assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
@@ -330,6 +355,8 @@ export type UserCreateManyInput = {
   password: string
   name?: string | null
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -340,6 +367,8 @@ export type UserUpdateManyMutationInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -350,6 +379,8 @@ export type UserUncheckedUpdateManyInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -370,6 +401,8 @@ export type UserCountOrderByAggregateInput = {
   password?: Prisma.SortOrder
   name?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  isDisabled?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -380,6 +413,8 @@ export type UserMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   name?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  isDisabled?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -390,6 +425,8 @@ export type UserMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   name?: Prisma.SortOrder
   isVerified?: Prisma.SortOrder
+  isDisabled?: Prisma.SortOrder
+  isDeleted?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -454,20 +491,8 @@ export type UserUpdateOneRequiredWithoutPasswordHistoryNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordHistoryInput, Prisma.UserUpdateWithoutPasswordHistoryInput>, Prisma.UserUncheckedUpdateWithoutPasswordHistoryInput>
 }
 
-export type UserCreateNestedOneWithoutPasswordResetTokensInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneWithoutPasswordResetTokensNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPasswordResetTokensInput
-  upsert?: Prisma.UserUpsertWithoutPasswordResetTokensInput
-  disconnect?: Prisma.UserWhereInput | boolean
-  delete?: Prisma.UserWhereInput | boolean
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPasswordResetTokensInput, Prisma.UserUpdateWithoutPasswordResetTokensInput>, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
 }
 
 export type UserCreateWithoutCreatedLeadsInput = {
@@ -476,10 +501,11 @@ export type UserCreateWithoutCreatedLeadsInput = {
   password: string
   name?: string | null
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
-  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
   assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
 }
@@ -490,10 +516,11 @@ export type UserUncheckedCreateWithoutCreatedLeadsInput = {
   password: string
   name?: string | null
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
   assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
 }
@@ -509,10 +536,11 @@ export type UserCreateWithoutAssignedLeadsInput = {
   password: string
   name?: string | null
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
-  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
   createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
 }
@@ -523,10 +551,11 @@ export type UserUncheckedCreateWithoutAssignedLeadsInput = {
   password: string
   name?: string | null
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
   createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
 }
@@ -553,10 +582,11 @@ export type UserUpdateWithoutCreatedLeadsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
   assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
 }
@@ -567,10 +597,11 @@ export type UserUncheckedUpdateWithoutCreatedLeadsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
   assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
 }
@@ -592,10 +623,11 @@ export type UserUpdateWithoutAssignedLeadsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
   createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
 }
@@ -606,10 +638,11 @@ export type UserUncheckedUpdateWithoutAssignedLeadsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
   createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
 }
@@ -620,10 +653,11 @@ export type UserCreateWithoutOrganizationsInput = {
   password: string
   name?: string | null
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
-  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
   createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
 }
@@ -634,10 +668,11 @@ export type UserUncheckedCreateWithoutOrganizationsInput = {
   password: string
   name?: string | null
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
   createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
 }
@@ -664,10 +699,11 @@ export type UserUpdateWithoutOrganizationsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
   createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
 }
@@ -678,10 +714,11 @@ export type UserUncheckedUpdateWithoutOrganizationsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
-  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
   assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
 }
@@ -692,9 +729,10 @@ export type UserCreateWithoutPasswordHistoryInput = {
   password: string
   name?: string | null
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  passwordResetTokens?: Prisma.PasswordResetTokenCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
   assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
   createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
@@ -706,9 +744,10 @@ export type UserUncheckedCreateWithoutPasswordHistoryInput = {
   password: string
   name?: string | null
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
-  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
   assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
   createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
@@ -736,9 +775,10 @@ export type UserUpdateWithoutPasswordHistoryInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  passwordResetTokens?: Prisma.PasswordResetTokenUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
   assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
   createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
@@ -750,81 +790,10 @@ export type UserUncheckedUpdateWithoutPasswordHistoryInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  passwordResetTokens?: Prisma.PasswordResetTokenUncheckedUpdateManyWithoutUserNestedInput
-  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
-}
-
-export type UserCreateWithoutPasswordResetTokensInput = {
-  id?: string
-  email: string
-  password: string
-  name?: string | null
-  isVerified?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
-  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
-}
-
-export type UserUncheckedCreateWithoutPasswordResetTokensInput = {
-  id?: string
-  email: string
-  password: string
-  name?: string | null
-  isVerified?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
-  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
-}
-
-export type UserCreateOrConnectWithoutPasswordResetTokensInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
-}
-
-export type UserUpsertWithoutPasswordResetTokensInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutPasswordResetTokensInput, Prisma.UserUncheckedCreateWithoutPasswordResetTokensInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutPasswordResetTokensInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutPasswordResetTokensInput, Prisma.UserUncheckedUpdateWithoutPasswordResetTokensInput>
-}
-
-export type UserUpdateWithoutPasswordResetTokensInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
-  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
-}
-
-export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
   assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
   createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
@@ -837,7 +806,6 @@ export type UserUncheckedUpdateWithoutPasswordResetTokensInput = {
 
 export type UserCountOutputType = {
   passwordHistory: number
-  passwordResetTokens: number
   organizations: number
   assignedLeads: number
   createdLeads: number
@@ -845,7 +813,6 @@ export type UserCountOutputType = {
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   passwordHistory?: boolean | UserCountOutputTypeCountPasswordHistoryArgs
-  passwordResetTokens?: boolean | UserCountOutputTypeCountPasswordResetTokensArgs
   organizations?: boolean | UserCountOutputTypeCountOrganizationsArgs
   assignedLeads?: boolean | UserCountOutputTypeCountAssignedLeadsArgs
   createdLeads?: boolean | UserCountOutputTypeCountCreatedLeadsArgs
@@ -866,13 +833,6 @@ export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
  */
 export type UserCountOutputTypeCountPasswordHistoryArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PasswordHistoryWhereInput
-}
-
-/**
- * UserCountOutputType without action
- */
-export type UserCountOutputTypeCountPasswordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PasswordResetTokenWhereInput
 }
 
 /**
@@ -903,10 +863,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   password?: boolean
   name?: boolean
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   passwordHistory?: boolean | Prisma.User$passwordHistoryArgs<ExtArgs>
-  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
   organizations?: boolean | Prisma.User$organizationsArgs<ExtArgs>
   assignedLeads?: boolean | Prisma.User$assignedLeadsArgs<ExtArgs>
   createdLeads?: boolean | Prisma.User$createdLeadsArgs<ExtArgs>
@@ -919,6 +880,8 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   name?: boolean
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -929,6 +892,8 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   password?: boolean
   name?: boolean
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["user"]>
@@ -939,14 +904,15 @@ export type UserSelectScalar = {
   password?: boolean
   name?: boolean
   isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "isVerified" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "name" | "isVerified" | "isDisabled" | "isDeleted" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   passwordHistory?: boolean | Prisma.User$passwordHistoryArgs<ExtArgs>
-  passwordResetTokens?: boolean | Prisma.User$passwordResetTokensArgs<ExtArgs>
   organizations?: boolean | Prisma.User$organizationsArgs<ExtArgs>
   assignedLeads?: boolean | Prisma.User$assignedLeadsArgs<ExtArgs>
   createdLeads?: boolean | Prisma.User$createdLeadsArgs<ExtArgs>
@@ -959,7 +925,6 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     passwordHistory: Prisma.$PasswordHistoryPayload<ExtArgs>[]
-    passwordResetTokens: Prisma.$PasswordResetTokenPayload<ExtArgs>[]
     organizations: Prisma.$OrganizationUserPayload<ExtArgs>[]
     assignedLeads: Prisma.$LeadPayload<ExtArgs>[]
     createdLeads: Prisma.$LeadPayload<ExtArgs>[]
@@ -970,6 +935,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     password: string
     name: string | null
     isVerified: boolean
+    isDisabled: boolean
+    isDeleted: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1367,7 +1334,6 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   passwordHistory<T extends Prisma.User$passwordHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  passwordResetTokens<T extends Prisma.User$passwordResetTokensArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordResetTokensArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordResetTokenPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizations<T extends Prisma.User$organizationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$organizationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedLeads<T extends Prisma.User$assignedLeadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdLeads<T extends Prisma.User$createdLeadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1405,6 +1371,8 @@ export interface UserFieldRefs {
   readonly password: Prisma.FieldRef<"User", 'String'>
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly isVerified: Prisma.FieldRef<"User", 'Boolean'>
+  readonly isDisabled: Prisma.FieldRef<"User", 'Boolean'>
+  readonly isDeleted: Prisma.FieldRef<"User", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }
@@ -1821,30 +1789,6 @@ export type User$passwordHistoryArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.PasswordHistoryScalarFieldEnum | Prisma.PasswordHistoryScalarFieldEnum[]
-}
-
-/**
- * User.passwordResetTokens
- */
-export type User$passwordResetTokensArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PasswordResetToken
-   */
-  select?: Prisma.PasswordResetTokenSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PasswordResetToken
-   */
-  omit?: Prisma.PasswordResetTokenOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PasswordResetTokenInclude<ExtArgs> | null
-  where?: Prisma.PasswordResetTokenWhereInput
-  orderBy?: Prisma.PasswordResetTokenOrderByWithRelationInput | Prisma.PasswordResetTokenOrderByWithRelationInput[]
-  cursor?: Prisma.PasswordResetTokenWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PasswordResetTokenScalarFieldEnum | Prisma.PasswordResetTokenScalarFieldEnum[]
 }
 
 /**

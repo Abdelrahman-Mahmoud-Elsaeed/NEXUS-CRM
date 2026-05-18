@@ -2,22 +2,21 @@ import bcrypt from "bcrypt";
 import { prisma } from "@config/db/prisma";
 import { createUserQuery } from "@queries/auth/auth.queries";
 import { mapUser } from "@/modules/auth/dto/User.mapper";
-import { LoginRequestDto, LoginResult, LoginServiceResult } from "./dto/LoginDto";
+import { LoginRequestDto, LoginServiceResult } from "./dto/LoginDto";
 import { RegisterRequistDto, RegisterServiceResult } from "./dto/RegisterDto";
 import { userWithOrganizationsInclude } from "@queries/auth/auth.include";
 import {
   ForgetPasswordResult,
   ResetPasswordResult,
 } from "./dto/ForgetPasswordDto";
-import { redis } from "@config/db/redis";
-import crypto from "crypto";
+import { CacheService } from "@/shared/services/cache.service";
 import { RequestOtpResult, VerifyEmailResult } from "./dto/VerifyEmailDto";
 import { emailService } from "@config/email/email.service";
-import { User } from "@/shared/generated/client/client";
 import { generateOtp, storeOtp, verifyOtp } from "./security/otp.util";
 import {
   consumeResetToken,
   generateResetToken,
+  hashToken,
   storeResetToken,
 } from "./security/password-reset.util";
 
@@ -39,7 +38,7 @@ export class AuthService {
     const result = await prisma.user.create(createUserQuery(data, hashed));
 
     const OTP = generateOtp();
-
+    console.log(OTP)
     await storeOtp(`email_verify:${result.id}`, OTP, 5 * 60);
 
     await emailService.sendOtp(result.email, result.name, OTP);
@@ -49,7 +48,6 @@ export class AuthService {
       data: mapUser(result),
     };
   }
-
 
   async login(data: LoginRequestDto): Promise<LoginServiceResult> {
     const user = await prisma.user.findUnique({
@@ -136,81 +134,59 @@ export class AuthService {
       }),
     ]);
 
-
     return { success: true, data: undefined };
   }
 
-  async verifyEmail(user: User, OTP: string): Promise<VerifyEmailResult> {
-    if (user.isVerified) {
-      return {
-        success: false,
-        reason: "USER_ALREADY_VERIFIED",
-      };
-    }
-
-    const otpResult = await verifyOtp(`email_verify:${user.id}`, OTP);
+  async verifyEmail(userId: string, OTP: string): Promise<VerifyEmailResult> {
+    const otpResult = await verifyOtp(`email_verify:${userId}`, OTP);
 
     if (!otpResult.success) {
       return {
         success: false,
-        reason: otpResult.reason as "INVALID_OTP" | "OTP_EXPIRED" | "USER_ALREADY_VERIFIED"
+        reason: otpResult.reason as
+          | "INVALID_OTP"
+          | "OTP_EXPIRED"
+          | "USER_ALREADY_VERIFIED",
       };
     }
 
     await prisma.user.update({
-      where: { id: user.id },
+      where: { id: userId },
       data: { isVerified: true },
     });
 
-    await redis.del(`email_verify:${user.id}`);
+    await CacheService.delete(`email_verify:${userId}`);
 
-    return { success: true , data:undefined };
+    return { success: true, data: undefined };
   }
 
-  async requestEmailVerificationOTP(user: User): Promise<RequestOtpResult> {
-    if (!user) {
-      return {
-        success: false,
-        reason: "USER_NOT_FOUND",
+  async requestEmailVerificationOTP(
+    userId: string,
+    email: string,
+    name: string | null,
+  ): Promise<RequestOtpResult> {
+    const OTP = generateOtp();
+    console.log(OTP)
+
+    await storeOtp(`email_verify:${userId}`, OTP, 5 * 60);
+
+    await emailService.sendOtp(email, name, OTP);
+    return { success: true, data: undefined };
+  }
+
+  async verifyPasswordResetToken(token: string) {
+    const hashed = hashToken(token);
+    const key = `password_reset:${hashed}`;
+    
+    const userId = await CacheService.get(key); 
+    
+    if (!userId) {
+      return { 
+        success: false, 
+        reason: "INVALID_TOKEN" 
       };
     }
 
-    const OTP = generateOtp();
-
-    await storeOtp(`email_verify:${user.id}`, OTP, 5 * 60);
-
-    await emailService.sendOtp(user.email, user.name, OTP);
-    console.log(OTP);
-    return { success: true, data:undefined};
+    return { success: true };
   }
 }
-
-// Controller is doing too much
-
-// Your controller:
-
-// creates session
-// generates tokens
-// stores redis session
-// sends cookies
-
-// 👉 This should be moved to a SessionService
-
-// ✔ Better separation:
-
-// AuthController → AuthService → SessionService → Redis
-
-// 3. Duplicate OTP logic
-
-// You repeat:
-
-// OTP generation
-// hashing
-// redis set
-// email send
-
-// 👉 Should be extracted:
-
-// generateOtp()
-// storeOtp()
-// sendOtp()

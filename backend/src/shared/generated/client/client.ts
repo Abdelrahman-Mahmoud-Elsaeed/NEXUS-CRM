@@ -60,11 +60,6 @@ export type OrganizationUser = Prisma.OrganizationUserModel
  */
 export type PasswordHistory = Prisma.PasswordHistoryModel
 /**
- * Model PasswordResetToken
- * 
- */
-export type PasswordResetToken = Prisma.PasswordResetTokenModel
-/**
  * Model User
  * 
  */

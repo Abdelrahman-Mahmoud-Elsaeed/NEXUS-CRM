@@ -55,7 +55,6 @@ export const ModelName = {
   Organization: 'Organization',
   OrganizationUser: 'OrganizationUser',
   PasswordHistory: 'PasswordHistory',
-  PasswordResetToken: 'PasswordResetToken',
   User: 'User'
 } as const
 
@@ -127,24 +126,14 @@ export const PasswordHistoryScalarFieldEnum = {
 export type PasswordHistoryScalarFieldEnum = (typeof PasswordHistoryScalarFieldEnum)[keyof typeof PasswordHistoryScalarFieldEnum]
 
 
-export const PasswordResetTokenScalarFieldEnum = {
-  id: 'id',
-  token: 'token',
-  userId: 'userId',
-  expiresAt: 'expiresAt',
-  used: 'used',
-  createdAt: 'createdAt'
-} as const
-
-export type PasswordResetTokenScalarFieldEnum = (typeof PasswordResetTokenScalarFieldEnum)[keyof typeof PasswordResetTokenScalarFieldEnum]
-
-
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   password: 'password',
   name: 'name',
   isVerified: 'isVerified',
+  isDisabled: 'isDisabled',
+  isDeleted: 'isDeleted',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

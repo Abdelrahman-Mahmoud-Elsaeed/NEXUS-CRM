@@ -7,9 +7,10 @@ model Lead {
   company        String?      
   website        String?
   
-  status         LeadStatus   @default(NEW)
-  priority       LeadPriority @default(MEDIUM)
+  pipelineStageId String?       @db.Uuid @map("pipeline_stage_id")
+  pipelineStage   PipelineStage? @relation(fields: [pipelineStageId], references: [id], onDelete: Restrict)
   
+  priority       LeadPriority @default(MEDIUM)
   source         String       @default("Manual")
   notes          String?      @db.Text
 
@@ -21,6 +22,8 @@ model Lead {
 
   assignedToId   String?      @db.Uuid @map("assigned_to_id")
   assignee       User?        @relation("LeadAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+
+  tasks          Task[]
 
   createdAt      DateTime     @default(now()) @map("created_at")
   updatedAt      DateTime     @updatedAt @map("updated_at")

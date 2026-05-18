@@ -11,7 +11,7 @@ export function resetPasswordTemplate(name: string  | null , token:string) {
 
       <p>You requested to reset your password.</p>
 
-      <a href="${CLIENT_URL}/verify?token=${token}" style="
+      <a href="${CLIENT_URL}/reset-password/${token}" style="
         display:inline-block;
         padding:10px 16px;
         background:#000;

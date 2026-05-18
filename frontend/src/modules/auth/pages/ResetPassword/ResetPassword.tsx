@@ -1,4 +1,4 @@
-import { Lock } from 'lucide-react';
+import { Lock, Loader2 } from 'lucide-react';
 import { Button } from '@/shared/ui/button';
 import { Input } from '@/shared/ui/input';
 import { Label } from '@/shared/ui/label';
@@ -6,8 +6,17 @@ import { AuthCard } from '@modules/auth/components/AuthCard/AuthCard';
 import { useResetPassword } from '@modules/auth/hooks/useResetPassword';
 
 export default function ResetPassword() {
-  const { form, loading, error, onSubmit } = useResetPassword();
+  const { form, loading, isVerifyingLink, error, onSubmit } = useResetPassword();
   const { register, formState: { errors } } = form;
+
+  if (isVerifyingLink) {
+    return (
+      <div className="flex flex-col items-center justify-center space-y-4 py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-sm text-outline">Verifying secure link...</p>
+      </div>
+    );
+  }
 
   return (
     <AuthCard 
@@ -17,7 +26,6 @@ export default function ResetPassword() {
     >
       <form className="space-y-6" onSubmit={onSubmit}>
         <div className="space-y-4">
-          {/* New Password Field */}
           <div className="space-y-2">
             <Label htmlFor="new-password">New Password</Label>
             <Input 
@@ -34,7 +42,6 @@ export default function ResetPassword() {
             )}
           </div>
 
-          {/* Confirm Password Field */}
           <div className="space-y-2">
             <Label htmlFor="confirm-password">Confirm Password</Label>
             <Input 
@@ -52,7 +59,6 @@ export default function ResetPassword() {
           </div>
         </div>
 
-        {/* API/Global Error Display */}
         {error && (
           <div className="animate-in fade-in slide-in-from-top-2">
             <p className="rounded-md bg-destructive/10 p-2.5 text-center text-xs font-medium text-destructive border border-destructive/20">

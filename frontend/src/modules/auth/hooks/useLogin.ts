@@ -1,15 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+// src/modules/auth/hooks/useLogin.ts
+
 import { useState } from "react";
+import { loginUser } from "../store/authSlice";
+import { loginSchema, type LoginValues } from "../validations/auth";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/app/store/hooks";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
-import { AuthService } from "@services/auth.service";
-import { loginSchema, type LoginValues } from "../validations/auth";
 
 export function useLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -25,26 +30,23 @@ export function useLogin() {
     setError(null);
 
     try {
-      const result = await AuthService.login({
+      const result = await dispatch(loginUser({
         email: values.email,
         password: values.password,
-      });
+      })).unwrap();
 
-      // Check the verification status from the response data
-      if (result.success) {
-        if (result.data.isVerified) {
-          navigate("/dashboard");
-        } else {
-          navigate("/verify-email");
-        }
+      if (result.user.isVerified) {
+        navigate("/");
+      } else {
+        navigate("/verify-email");
       }
-    } catch (err: any) {
-      const reason = err.response?.data?.reason;
-
+    } catch (reason: any) {
       if (reason === "INVALID_CREDENTIALS") {
         setError("Invalid email or password.");
+      } else if (reason === "USER_DISABLED") {
+        setError("This account has been disabled.");
       } else {
-        setError("An unexpected error occurred. Please try again.");
+        setError(reason || "An unexpected error occurred. Please try again.");
       }
     } finally {
       setLoading(false);

@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LayoutGrid, Loader2 } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Link } from "react-router-dom";
 
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
@@ -16,42 +13,11 @@ import {
   CardTitle,
 } from "@/shared/ui/card";
 
-import {
-  signupSchema,
-  type SignupValues,
-} from "@modules/auth/validations/auth";
-import { AuthService } from "@/shared/services/auth.service";
+import { useSignup } from "@modules/auth/hooks/useSignup";
 
 export default function SignUpPage() {
-  const navigate = useNavigate();
-
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<SignupValues>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: { name: "", email: "", password: "" },
-  });
-
-  const onSubmit = async (values: SignupValues) => {
-    try {
-      const result = await AuthService.register(values);
-      if (!result || !result.tokens) return;
-
-
-
-      navigate("/verify-email");
-    } catch (error: any) {
-      const reason = error.response?.data?.reason;
-      if (reason === "EMAIL_IS_USED") {
-        setError("email", { message: "This email is already in use." });
-      } else {
-        setError("root", { message: "An unexpected error occurred." });
-      }
-    }
-  };
+  const { form, onSubmit } = useSignup();
+  const { register, formState: { errors, isSubmitting } } = form;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background font-sans">
@@ -75,7 +41,15 @@ export default function SignUpPage() {
         </CardHeader>
 
         <CardContent className="pb-6 space-y-8">
-          <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+          <form className="space-y-5" onSubmit={onSubmit}>
+            
+            {/* Safe handling of generic global/root form errors */}
+            {errors.root && (
+              <div className="text-sm text-error font-medium text-center bg-error/10 p-2 rounded-md border border-error/20">
+                {errors.root.message}
+              </div>
+            )}
+
             {/* Name Field */}
             <div className="space-y-2">
               <Label

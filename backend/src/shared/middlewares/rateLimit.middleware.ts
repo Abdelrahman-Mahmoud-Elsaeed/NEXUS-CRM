@@ -2,7 +2,7 @@ import rateLimit from "express-rate-limit";
 import { Request } from "express";
 
 const getEmailFromReq = (req: Request) => {
-  if (req.user?.email) return req.user.email;
+  if (req.user.email) return req.user.email;
 
   if (req.body?.email) return req.body.email;
 

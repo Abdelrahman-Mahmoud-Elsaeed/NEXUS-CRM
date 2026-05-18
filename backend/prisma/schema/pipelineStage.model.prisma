@@ -1,0 +1,16 @@
+model PipelineStage {
+  id             String       @id @default(uuid()) @db.Uuid
+  name           String
+  color          String?
+  position       Int
+
+  pipelineId     String       @db.Uuid @map("pipeline_id")
+  pipeline       Pipeline     @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+
+  organizationId String       @db.Uuid @map("organization_id")
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  leads          Lead[]
+
+  @@map("pipeline_stages")
+}

@@ -4,7 +4,10 @@ import { JWT_REFRESH_SECRET, JWT_SECRET } from "../config/env";
 
 export type JwtPayload = {
   userId: string;
-  sessionId:string
+  sessionId:string;
+  otpVerified:boolean;
+  email:string;
+  name:string
 };
 
 export const generateAccessToken = (payload: JwtPayload) => {

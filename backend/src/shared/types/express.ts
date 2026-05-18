@@ -3,8 +3,15 @@ import { User } from "@prisma-client";
 declare global {
   namespace Express {
     interface Request {
-      user?: User;
-      sessionId:string;
+      sessionId: string;
+      jwtPayload: any;
+      currentCachedSession: any;
+      user: {
+        otpVerified: boolean;
+        email: string;
+        name: string;
+        userId?: string;
+      };
     }
   }
 }

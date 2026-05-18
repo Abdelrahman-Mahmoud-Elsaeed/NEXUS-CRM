@@ -22,7 +22,7 @@
       "@ui/*": ["src/shared/ui/*"],
       "@hooks/*": ["src/shared/hooks/*"],
       "@utils/*": ["src/shared/utils/*"],
-      "@services/*": ["src/shared/services/*"],
+      "@services/*": ["src/modules/auth/services/*"],
       "@constants/*": ["src/shared/constants/*"],
       "@types/*": ["src/shared/types/*"],
       "@validations/*": ["src/shared/validations/*"],

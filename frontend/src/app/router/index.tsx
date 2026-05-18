@@ -12,6 +12,13 @@ import CheckEmail from "@/modules/auth/pages/CheckEmail/CheckEmail";
 import ResetPassword from "@/modules/auth/pages/ResetPassword/ResetPassword";
 import LinkExpired from "@/modules/auth/pages/LinkExpired/LinkExpired";
 
+import DashboardLayout from "../layouts/DashboardLayout";
+
+import Dashboard from "@/modules/dashboard/pages/Dashboard"
+import GuestGuard from "@/modules/auth/guard/GuestGuard";
+import VerifyGuard from "@/modules/auth/guard/VerifyGuard";
+import AuthGuard from "@/modules/auth/guard/AuthGuard";
+
 // // Dashboard Pages (Placeholders)
 // import DashboardPage from "@/pages/Dashboard";
 // import LeadsListPage from "@/pages/LeadsList";
@@ -24,84 +31,68 @@ import LinkExpired from "@/modules/auth/pages/LinkExpired/LinkExpired";
 // import NotFoundPage from "@/pages/NotFound";
 
 export const router = createBrowserRouter([
+
   {
-    element: <AuthLayout />,
+    element: <GuestGuard />,
     children: [
       {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/signup",
-        element: <SignupPage />,
-      },
-      {
-        path: "/verify-email",
-        element: <VerifyEmail />,
-      },
-      {
-        path: "/forgot-password",
-        element: <ForgotPassword />,
-      },
-      {
-        path: "/check-email",
-        element: <CheckEmail />,
-      },
-      {
-        path: "/reset-password/:token",
-        element: <ResetPassword />,
-      },
-      {
-        path: "/link-expired",
-        element: <LinkExpired />,
+        element: <AuthLayout />,
+        children: [
+          {
+            path: "/login",
+            element: <LoginPage />,
+          },
+          {
+            path: "/signup",
+            element: <SignupPage />,
+          },
+          {
+            path: "/forgot-password",
+            element: <ForgotPassword />,
+          },
+          {
+            path: "/check-email",
+            element: <CheckEmail />,
+          },
+          {
+            path: "/reset-password/:token",
+            element: <ResetPassword />,
+          },
+          {
+            path: "/link-expired",
+            element: <LinkExpired />,
+          },
+        ],
       },
     ],
-    // },
-    // {
-    //   // Protected/Dashboard Routes
-    //   element: <DashboardLayout />,
-    //   children: [
-    //     {
-    //       path: "/",
-    //       element: <DashboardPage />,
-    //     },
-    //     {
-    //       path: "/leads",
-    //       element: <LeadsListPage />,
-    //     },
-    //     {
-    //       path: "/leads/new",
-    //       element: <LeadFormPage />, // Mode can be determined by the absence of an ID param
-    //     },
-    //     {
-    //       path: "/leads/:id",
-    //       element: <LeadDetailsPage />,
-    //     },
-    //     {
-    //       path: "/leads/:id/edit",
-    //       element: <LeadFormPage />, // Mode can be determined by the presence of an ID param
-    //     },
-    //     {
-    //       path: "/pipeline",
-    //       element: <PipelineBoardPage />,
-    //     },
-    //     {
-    //       path: "/tasks",
-    //       element: <TasksPage />,
-    //     },
-    //     {
-    //       path: "/team",
-    //       element: <TeamMembersPage />,
-    //     },
-    //     {
-    //       path: "/settings",
-    //       element: <SettingsPage />,
-    //     },
-    //   ],
-    // },
-    // {
-    //   path: "*",
-    //   element: <NotFoundPage />,
-    // }
+  },
+
+  {
+    element: <VerifyGuard />,
+    children: [
+      {
+        element: <AuthLayout />, 
+        children: [
+          {
+            path: "/verify-email",
+            element: <VerifyEmail />,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    element: <AuthGuard />,
+    children: [
+      {
+        element: <DashboardLayout />,
+        children: [
+          {
+            path: "/",
+            element: <Dashboard />,
+          },
+        ],
+      },
+    ],
   },
 ]);

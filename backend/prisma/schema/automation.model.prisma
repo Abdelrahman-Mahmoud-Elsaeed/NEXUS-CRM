@@ -1,0 +1,18 @@
+model Automation {
+  id             String       @id @default(uuid()) @db.Uuid
+  name           String
+  description    String?      @db.Text
+  isActive       Boolean      @default(true) @map("is_active")
+  triggerEvent   String       @map("trigger_event")
+  conditions     Json?
+  actionType     String       @map("action_type")
+  actionPayload  Json?        @map("action_payload")
+
+  organizationId String       @db.Uuid @map("organization_id")
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+
+  @@map("automations")
+}

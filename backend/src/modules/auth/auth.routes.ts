@@ -15,6 +15,7 @@ import {
   otpRateLimit,
   passwordResetRateLimit,
 } from "@middlewares/rateLimit.middleware";
+import { tokenRotationMiddleware } from "@/shared/middlewares/tokenRotationMiddleware";
 
 const router = Router();
 const controller = new AuthController();
@@ -25,11 +26,7 @@ router.post(
   asyncHandler(controller.register),
 );
 
-router.post(
-  "/login",
-  validate(loginSchema),
-  asyncHandler(controller.login),
-);
+router.post("/login", validate(loginSchema), asyncHandler(controller.login));
 
 router.post(
   "/password/forgot",
@@ -49,6 +46,7 @@ router.post(
   "/email/verify",
   validate(verifyEmailSchema),
   authMiddleware,
+  tokenRotationMiddleware,
   otpRateLimit,
   asyncHandler(controller.verifyEmail),
 );
@@ -56,8 +54,21 @@ router.post(
 router.post(
   "/email/otp",
   authMiddleware,
+  tokenRotationMiddleware,
   otpRateLimit,
   asyncHandler(controller.requestEmailOTP),
+);
+
+router.get(
+  "/verifyAccessToken",
+  authMiddleware,
+  tokenRotationMiddleware,
+  asyncHandler(controller.verifyAccessToken),
+);
+
+router.get(
+  "/verifyPasswordResetToken/:token",
+  asyncHandler(controller.verifyPasswordResetToken),
 );
 
 export default router;
