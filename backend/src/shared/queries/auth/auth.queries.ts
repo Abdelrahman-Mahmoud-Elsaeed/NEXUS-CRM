@@ -1,5 +1,5 @@
+import { RegisterRequistDto } from "@/modules/auth/auth.dto";
 import { Prisma } from "@/shared/generated/client/client";
-import { RegisterRequistDto } from "@modules/auth/dto/RegisterDto";
 
 export const createUserQuery = (
   data: RegisterRequistDto,

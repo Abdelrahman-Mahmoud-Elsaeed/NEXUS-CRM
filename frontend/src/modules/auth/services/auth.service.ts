@@ -11,7 +11,7 @@ import type {
   RequestOtpResult,
   VerifyResetTokenResult,
   VerifyAccessTokenResult,
-} from "@/shared/types/auth.types";
+} from "@/modules/auth/types/auth.types";
 
 const AUTH_BASE = "/auth";
 
@@ -32,16 +32,14 @@ export const AuthService = {
     return response.data;
   },
 
-
   resetPassword: async (
     password: string,
     token: string,
   ): Promise<ResetPasswordResult> => {
     const response = await api.post(`${AUTH_BASE}/password/reset`, {
-      newPassword:password,
+      newPassword: password,
       token,
     });
-
     return response.data;
   },
 
@@ -49,7 +47,6 @@ export const AuthService = {
     const response = await api.post(`${AUTH_BASE}/email/verify`, { OTP });
     return response.data;
   },
-
 
   requestOtp: async (): Promise<RequestOtpResult> => {
     const response = await api.post(`${AUTH_BASE}/email/otp`);
@@ -60,9 +57,9 @@ export const AuthService = {
     const response = await api.get(`${AUTH_BASE}/verifyPasswordResetToken/${token}`);
     return response.data;
   },
+
   verifyAccessToken: async (): Promise<VerifyAccessTokenResult> => {
     const response = await api.get(`${AUTH_BASE}/verifyAccessToken`);
     return response.data;
   },
 };
-

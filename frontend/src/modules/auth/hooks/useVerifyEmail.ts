@@ -54,7 +54,7 @@ export function useVerifyEmail() {
 
     try {
       await dispatch(verifyUserOtp(fullOtp)).unwrap();
-      navigate("/");
+      navigate("/setup-workspace");
     } catch (reason) {
       switch (reason) {
         case "INVALID_OTP":

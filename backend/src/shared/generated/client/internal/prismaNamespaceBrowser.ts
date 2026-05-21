@@ -51,10 +51,18 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Automation: 'Automation',
+  File: 'File',
+  Invitation: 'Invitation',
   Lead: 'Lead',
+  LeadTag: 'LeadTag',
   Organization: 'Organization',
   OrganizationUser: 'OrganizationUser',
   PasswordHistory: 'PasswordHistory',
+  Pipeline: 'Pipeline',
+  PipelineStage: 'PipelineStage',
+  Tag: 'Tag',
+  Task: 'Task',
   User: 'User'
 } as const
 
@@ -74,6 +82,53 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const AutomationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  isActive: 'isActive',
+  triggerEvent: 'triggerEvent',
+  conditions: 'conditions',
+  actionType: 'actionType',
+  actionPayload: 'actionPayload',
+  organizationId: 'organizationId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AutomationScalarFieldEnum = (typeof AutomationScalarFieldEnum)[keyof typeof AutomationScalarFieldEnum]
+
+
+export const FileScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  url: 'url',
+  storageKey: 'storageKey',
+  size: 'size',
+  mimeType: 'mimeType',
+  uploadedById: 'uploadedById',
+  organizationId: 'organizationId',
+  createdAt: 'createdAt'
+} as const
+
+export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
+
+
+export const InvitationScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token',
+  role: 'role',
+  isUsed: 'isUsed',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  acceptedAt: 'acceptedAt',
+  organizationId: 'organizationId'
+} as const
+
+export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
+
+
 export const LeadScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -82,7 +137,7 @@ export const LeadScalarFieldEnum = {
   jobTitle: 'jobTitle',
   company: 'company',
   website: 'website',
-  status: 'status',
+  pipelineStageId: 'pipelineStageId',
   priority: 'priority',
   source: 'source',
   notes: 'notes',
@@ -96,11 +151,20 @@ export const LeadScalarFieldEnum = {
 export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
 
 
+export const LeadTagScalarFieldEnum = {
+  leadId: 'leadId',
+  tagId: 'tagId'
+} as const
+
+export type LeadTagScalarFieldEnum = (typeof LeadTagScalarFieldEnum)[keyof typeof LeadTagScalarFieldEnum]
+
+
 export const OrganizationScalarFieldEnum = {
   id: 'id',
   name: 'name',
   billingPlan: 'billingPlan',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  avatar: 'avatar'
 } as const
 
 export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
@@ -126,11 +190,66 @@ export const PasswordHistoryScalarFieldEnum = {
 export type PasswordHistoryScalarFieldEnum = (typeof PasswordHistoryScalarFieldEnum)[keyof typeof PasswordHistoryScalarFieldEnum]
 
 
+export const PipelineScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  organizationId: 'organizationId'
+} as const
+
+export type PipelineScalarFieldEnum = (typeof PipelineScalarFieldEnum)[keyof typeof PipelineScalarFieldEnum]
+
+
+export const PipelineStageScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  color: 'color',
+  position: 'position',
+  pipelineId: 'pipelineId',
+  organizationId: 'organizationId'
+} as const
+
+export type PipelineStageScalarFieldEnum = (typeof PipelineStageScalarFieldEnum)[keyof typeof PipelineStageScalarFieldEnum]
+
+
+export const TagScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  colorHex: 'colorHex',
+  organizationId: 'organizationId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TagScalarFieldEnum = (typeof TagScalarFieldEnum)[keyof typeof TagScalarFieldEnum]
+
+
+export const TaskScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  dueDate: 'dueDate',
+  status: 'status',
+  priority: 'priority',
+  leadId: 'leadId',
+  organizationId: 'organizationId',
+  assignedToId: 'assignedToId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
+
+
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   password: 'password',
   name: 'name',
+  avatar: 'avatar',
   isVerified: 'isVerified',
   isDisabled: 'isDisabled',
   isDeleted: 'isDeleted',
@@ -149,12 +268,29 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 export const NullsOrder = {

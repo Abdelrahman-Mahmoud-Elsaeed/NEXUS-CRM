@@ -23,6 +23,7 @@ export function useForgotPassword() {
     setError(null);
 
     try {
+      console.log(values.email)
       await AuthService.forgotPassword(values.email);
       navigate("/check-email", { state: { email: values.email } });
     } catch (err: any) {

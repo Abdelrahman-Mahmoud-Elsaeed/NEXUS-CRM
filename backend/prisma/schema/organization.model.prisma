@@ -3,14 +3,16 @@ model Organization {
   name        String
   billingPlan String   @default("free") @map("billing_plan")
   createdAt   DateTime @default(now()) @map("created_at")
+  avatar     String?
 
-  members     OrganizationUser[]
-  leads       Lead[]
-
+  members OrganizationUser[]
+  leads   Lead[]
+  tags           Tag[]
   pipelines      Pipeline[]
   pipelineStages PipelineStage[]
   tasks          Task[]
   automations    Automation[]
+  invitations    Invitation[]
 
   @@map("organizations")
 }

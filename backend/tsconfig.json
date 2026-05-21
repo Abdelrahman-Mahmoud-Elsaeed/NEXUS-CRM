@@ -24,7 +24,7 @@
 
       "@events/*": ["src/shared/events/*"],
 
-      "@prisma-client": ["src/shared/generated/client/client"]
+      "@prisma/client": ["src/shared/generated/client/client"]
     },
     "ignoreDeprecations": "6.0"
   },

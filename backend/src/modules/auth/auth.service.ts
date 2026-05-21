@@ -1,24 +1,11 @@
 import bcrypt from "bcrypt";
 import { prisma } from "@config/db/prisma";
 import { createUserQuery } from "@queries/auth/auth.queries";
-import { mapUser } from "@/modules/auth/dto/User.mapper";
-import { LoginRequestDto, LoginServiceResult } from "./dto/LoginDto";
-import { RegisterRequistDto, RegisterServiceResult } from "./dto/RegisterDto";
 import { userWithOrganizationsInclude } from "@queries/auth/auth.include";
-import {
-  ForgetPasswordResult,
-  ResetPasswordResult,
-} from "./dto/ForgetPasswordDto";
 import { CacheService } from "@/shared/services/cache.service";
-import { RequestOtpResult, VerifyEmailResult } from "./dto/VerifyEmailDto";
 import { emailService } from "@config/email/email.service";
-import { generateOtp, storeOtp, verifyOtp } from "./security/otp.util";
-import {
-  consumeResetToken,
-  generateResetToken,
-  hashToken,
-  storeResetToken,
-} from "./security/password-reset.util";
+import { ForgetPasswordResult, LoginRequestDto, LoginServiceResult, mapUser, RegisterRequistDto, RegisterServiceResult, RequestOtpResult, ResetPasswordResult, VerifyEmailResult } from "./auth.dto";
+import { consumeResetToken, generateOtp, generateResetToken, hashToken, storeOtp, storeResetToken, verifyOtp } from "./auth.util";
 
 export class AuthService {
   async register(data: RegisterRequistDto): Promise<RegisterServiceResult> {
@@ -63,6 +50,15 @@ export class AuthService {
     if (!valid) {
       return { success: false, reason: "INVALID_CREDENTIALS" };
     }
+    if (!user.isVerified) {
+      const OTP = generateOtp();
+      console.log(OTP)
+      await storeOtp(`email_verify:${user.id}`, OTP, 5 * 60);
+
+      await emailService.sendOtp(user.email, user.name, OTP);
+    }
+
+
     return {
       success: true,
       data: mapUser(user),
@@ -166,7 +162,7 @@ export class AuthService {
     name: string | null,
   ): Promise<RequestOtpResult> {
     const OTP = generateOtp();
-    console.log(OTP)
+    console.log(OTP);
 
     await storeOtp(`email_verify:${userId}`, OTP, 5 * 60);
 

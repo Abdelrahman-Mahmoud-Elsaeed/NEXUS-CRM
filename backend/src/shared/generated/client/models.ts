@@ -8,9 +8,17 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Automation'
+export type * from './models/File'
+export type * from './models/Invitation'
 export type * from './models/Lead'
+export type * from './models/LeadTag'
 export type * from './models/Organization'
 export type * from './models/OrganizationUser'
 export type * from './models/PasswordHistory'
+export type * from './models/Pipeline'
+export type * from './models/PipelineStage'
+export type * from './models/Tag'
+export type * from './models/Task'
 export type * from './models/User'
 export type * from './commonInputTypes'

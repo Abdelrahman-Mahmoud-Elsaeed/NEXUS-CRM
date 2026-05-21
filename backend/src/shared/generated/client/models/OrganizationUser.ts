@@ -345,10 +345,6 @@ export type OrganizationUserUncheckedUpdateManyWithoutOrganizationNestedInput = 
   deleteMany?: Prisma.OrganizationUserScalarWhereInput | Prisma.OrganizationUserScalarWhereInput[]
 }
 
-export type EnumRoleFieldUpdateOperationsInput = {
-  set?: $Enums.Role
-}
-
 export type OrganizationUserCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.OrganizationUserCreateWithoutUserInput, Prisma.OrganizationUserUncheckedCreateWithoutUserInput> | Prisma.OrganizationUserCreateWithoutUserInput[] | Prisma.OrganizationUserUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.OrganizationUserCreateOrConnectWithoutUserInput | Prisma.OrganizationUserCreateOrConnectWithoutUserInput[]

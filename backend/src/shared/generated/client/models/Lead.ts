@@ -32,7 +32,7 @@ export type LeadMinAggregateOutputType = {
   jobTitle: string | null
   company: string | null
   website: string | null
-  status: $Enums.LeadStatus | null
+  pipelineStageId: string | null
   priority: $Enums.LeadPriority | null
   source: string | null
   notes: string | null
@@ -51,7 +51,7 @@ export type LeadMaxAggregateOutputType = {
   jobTitle: string | null
   company: string | null
   website: string | null
-  status: $Enums.LeadStatus | null
+  pipelineStageId: string | null
   priority: $Enums.LeadPriority | null
   source: string | null
   notes: string | null
@@ -70,7 +70,7 @@ export type LeadCountAggregateOutputType = {
   jobTitle: number
   company: number
   website: number
-  status: number
+  pipelineStageId: number
   priority: number
   source: number
   notes: number
@@ -91,7 +91,7 @@ export type LeadMinAggregateInputType = {
   jobTitle?: true
   company?: true
   website?: true
-  status?: true
+  pipelineStageId?: true
   priority?: true
   source?: true
   notes?: true
@@ -110,7 +110,7 @@ export type LeadMaxAggregateInputType = {
   jobTitle?: true
   company?: true
   website?: true
-  status?: true
+  pipelineStageId?: true
   priority?: true
   source?: true
   notes?: true
@@ -129,7 +129,7 @@ export type LeadCountAggregateInputType = {
   jobTitle?: true
   company?: true
   website?: true
-  status?: true
+  pipelineStageId?: true
   priority?: true
   source?: true
   notes?: true
@@ -221,7 +221,7 @@ export type LeadGroupByOutputType = {
   jobTitle: string | null
   company: string | null
   website: string | null
-  status: $Enums.LeadStatus
+  pipelineStageId: string | null
   priority: $Enums.LeadPriority
   source: string
   notes: string | null
@@ -261,7 +261,7 @@ export type LeadWhereInput = {
   jobTitle?: Prisma.StringNullableFilter<"Lead"> | string | null
   company?: Prisma.StringNullableFilter<"Lead"> | string | null
   website?: Prisma.StringNullableFilter<"Lead"> | string | null
-  status?: Prisma.EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
+  pipelineStageId?: Prisma.UuidNullableFilter<"Lead"> | string | null
   priority?: Prisma.EnumLeadPriorityFilter<"Lead"> | $Enums.LeadPriority
   source?: Prisma.StringFilter<"Lead"> | string
   notes?: Prisma.StringNullableFilter<"Lead"> | string | null
@@ -270,9 +270,12 @@ export type LeadWhereInput = {
   assignedToId?: Prisma.UuidNullableFilter<"Lead"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Lead"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lead"> | Date | string
+  pipelineStage?: Prisma.XOR<Prisma.PipelineStageNullableScalarRelationFilter, Prisma.PipelineStageWhereInput> | null
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   creator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   assignee?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  tasks?: Prisma.TaskListRelationFilter
+  tags?: Prisma.LeadTagListRelationFilter
 }
 
 export type LeadOrderByWithRelationInput = {
@@ -283,7 +286,7 @@ export type LeadOrderByWithRelationInput = {
   jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   company?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
-  status?: Prisma.SortOrder
+  pipelineStageId?: Prisma.SortOrderInput | Prisma.SortOrder
   priority?: Prisma.SortOrder
   source?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -292,9 +295,12 @@ export type LeadOrderByWithRelationInput = {
   assignedToId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  pipelineStage?: Prisma.PipelineStageOrderByWithRelationInput
   organization?: Prisma.OrganizationOrderByWithRelationInput
   creator?: Prisma.UserOrderByWithRelationInput
   assignee?: Prisma.UserOrderByWithRelationInput
+  tasks?: Prisma.TaskOrderByRelationAggregateInput
+  tags?: Prisma.LeadTagOrderByRelationAggregateInput
 }
 
 export type LeadWhereUniqueInput = Prisma.AtLeast<{
@@ -308,7 +314,7 @@ export type LeadWhereUniqueInput = Prisma.AtLeast<{
   jobTitle?: Prisma.StringNullableFilter<"Lead"> | string | null
   company?: Prisma.StringNullableFilter<"Lead"> | string | null
   website?: Prisma.StringNullableFilter<"Lead"> | string | null
-  status?: Prisma.EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
+  pipelineStageId?: Prisma.UuidNullableFilter<"Lead"> | string | null
   priority?: Prisma.EnumLeadPriorityFilter<"Lead"> | $Enums.LeadPriority
   source?: Prisma.StringFilter<"Lead"> | string
   notes?: Prisma.StringNullableFilter<"Lead"> | string | null
@@ -317,9 +323,12 @@ export type LeadWhereUniqueInput = Prisma.AtLeast<{
   assignedToId?: Prisma.UuidNullableFilter<"Lead"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Lead"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Lead"> | Date | string
+  pipelineStage?: Prisma.XOR<Prisma.PipelineStageNullableScalarRelationFilter, Prisma.PipelineStageWhereInput> | null
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   creator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   assignee?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  tasks?: Prisma.TaskListRelationFilter
+  tags?: Prisma.LeadTagListRelationFilter
 }, "id">
 
 export type LeadOrderByWithAggregationInput = {
@@ -330,7 +339,7 @@ export type LeadOrderByWithAggregationInput = {
   jobTitle?: Prisma.SortOrderInput | Prisma.SortOrder
   company?: Prisma.SortOrderInput | Prisma.SortOrder
   website?: Prisma.SortOrderInput | Prisma.SortOrder
-  status?: Prisma.SortOrder
+  pipelineStageId?: Prisma.SortOrderInput | Prisma.SortOrder
   priority?: Prisma.SortOrder
   source?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -355,7 +364,7 @@ export type LeadScalarWhereWithAggregatesInput = {
   jobTitle?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
   company?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
   website?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
-  status?: Prisma.EnumLeadStatusWithAggregatesFilter<"Lead"> | $Enums.LeadStatus
+  pipelineStageId?: Prisma.UuidNullableWithAggregatesFilter<"Lead"> | string | null
   priority?: Prisma.EnumLeadPriorityWithAggregatesFilter<"Lead"> | $Enums.LeadPriority
   source?: Prisma.StringWithAggregatesFilter<"Lead"> | string
   notes?: Prisma.StringNullableWithAggregatesFilter<"Lead"> | string | null
@@ -374,15 +383,17 @@ export type LeadCreateInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  pipelineStage?: Prisma.PipelineStageCreateNestedOneWithoutLeadsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutLeadsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedLeadsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedLeadsInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutLeadInput
+  tags?: Prisma.LeadTagCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateInput = {
@@ -393,7 +404,7 @@ export type LeadUncheckedCreateInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
+  pipelineStageId?: string | null
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
@@ -402,6 +413,8 @@ export type LeadUncheckedCreateInput = {
   assignedToId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutLeadInput
+  tags?: Prisma.LeadTagUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUpdateInput = {
@@ -412,15 +425,17 @@ export type LeadUpdateInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pipelineStage?: Prisma.PipelineStageUpdateOneWithoutLeadsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutLeadsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedLeadsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedLeadsNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutLeadNestedInput
+  tags?: Prisma.LeadTagUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateInput = {
@@ -431,7 +446,7 @@ export type LeadUncheckedUpdateInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+  pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -440,6 +455,8 @@ export type LeadUncheckedUpdateInput = {
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutLeadNestedInput
+  tags?: Prisma.LeadTagUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadCreateManyInput = {
@@ -450,7 +467,7 @@ export type LeadCreateManyInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
+  pipelineStageId?: string | null
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
@@ -469,7 +486,6 @@ export type LeadUpdateManyMutationInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -485,7 +501,7 @@ export type LeadUncheckedUpdateManyInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+  pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -504,7 +520,7 @@ export type LeadCountOrderByAggregateInput = {
   jobTitle?: Prisma.SortOrder
   company?: Prisma.SortOrder
   website?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  pipelineStageId?: Prisma.SortOrder
   priority?: Prisma.SortOrder
   source?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -523,7 +539,7 @@ export type LeadMaxOrderByAggregateInput = {
   jobTitle?: Prisma.SortOrder
   company?: Prisma.SortOrder
   website?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  pipelineStageId?: Prisma.SortOrder
   priority?: Prisma.SortOrder
   source?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -542,7 +558,7 @@ export type LeadMinOrderByAggregateInput = {
   jobTitle?: Prisma.SortOrder
   company?: Prisma.SortOrder
   website?: Prisma.SortOrder
-  status?: Prisma.SortOrder
+  pipelineStageId?: Prisma.SortOrder
   priority?: Prisma.SortOrder
   source?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -551,6 +567,11 @@ export type LeadMinOrderByAggregateInput = {
   assignedToId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type LeadScalarRelationFilter = {
+  is?: Prisma.LeadWhereInput
+  isNot?: Prisma.LeadWhereInput
 }
 
 export type LeadListRelationFilter = {
@@ -563,24 +584,22 @@ export type LeadOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
-export type EnumLeadStatusFieldUpdateOperationsInput = {
-  set?: $Enums.LeadStatus
-}
-
 export type EnumLeadPriorityFieldUpdateOperationsInput = {
   set?: $Enums.LeadPriority
 }
 
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
+export type LeadCreateNestedOneWithoutTagsInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutTagsInput, Prisma.LeadUncheckedCreateWithoutTagsInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutTagsInput
+  connect?: Prisma.LeadWhereUniqueInput
+}
+
+export type LeadUpdateOneRequiredWithoutTagsNestedInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutTagsInput, Prisma.LeadUncheckedCreateWithoutTagsInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutTagsInput
+  upsert?: Prisma.LeadUpsertWithoutTagsInput
+  connect?: Prisma.LeadWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LeadUpdateToOneWithWhereWithoutTagsInput, Prisma.LeadUpdateWithoutTagsInput>, Prisma.LeadUncheckedUpdateWithoutTagsInput>
 }
 
 export type LeadCreateNestedManyWithoutOrganizationInput = {
@@ -623,6 +642,62 @@ export type LeadUncheckedUpdateManyWithoutOrganizationNestedInput = {
   update?: Prisma.LeadUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.LeadUpdateWithWhereUniqueWithoutOrganizationInput[]
   updateMany?: Prisma.LeadUpdateManyWithWhereWithoutOrganizationInput | Prisma.LeadUpdateManyWithWhereWithoutOrganizationInput[]
   deleteMany?: Prisma.LeadScalarWhereInput | Prisma.LeadScalarWhereInput[]
+}
+
+export type LeadCreateNestedManyWithoutPipelineStageInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutPipelineStageInput, Prisma.LeadUncheckedCreateWithoutPipelineStageInput> | Prisma.LeadCreateWithoutPipelineStageInput[] | Prisma.LeadUncheckedCreateWithoutPipelineStageInput[]
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutPipelineStageInput | Prisma.LeadCreateOrConnectWithoutPipelineStageInput[]
+  createMany?: Prisma.LeadCreateManyPipelineStageInputEnvelope
+  connect?: Prisma.LeadWhereUniqueInput | Prisma.LeadWhereUniqueInput[]
+}
+
+export type LeadUncheckedCreateNestedManyWithoutPipelineStageInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutPipelineStageInput, Prisma.LeadUncheckedCreateWithoutPipelineStageInput> | Prisma.LeadCreateWithoutPipelineStageInput[] | Prisma.LeadUncheckedCreateWithoutPipelineStageInput[]
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutPipelineStageInput | Prisma.LeadCreateOrConnectWithoutPipelineStageInput[]
+  createMany?: Prisma.LeadCreateManyPipelineStageInputEnvelope
+  connect?: Prisma.LeadWhereUniqueInput | Prisma.LeadWhereUniqueInput[]
+}
+
+export type LeadUpdateManyWithoutPipelineStageNestedInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutPipelineStageInput, Prisma.LeadUncheckedCreateWithoutPipelineStageInput> | Prisma.LeadCreateWithoutPipelineStageInput[] | Prisma.LeadUncheckedCreateWithoutPipelineStageInput[]
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutPipelineStageInput | Prisma.LeadCreateOrConnectWithoutPipelineStageInput[]
+  upsert?: Prisma.LeadUpsertWithWhereUniqueWithoutPipelineStageInput | Prisma.LeadUpsertWithWhereUniqueWithoutPipelineStageInput[]
+  createMany?: Prisma.LeadCreateManyPipelineStageInputEnvelope
+  set?: Prisma.LeadWhereUniqueInput | Prisma.LeadWhereUniqueInput[]
+  disconnect?: Prisma.LeadWhereUniqueInput | Prisma.LeadWhereUniqueInput[]
+  delete?: Prisma.LeadWhereUniqueInput | Prisma.LeadWhereUniqueInput[]
+  connect?: Prisma.LeadWhereUniqueInput | Prisma.LeadWhereUniqueInput[]
+  update?: Prisma.LeadUpdateWithWhereUniqueWithoutPipelineStageInput | Prisma.LeadUpdateWithWhereUniqueWithoutPipelineStageInput[]
+  updateMany?: Prisma.LeadUpdateManyWithWhereWithoutPipelineStageInput | Prisma.LeadUpdateManyWithWhereWithoutPipelineStageInput[]
+  deleteMany?: Prisma.LeadScalarWhereInput | Prisma.LeadScalarWhereInput[]
+}
+
+export type LeadUncheckedUpdateManyWithoutPipelineStageNestedInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutPipelineStageInput, Prisma.LeadUncheckedCreateWithoutPipelineStageInput> | Prisma.LeadCreateWithoutPipelineStageInput[] | Prisma.LeadUncheckedCreateWithoutPipelineStageInput[]
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutPipelineStageInput | Prisma.LeadCreateOrConnectWithoutPipelineStageInput[]
+  upsert?: Prisma.LeadUpsertWithWhereUniqueWithoutPipelineStageInput | Prisma.LeadUpsertWithWhereUniqueWithoutPipelineStageInput[]
+  createMany?: Prisma.LeadCreateManyPipelineStageInputEnvelope
+  set?: Prisma.LeadWhereUniqueInput | Prisma.LeadWhereUniqueInput[]
+  disconnect?: Prisma.LeadWhereUniqueInput | Prisma.LeadWhereUniqueInput[]
+  delete?: Prisma.LeadWhereUniqueInput | Prisma.LeadWhereUniqueInput[]
+  connect?: Prisma.LeadWhereUniqueInput | Prisma.LeadWhereUniqueInput[]
+  update?: Prisma.LeadUpdateWithWhereUniqueWithoutPipelineStageInput | Prisma.LeadUpdateWithWhereUniqueWithoutPipelineStageInput[]
+  updateMany?: Prisma.LeadUpdateManyWithWhereWithoutPipelineStageInput | Prisma.LeadUpdateManyWithWhereWithoutPipelineStageInput[]
+  deleteMany?: Prisma.LeadScalarWhereInput | Prisma.LeadScalarWhereInput[]
+}
+
+export type LeadCreateNestedOneWithoutTasksInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutTasksInput, Prisma.LeadUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutTasksInput
+  connect?: Prisma.LeadWhereUniqueInput
+}
+
+export type LeadUpdateOneRequiredWithoutTasksNestedInput = {
+  create?: Prisma.XOR<Prisma.LeadCreateWithoutTasksInput, Prisma.LeadUncheckedCreateWithoutTasksInput>
+  connectOrCreate?: Prisma.LeadCreateOrConnectWithoutTasksInput
+  upsert?: Prisma.LeadUpsertWithoutTasksInput
+  connect?: Prisma.LeadWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LeadUpdateToOneWithWhereWithoutTasksInput, Prisma.LeadUpdateWithoutTasksInput>, Prisma.LeadUncheckedUpdateWithoutTasksInput>
 }
 
 export type LeadCreateNestedManyWithoutAssigneeInput = {
@@ -709,6 +784,102 @@ export type LeadUncheckedUpdateManyWithoutCreatorNestedInput = {
   deleteMany?: Prisma.LeadScalarWhereInput | Prisma.LeadScalarWhereInput[]
 }
 
+export type LeadCreateWithoutTagsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  jobTitle?: string | null
+  company?: string | null
+  website?: string | null
+  priority?: $Enums.LeadPriority
+  source?: string
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pipelineStage?: Prisma.PipelineStageCreateNestedOneWithoutLeadsInput
+  organization: Prisma.OrganizationCreateNestedOneWithoutLeadsInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreatedLeadsInput
+  assignee?: Prisma.UserCreateNestedOneWithoutAssignedLeadsInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutLeadInput
+}
+
+export type LeadUncheckedCreateWithoutTagsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  jobTitle?: string | null
+  company?: string | null
+  website?: string | null
+  pipelineStageId?: string | null
+  priority?: $Enums.LeadPriority
+  source?: string
+  notes?: string | null
+  organizationId: string
+  createdById?: string | null
+  assignedToId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutLeadInput
+}
+
+export type LeadCreateOrConnectWithoutTagsInput = {
+  where: Prisma.LeadWhereUniqueInput
+  create: Prisma.XOR<Prisma.LeadCreateWithoutTagsInput, Prisma.LeadUncheckedCreateWithoutTagsInput>
+}
+
+export type LeadUpsertWithoutTagsInput = {
+  update: Prisma.XOR<Prisma.LeadUpdateWithoutTagsInput, Prisma.LeadUncheckedUpdateWithoutTagsInput>
+  create: Prisma.XOR<Prisma.LeadCreateWithoutTagsInput, Prisma.LeadUncheckedCreateWithoutTagsInput>
+  where?: Prisma.LeadWhereInput
+}
+
+export type LeadUpdateToOneWithWhereWithoutTagsInput = {
+  where?: Prisma.LeadWhereInput
+  data: Prisma.XOR<Prisma.LeadUpdateWithoutTagsInput, Prisma.LeadUncheckedUpdateWithoutTagsInput>
+}
+
+export type LeadUpdateWithoutTagsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pipelineStage?: Prisma.PipelineStageUpdateOneWithoutLeadsNestedInput
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutLeadsNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreatedLeadsNestedInput
+  assignee?: Prisma.UserUpdateOneWithoutAssignedLeadsNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadUncheckedUpdateWithoutTagsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutLeadNestedInput
+}
+
 export type LeadCreateWithoutOrganizationInput = {
   id?: string
   name: string
@@ -717,14 +888,16 @@ export type LeadCreateWithoutOrganizationInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  pipelineStage?: Prisma.PipelineStageCreateNestedOneWithoutLeadsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedLeadsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedLeadsInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutLeadInput
+  tags?: Prisma.LeadTagCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutOrganizationInput = {
@@ -735,7 +908,7 @@ export type LeadUncheckedCreateWithoutOrganizationInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
+  pipelineStageId?: string | null
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
@@ -743,6 +916,8 @@ export type LeadUncheckedCreateWithoutOrganizationInput = {
   assignedToId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutLeadInput
+  tags?: Prisma.LeadTagUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutOrganizationInput = {
@@ -782,7 +957,7 @@ export type LeadScalarWhereInput = {
   jobTitle?: Prisma.StringNullableFilter<"Lead"> | string | null
   company?: Prisma.StringNullableFilter<"Lead"> | string | null
   website?: Prisma.StringNullableFilter<"Lead"> | string | null
-  status?: Prisma.EnumLeadStatusFilter<"Lead"> | $Enums.LeadStatus
+  pipelineStageId?: Prisma.UuidNullableFilter<"Lead"> | string | null
   priority?: Prisma.EnumLeadPriorityFilter<"Lead"> | $Enums.LeadPriority
   source?: Prisma.StringFilter<"Lead"> | string
   notes?: Prisma.StringNullableFilter<"Lead"> | string | null
@@ -793,6 +968,168 @@ export type LeadScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Lead"> | Date | string
 }
 
+export type LeadCreateWithoutPipelineStageInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  jobTitle?: string | null
+  company?: string | null
+  website?: string | null
+  priority?: $Enums.LeadPriority
+  source?: string
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutLeadsInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreatedLeadsInput
+  assignee?: Prisma.UserCreateNestedOneWithoutAssignedLeadsInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutLeadInput
+  tags?: Prisma.LeadTagCreateNestedManyWithoutLeadInput
+}
+
+export type LeadUncheckedCreateWithoutPipelineStageInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  jobTitle?: string | null
+  company?: string | null
+  website?: string | null
+  priority?: $Enums.LeadPriority
+  source?: string
+  notes?: string | null
+  organizationId: string
+  createdById?: string | null
+  assignedToId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutLeadInput
+  tags?: Prisma.LeadTagUncheckedCreateNestedManyWithoutLeadInput
+}
+
+export type LeadCreateOrConnectWithoutPipelineStageInput = {
+  where: Prisma.LeadWhereUniqueInput
+  create: Prisma.XOR<Prisma.LeadCreateWithoutPipelineStageInput, Prisma.LeadUncheckedCreateWithoutPipelineStageInput>
+}
+
+export type LeadCreateManyPipelineStageInputEnvelope = {
+  data: Prisma.LeadCreateManyPipelineStageInput | Prisma.LeadCreateManyPipelineStageInput[]
+  skipDuplicates?: boolean
+}
+
+export type LeadUpsertWithWhereUniqueWithoutPipelineStageInput = {
+  where: Prisma.LeadWhereUniqueInput
+  update: Prisma.XOR<Prisma.LeadUpdateWithoutPipelineStageInput, Prisma.LeadUncheckedUpdateWithoutPipelineStageInput>
+  create: Prisma.XOR<Prisma.LeadCreateWithoutPipelineStageInput, Prisma.LeadUncheckedCreateWithoutPipelineStageInput>
+}
+
+export type LeadUpdateWithWhereUniqueWithoutPipelineStageInput = {
+  where: Prisma.LeadWhereUniqueInput
+  data: Prisma.XOR<Prisma.LeadUpdateWithoutPipelineStageInput, Prisma.LeadUncheckedUpdateWithoutPipelineStageInput>
+}
+
+export type LeadUpdateManyWithWhereWithoutPipelineStageInput = {
+  where: Prisma.LeadScalarWhereInput
+  data: Prisma.XOR<Prisma.LeadUpdateManyMutationInput, Prisma.LeadUncheckedUpdateManyWithoutPipelineStageInput>
+}
+
+export type LeadCreateWithoutTasksInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  jobTitle?: string | null
+  company?: string | null
+  website?: string | null
+  priority?: $Enums.LeadPriority
+  source?: string
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pipelineStage?: Prisma.PipelineStageCreateNestedOneWithoutLeadsInput
+  organization: Prisma.OrganizationCreateNestedOneWithoutLeadsInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreatedLeadsInput
+  assignee?: Prisma.UserCreateNestedOneWithoutAssignedLeadsInput
+  tags?: Prisma.LeadTagCreateNestedManyWithoutLeadInput
+}
+
+export type LeadUncheckedCreateWithoutTasksInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  jobTitle?: string | null
+  company?: string | null
+  website?: string | null
+  pipelineStageId?: string | null
+  priority?: $Enums.LeadPriority
+  source?: string
+  notes?: string | null
+  organizationId: string
+  createdById?: string | null
+  assignedToId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tags?: Prisma.LeadTagUncheckedCreateNestedManyWithoutLeadInput
+}
+
+export type LeadCreateOrConnectWithoutTasksInput = {
+  where: Prisma.LeadWhereUniqueInput
+  create: Prisma.XOR<Prisma.LeadCreateWithoutTasksInput, Prisma.LeadUncheckedCreateWithoutTasksInput>
+}
+
+export type LeadUpsertWithoutTasksInput = {
+  update: Prisma.XOR<Prisma.LeadUpdateWithoutTasksInput, Prisma.LeadUncheckedUpdateWithoutTasksInput>
+  create: Prisma.XOR<Prisma.LeadCreateWithoutTasksInput, Prisma.LeadUncheckedCreateWithoutTasksInput>
+  where?: Prisma.LeadWhereInput
+}
+
+export type LeadUpdateToOneWithWhereWithoutTasksInput = {
+  where?: Prisma.LeadWhereInput
+  data: Prisma.XOR<Prisma.LeadUpdateWithoutTasksInput, Prisma.LeadUncheckedUpdateWithoutTasksInput>
+}
+
+export type LeadUpdateWithoutTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pipelineStage?: Prisma.PipelineStageUpdateOneWithoutLeadsNestedInput
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutLeadsNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreatedLeadsNestedInput
+  assignee?: Prisma.UserUpdateOneWithoutAssignedLeadsNestedInput
+  tags?: Prisma.LeadTagUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadUncheckedUpdateWithoutTasksInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tags?: Prisma.LeadTagUncheckedUpdateManyWithoutLeadNestedInput
+}
+
 export type LeadCreateWithoutAssigneeInput = {
   id?: string
   name: string
@@ -801,14 +1138,16 @@ export type LeadCreateWithoutAssigneeInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  pipelineStage?: Prisma.PipelineStageCreateNestedOneWithoutLeadsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutLeadsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedLeadsInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutLeadInput
+  tags?: Prisma.LeadTagCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutAssigneeInput = {
@@ -819,7 +1158,7 @@ export type LeadUncheckedCreateWithoutAssigneeInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
+  pipelineStageId?: string | null
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
@@ -827,6 +1166,8 @@ export type LeadUncheckedCreateWithoutAssigneeInput = {
   createdById?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutLeadInput
+  tags?: Prisma.LeadTagUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutAssigneeInput = {
@@ -847,14 +1188,16 @@ export type LeadCreateWithoutCreatorInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  pipelineStage?: Prisma.PipelineStageCreateNestedOneWithoutLeadsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutLeadsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedLeadsInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutLeadInput
+  tags?: Prisma.LeadTagCreateNestedManyWithoutLeadInput
 }
 
 export type LeadUncheckedCreateWithoutCreatorInput = {
@@ -865,7 +1208,7 @@ export type LeadUncheckedCreateWithoutCreatorInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
+  pipelineStageId?: string | null
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
@@ -873,6 +1216,8 @@ export type LeadUncheckedCreateWithoutCreatorInput = {
   assignedToId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutLeadInput
+  tags?: Prisma.LeadTagUncheckedCreateNestedManyWithoutLeadInput
 }
 
 export type LeadCreateOrConnectWithoutCreatorInput = {
@@ -925,7 +1270,7 @@ export type LeadCreateManyOrganizationInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
+  pipelineStageId?: string | null
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
@@ -943,14 +1288,16 @@ export type LeadUpdateWithoutOrganizationInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pipelineStage?: Prisma.PipelineStageUpdateOneWithoutLeadsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedLeadsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedLeadsNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutLeadNestedInput
+  tags?: Prisma.LeadTagUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutOrganizationInput = {
@@ -961,7 +1308,7 @@ export type LeadUncheckedUpdateWithoutOrganizationInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+  pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -969,6 +1316,8 @@ export type LeadUncheckedUpdateWithoutOrganizationInput = {
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutLeadNestedInput
+  tags?: Prisma.LeadTagUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateManyWithoutOrganizationInput = {
@@ -979,10 +1328,86 @@ export type LeadUncheckedUpdateManyWithoutOrganizationInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+  pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type LeadCreateManyPipelineStageInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  jobTitle?: string | null
+  company?: string | null
+  website?: string | null
+  priority?: $Enums.LeadPriority
+  source?: string
+  notes?: string | null
+  organizationId: string
+  createdById?: string | null
+  assignedToId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type LeadUpdateWithoutPipelineStageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutLeadsNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreatedLeadsNestedInput
+  assignee?: Prisma.UserUpdateOneWithoutAssignedLeadsNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutLeadNestedInput
+  tags?: Prisma.LeadTagUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadUncheckedUpdateWithoutPipelineStageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutLeadNestedInput
+  tags?: Prisma.LeadTagUncheckedUpdateManyWithoutLeadNestedInput
+}
+
+export type LeadUncheckedUpdateManyWithoutPipelineStageInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -997,7 +1422,7 @@ export type LeadCreateManyAssigneeInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
+  pipelineStageId?: string | null
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
@@ -1015,7 +1440,7 @@ export type LeadCreateManyCreatorInput = {
   jobTitle?: string | null
   company?: string | null
   website?: string | null
-  status?: $Enums.LeadStatus
+  pipelineStageId?: string | null
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
@@ -1033,14 +1458,16 @@ export type LeadUpdateWithoutAssigneeInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pipelineStage?: Prisma.PipelineStageUpdateOneWithoutLeadsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutLeadsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedLeadsNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutLeadNestedInput
+  tags?: Prisma.LeadTagUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutAssigneeInput = {
@@ -1051,7 +1478,7 @@ export type LeadUncheckedUpdateWithoutAssigneeInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+  pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1059,6 +1486,8 @@ export type LeadUncheckedUpdateWithoutAssigneeInput = {
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutLeadNestedInput
+  tags?: Prisma.LeadTagUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateManyWithoutAssigneeInput = {
@@ -1069,7 +1498,7 @@ export type LeadUncheckedUpdateManyWithoutAssigneeInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+  pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1087,14 +1516,16 @@ export type LeadUpdateWithoutCreatorInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pipelineStage?: Prisma.PipelineStageUpdateOneWithoutLeadsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutLeadsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedLeadsNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutLeadNestedInput
+  tags?: Prisma.LeadTagUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateWithoutCreatorInput = {
@@ -1105,7 +1536,7 @@ export type LeadUncheckedUpdateWithoutCreatorInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+  pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1113,6 +1544,8 @@ export type LeadUncheckedUpdateWithoutCreatorInput = {
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutLeadNestedInput
+  tags?: Prisma.LeadTagUncheckedUpdateManyWithoutLeadNestedInput
 }
 
 export type LeadUncheckedUpdateManyWithoutCreatorInput = {
@@ -1123,7 +1556,7 @@ export type LeadUncheckedUpdateManyWithoutCreatorInput = {
   jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   company?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  status?: Prisma.EnumLeadStatusFieldUpdateOperationsInput | $Enums.LeadStatus
+  pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1134,6 +1567,44 @@ export type LeadUncheckedUpdateManyWithoutCreatorInput = {
 }
 
 
+/**
+ * Count Type LeadCountOutputType
+ */
+
+export type LeadCountOutputType = {
+  tasks: number
+  tags: number
+}
+
+export type LeadCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tasks?: boolean | LeadCountOutputTypeCountTasksArgs
+  tags?: boolean | LeadCountOutputTypeCountTagsArgs
+}
+
+/**
+ * LeadCountOutputType without action
+ */
+export type LeadCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LeadCountOutputType
+   */
+  select?: Prisma.LeadCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * LeadCountOutputType without action
+ */
+export type LeadCountOutputTypeCountTasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TaskWhereInput
+}
+
+/**
+ * LeadCountOutputType without action
+ */
+export type LeadCountOutputTypeCountTagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.LeadTagWhereInput
+}
+
 
 export type LeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1143,7 +1614,7 @@ export type LeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   jobTitle?: boolean
   company?: boolean
   website?: boolean
-  status?: boolean
+  pipelineStageId?: boolean
   priority?: boolean
   source?: boolean
   notes?: boolean
@@ -1152,9 +1623,13 @@ export type LeadSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   assignedToId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  pipelineStage?: boolean | Prisma.Lead$pipelineStageArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.Lead$creatorArgs<ExtArgs>
   assignee?: boolean | Prisma.Lead$assigneeArgs<ExtArgs>
+  tasks?: boolean | Prisma.Lead$tasksArgs<ExtArgs>
+  tags?: boolean | Prisma.Lead$tagsArgs<ExtArgs>
+  _count?: boolean | Prisma.LeadCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lead"]>
 
 export type LeadSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1165,7 +1640,7 @@ export type LeadSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   jobTitle?: boolean
   company?: boolean
   website?: boolean
-  status?: boolean
+  pipelineStageId?: boolean
   priority?: boolean
   source?: boolean
   notes?: boolean
@@ -1174,6 +1649,7 @@ export type LeadSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   assignedToId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  pipelineStage?: boolean | Prisma.Lead$pipelineStageArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.Lead$creatorArgs<ExtArgs>
   assignee?: boolean | Prisma.Lead$assigneeArgs<ExtArgs>
@@ -1187,7 +1663,7 @@ export type LeadSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   jobTitle?: boolean
   company?: boolean
   website?: boolean
-  status?: boolean
+  pipelineStageId?: boolean
   priority?: boolean
   source?: boolean
   notes?: boolean
@@ -1196,6 +1672,7 @@ export type LeadSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   assignedToId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  pipelineStage?: boolean | Prisma.Lead$pipelineStageArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.Lead$creatorArgs<ExtArgs>
   assignee?: boolean | Prisma.Lead$assigneeArgs<ExtArgs>
@@ -1209,7 +1686,7 @@ export type LeadSelectScalar = {
   jobTitle?: boolean
   company?: boolean
   website?: boolean
-  status?: boolean
+  pipelineStageId?: boolean
   priority?: boolean
   source?: boolean
   notes?: boolean
@@ -1220,18 +1697,24 @@ export type LeadSelectScalar = {
   updatedAt?: boolean
 }
 
-export type LeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "jobTitle" | "company" | "website" | "status" | "priority" | "source" | "notes" | "organizationId" | "createdById" | "assignedToId" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
+export type LeadOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "jobTitle" | "company" | "website" | "pipelineStageId" | "priority" | "source" | "notes" | "organizationId" | "createdById" | "assignedToId" | "createdAt" | "updatedAt", ExtArgs["result"]["lead"]>
 export type LeadInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  pipelineStage?: boolean | Prisma.Lead$pipelineStageArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.Lead$creatorArgs<ExtArgs>
   assignee?: boolean | Prisma.Lead$assigneeArgs<ExtArgs>
+  tasks?: boolean | Prisma.Lead$tasksArgs<ExtArgs>
+  tags?: boolean | Prisma.Lead$tagsArgs<ExtArgs>
+  _count?: boolean | Prisma.LeadCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LeadIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  pipelineStage?: boolean | Prisma.Lead$pipelineStageArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.Lead$creatorArgs<ExtArgs>
   assignee?: boolean | Prisma.Lead$assigneeArgs<ExtArgs>
 }
 export type LeadIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  pipelineStage?: boolean | Prisma.Lead$pipelineStageArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.Lead$creatorArgs<ExtArgs>
   assignee?: boolean | Prisma.Lead$assigneeArgs<ExtArgs>
@@ -1240,9 +1723,12 @@ export type LeadIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
 export type $LeadPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Lead"
   objects: {
+    pipelineStage: Prisma.$PipelineStagePayload<ExtArgs> | null
     organization: Prisma.$OrganizationPayload<ExtArgs>
     creator: Prisma.$UserPayload<ExtArgs> | null
     assignee: Prisma.$UserPayload<ExtArgs> | null
+    tasks: Prisma.$TaskPayload<ExtArgs>[]
+    tags: Prisma.$LeadTagPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1252,7 +1738,7 @@ export type $LeadPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     jobTitle: string | null
     company: string | null
     website: string | null
-    status: $Enums.LeadStatus
+    pipelineStageId: string | null
     priority: $Enums.LeadPriority
     source: string
     notes: string | null
@@ -1655,9 +2141,12 @@ readonly fields: LeadFieldRefs;
  */
 export interface Prisma__LeadClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  pipelineStage<T extends Prisma.Lead$pipelineStageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$pipelineStageArgs<ExtArgs>>): Prisma.Prisma__PipelineStageClient<runtime.Types.Result.GetResult<Prisma.$PipelineStagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   creator<T extends Prisma.Lead$creatorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$creatorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   assignee<T extends Prisma.Lead$assigneeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$assigneeArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  tasks<T extends Prisma.Lead$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  tags<T extends Prisma.Lead$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lead$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1694,7 +2183,7 @@ export interface LeadFieldRefs {
   readonly jobTitle: Prisma.FieldRef<"Lead", 'String'>
   readonly company: Prisma.FieldRef<"Lead", 'String'>
   readonly website: Prisma.FieldRef<"Lead", 'String'>
-  readonly status: Prisma.FieldRef<"Lead", 'LeadStatus'>
+  readonly pipelineStageId: Prisma.FieldRef<"Lead", 'String'>
   readonly priority: Prisma.FieldRef<"Lead", 'LeadPriority'>
   readonly source: Prisma.FieldRef<"Lead", 'String'>
   readonly notes: Prisma.FieldRef<"Lead", 'String'>
@@ -2104,6 +2593,25 @@ export type LeadDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * Lead.pipelineStage
+ */
+export type Lead$pipelineStageArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PipelineStage
+   */
+  select?: Prisma.PipelineStageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PipelineStage
+   */
+  omit?: Prisma.PipelineStageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PipelineStageInclude<ExtArgs> | null
+  where?: Prisma.PipelineStageWhereInput
+}
+
+/**
  * Lead.creator
  */
 export type Lead$creatorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2139,6 +2647,54 @@ export type Lead$assigneeArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Lead.tasks
+ */
+export type Lead$tasksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Task
+   */
+  select?: Prisma.TaskSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Task
+   */
+  omit?: Prisma.TaskOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TaskInclude<ExtArgs> | null
+  where?: Prisma.TaskWhereInput
+  orderBy?: Prisma.TaskOrderByWithRelationInput | Prisma.TaskOrderByWithRelationInput[]
+  cursor?: Prisma.TaskWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TaskScalarFieldEnum | Prisma.TaskScalarFieldEnum[]
+}
+
+/**
+ * Lead.tags
+ */
+export type Lead$tagsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the LeadTag
+   */
+  select?: Prisma.LeadTagSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the LeadTag
+   */
+  omit?: Prisma.LeadTagOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.LeadTagInclude<ExtArgs> | null
+  where?: Prisma.LeadTagWhereInput
+  orderBy?: Prisma.LeadTagOrderByWithRelationInput | Prisma.LeadTagOrderByWithRelationInput[]
+  cursor?: Prisma.LeadTagWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.LeadTagScalarFieldEnum | Prisma.LeadTagScalarFieldEnum[]
 }
 
 /**

@@ -29,8 +29,8 @@ export * from "./enums"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Leads
- * const leads = await prisma.lead.findMany()
+ * // Fetch zero or more Automations
+ * const automations = await prisma.automation.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -40,10 +40,30 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
+ * Model Automation
+ * 
+ */
+export type Automation = Prisma.AutomationModel
+/**
+ * Model File
+ * 
+ */
+export type File = Prisma.FileModel
+/**
+ * Model Invitation
+ * 
+ */
+export type Invitation = Prisma.InvitationModel
+/**
  * Model Lead
  * 
  */
 export type Lead = Prisma.LeadModel
+/**
+ * Model LeadTag
+ * 
+ */
+export type LeadTag = Prisma.LeadTagModel
 /**
  * Model Organization
  * 
@@ -59,6 +79,26 @@ export type OrganizationUser = Prisma.OrganizationUserModel
  * 
  */
 export type PasswordHistory = Prisma.PasswordHistoryModel
+/**
+ * Model Pipeline
+ * 
+ */
+export type Pipeline = Prisma.PipelineModel
+/**
+ * Model PipelineStage
+ * 
+ */
+export type PipelineStage = Prisma.PipelineStageModel
+/**
+ * Model Tag
+ * 
+ */
+export type Tag = Prisma.TagModel
+/**
+ * Model Task
+ * 
+ */
+export type Task = Prisma.TaskModel
 /**
  * Model User
  * 

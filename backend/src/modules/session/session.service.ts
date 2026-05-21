@@ -1,10 +1,7 @@
-import {
-  generateAccessToken,
-  generateRefreshToken,
-} from "@/shared/utils/token.util";
 import { CacheService } from "@/shared/services/cache.service";
 import crypto from "crypto";
-import { UserProfileDto } from "../auth/dto/user-profile.dto";
+import { UserProfileDto } from "../auth/auth.dto";
+import { generateAccessToken, generateRefreshToken } from "../auth/auth.util";
 
 export interface CachedSession {
   token: string;
@@ -60,7 +57,7 @@ export class SessionService {
       sessionId,
     };
   }
-  // Add this inside your SessionService class
+
   async rotate(
     user: UserProfileDto,
     currentSessionId: string,
@@ -102,10 +99,14 @@ export class SessionService {
       await CacheService.set(
         `refresh_token:${userId}:${targetSessionId}`,
         updatedSessionData,
-        7 * 24 * 60 * 60, // 7 days in seconds
+        7 * 24 * 60 * 60,
       );
 
-      await CacheService.delete(`refresh_token:${userId}:${currentSessionId}`);
+      await CacheService.set(
+        `refresh_token:${userId}:${currentSessionId}`,
+        cachedSession,
+        30,
+      );
     }
 
     return {
@@ -115,7 +116,6 @@ export class SessionService {
   }
   async verifySessionOtp(userId: string, sessionId: string) {
     const sessionKey = `refresh_token:${userId}:${sessionId}`;
-
     const session = await CacheService.get<CachedSession>(sessionKey);
 
     if (!session) {

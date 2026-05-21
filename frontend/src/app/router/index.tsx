@@ -14,10 +14,11 @@ import LinkExpired from "@/modules/auth/pages/LinkExpired/LinkExpired";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 
-import Dashboard from "@/modules/dashboard/pages/Dashboard"
+import Dashboard from "@/modules/dashboard/pages/Dashboard";
 import GuestGuard from "@/modules/auth/guard/GuestGuard";
 import VerifyGuard from "@/modules/auth/guard/VerifyGuard";
 import AuthGuard from "@/modules/auth/guard/AuthGuard";
+import SetupWorkspace from "@/modules/auth/pages/SetupWorkspace/SetupWorkspace";
 
 // // Dashboard Pages (Placeholders)
 // import DashboardPage from "@/pages/Dashboard";
@@ -31,7 +32,6 @@ import AuthGuard from "@/modules/auth/guard/AuthGuard";
 // import NotFoundPage from "@/pages/NotFound";
 
 export const router = createBrowserRouter([
-
   {
     element: <GuestGuard />,
     children: [
@@ -46,6 +46,7 @@ export const router = createBrowserRouter([
             path: "/signup",
             element: <SignupPage />,
           },
+
           {
             path: "/forgot-password",
             element: <ForgotPassword />,
@@ -71,7 +72,7 @@ export const router = createBrowserRouter([
     element: <VerifyGuard />,
     children: [
       {
-        element: <AuthLayout />, 
+        element: <AuthLayout />,
         children: [
           {
             path: "/verify-email",
@@ -84,6 +85,16 @@ export const router = createBrowserRouter([
   {
     element: <AuthGuard />,
     children: [
+      {
+        element: <AuthLayout />,
+        children: [
+          {
+            path: "/setup-workspace",
+            element: <SetupWorkspace />,
+          },
+        ],
+      },
+
       {
         element: <DashboardLayout />,
         children: [

@@ -25,3 +25,10 @@ export const CLIENT_URL = getEnv("CLIENT_URL");
 export const JWT_SECRET = getEnv("JWT_SECRET");
 
 export const JWT_REFRESH_SECRET = getEnv("JWT_REFRESH_SECRET");
+
+export const SUPABASE_URL = getEnv("SUPABASE_URL");
+
+export const SUPABASE_SERVICE_KEY = getEnv("SUPABASE_SERVICE_KEY");
+
+export const CRM_BUCKET = getEnv("CRM_BUCKET");
+

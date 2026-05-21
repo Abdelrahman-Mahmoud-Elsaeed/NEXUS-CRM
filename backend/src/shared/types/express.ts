@@ -1,9 +1,11 @@
-import { User } from "@prisma-client";
-
+import { Role as PrismaRole } from "@prisma/client";
+import { Multer } from "multer";
 declare global {
   namespace Express {
     interface Request {
+      file?: Multer.File;
       sessionId: string;
+      uploadFolder:string;
       jwtPayload: any;
       currentCachedSession: any;
       user: {
@@ -12,6 +14,8 @@ declare global {
         name: string;
         userId?: string;
       };
+      organizationId?: string;
+      organizationRole?: PrismaRole;
     }
   }
 }

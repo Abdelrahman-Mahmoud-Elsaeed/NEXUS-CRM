@@ -3,8 +3,7 @@ import { AuthService } from "./auth.service";
 import { SessionService } from "@modules/session/session.service";
 import { getSessionMeta, setRefreshCookie } from "../session/session.utils";
 import { Request, Response } from "express";
-import { RegisterResult } from "./dto/RegisterDto";
-import { LoginResult } from "./dto/LoginDto";
+import { LoginResult, RegisterResult } from "./auth.dto";
 
 const authService = new AuthService();
 const sessionService = new SessionService();
