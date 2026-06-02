@@ -12,6 +12,7 @@ import {
 import {
   emailSchema,
   loginSchema,
+  registerInvitedSchema,
   registerSchema,
   resetPasswordSchema,
   verifyEmailSchema,
@@ -29,6 +30,12 @@ router.post(
   "/register",
   validate(registerSchema),
   asyncHandler(controller.register),
+);
+
+router.post(
+  "/register-invited",
+  validate(registerInvitedSchema),
+  asyncHandler(controller.registerInvited)
 );
 
 router.post(

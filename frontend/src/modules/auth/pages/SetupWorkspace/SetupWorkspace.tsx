@@ -34,7 +34,7 @@ export default function SetupWorkspace() {
         </div>
 
         <form className="w-full flex flex-col gap-6" onSubmit={handleSubmit}>
-          {/* Avatar Upload Frame */}
+
           <div className="flex flex-col items-center gap-3">
             <div
               onClick={() => fileInputRef.current?.click()}
@@ -65,7 +65,7 @@ export default function SetupWorkspace() {
                 disabled={isSubmitting}
               />
             </div>
-            <span className="font-label-sm text-label-sm text-on-surface-variant select-none">
+            <span className="font-label-sm text-label-sm text-on-surface-variant ">
               Upload Avatar
             </span>
           </div>
@@ -94,7 +94,6 @@ export default function SetupWorkspace() {
             />
           </div>
 
-          {/* Action Button */}
           <Button
             type="submit"
             disabled={isSubmitting || !orgName.trim()}

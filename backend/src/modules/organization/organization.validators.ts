@@ -35,6 +35,13 @@ export const inviteUserSchema = z.object({
   }),
 });
 
+export const getWorkspaceInvitationsSchema = z.object({
+  params: z.object({
+    id: strictUuid,
+  }),
+  organizationId: strictUuid,
+});
+
 
 export const acceptInviteSchema = z.object({
   user: z.object({

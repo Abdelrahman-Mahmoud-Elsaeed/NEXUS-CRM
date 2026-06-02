@@ -3,6 +3,7 @@ import { api } from "@/lib/axios";
 import type {
   AcceptInviteRequestDto,
   ApiSingleResponse,
+  InvitationDto,
   InviteUserRequestDto,
   Organization,
   OrganizationMember,
@@ -33,7 +34,9 @@ export const OrganizationService = {
     return response.data;
   },
 
-  getUserOrganizations: async (): Promise<ApiResponse<{organizations:Organization[]}>> => {
+  getUserOrganizations: async (): Promise<
+    ApiResponse<{ organizations: Organization[] }>
+  > => {
     const response = await api.get(`${ORGANIZATION_BASE}`);
     return response.data;
   },
@@ -67,6 +70,15 @@ export const OrganizationService = {
     const response = await api.post(
       `${ORGANIZATION_BASE}/${organizationId}/invites`,
       data,
+    );
+    return response.data;
+  },
+
+  getWorkspaceInvitations: async (
+    organizationId: string,
+  ): Promise<ApiSingleResponse<InvitationDto[]>> => {
+    const response = await api.get(
+      `${ORGANIZATION_BASE}/${organizationId}/invites`,
     );
     return response.data;
   },

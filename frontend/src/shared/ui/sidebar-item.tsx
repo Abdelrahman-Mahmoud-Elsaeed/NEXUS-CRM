@@ -11,7 +11,6 @@ interface SidebarItemProps {
 export function SidebarItem({ icon: Icon, label, to }: SidebarItemProps) {
   const location = useLocation();
   const isActive = location.pathname === to;
-  console.log(to)
   return (
     <Link
       to={to}

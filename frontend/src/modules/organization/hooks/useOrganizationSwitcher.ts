@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectAuth, setOrganization, fetchUserOrganizations } from "@/modules/auth/store/authSlice";
 
 export function useOrganizationSwitcher() {
-  const dispatch = useDispatch<any>(); // Cast to any to safely allow async thunk dispatches
+  const dispatch = useDispatch<any>();
   const [isOpen, setIsOpen] = useState(false);
 
   const { organizations, currentOrganizationId, status } = useSelector(selectAuth);

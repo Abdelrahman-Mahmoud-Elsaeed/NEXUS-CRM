@@ -71,10 +71,17 @@ export const emailSchema = z.object({
 });
 
 
+export const registerInvitedSchema = z.object({
+  body: z.object({
+    token: z.string().min(1, "Invitation verification token string parameter is required"),
+    name: strictName,
+    password: strictPassword,
+  }),
+});
 
 export type RegisterDto = z.infer<typeof registerSchema>;
 export type LoginDto = z.infer<typeof loginSchema>;
 export type VerifyEmailDto = z.infer<typeof verifyEmailSchema>;
 export type ResetPasswordDto = z.infer<typeof resetPasswordSchema>;
 export type EmailDto = z.infer<typeof emailSchema>;
-
+export type RegisterInvitedDto = z.infer<typeof registerInvitedSchema>;

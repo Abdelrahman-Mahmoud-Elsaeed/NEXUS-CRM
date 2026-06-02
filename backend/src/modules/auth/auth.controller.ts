@@ -4,6 +4,7 @@ import { SessionService } from "@modules/session/session.service";
 import { getSessionMeta, setRefreshCookie } from "../session/session.utils";
 import { Request, Response } from "express";
 import { LoginResult, RegisterResult } from "./auth.dto";
+import { RegisterInvitedDto } from "./auth.validators";
 
 const authService = new AuthService();
 const sessionService = new SessionService();
@@ -28,6 +29,28 @@ export class AuthController {
     };
 
     return res.status(201).json(responsePayload);
+  }
+
+  async registerInvited(req: Request, res: Response): Promise<void> {
+    const serviceResult = await authService.registerInvitedUser(req.body);
+
+    if (!serviceResult.success) {
+      res.status(400).json(serviceResult);
+      return;
+    }
+    const meta = await getSessionMeta(req);
+    const session = await sessionService.create(serviceResult.data, meta);
+    setRefreshCookie(res, session.sessionId);
+
+    res.status(201).json({
+      success: true,
+      data: {
+        user: serviceResult.data ,
+        tokens: {
+          accessToken: session.accessToken,
+        },
+      },
+    });
   }
 
   async login(req: Request, res: Response) {

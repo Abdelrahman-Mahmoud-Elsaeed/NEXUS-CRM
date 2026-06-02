@@ -124,3 +124,31 @@ export type UpdateOrgNameApiResponse = ApiResponse<
   { id: string; name: string },                               // Success Payload Type (T)
   "UNAUTHORIZED" | "FORBIDDEN_ORGANIZATION_ACCESS" | "ORGANIZATION_NOT_FOUND" | "INTERNAL_SERVER_ERROR" // Error Reasons (E)
 >;
+
+
+export type GetInvitationsServiceResult =
+  | { success: true; data: Invitation[] }
+  | { success: false; reason: "ORGANIZATION_MISMATCH" | "FETCH_FAILED" };
+
+export interface InvitationDetailsDto {
+  email: string;
+  workspaceName: string;
+  inviterName: string | null;
+  inviterRole: string;
+  token: string;
+  expiresAt: Date;
+}
+
+export type GetInvitationDetailsByTokenServiceResult = ApiResponse<
+  InvitationDetailsDto,
+  "INVITATION_NOT_FOUND" | "INVITATION_EXPIRED" | "INVITATION_ALREADY_USED" | "DATABASE_ERROR"
+>;
+
+export type GetInvitationDetailsByTokenApiResponse = ApiResponse<
+  InvitationDetailsDto,
+  | "INVALID_INPUT"
+  | "INVITATION_NOT_FOUND"
+  | "INVITATION_EXPIRED"
+  | "INVITATION_ALREADY_USED"
+  | "INTERNAL_SERVER_ERROR"
+>;

@@ -9,6 +9,7 @@ import {
   acceptInviteSchema, 
   getOrganizationMembersSchema, 
   getUserOrganizationsSchema, 
+  getWorkspaceInvitationsSchema, 
   inviteUserSchema, 
   updateOrgNameSchema
 } from "./organization.validators";
@@ -17,13 +18,17 @@ const router = Router();
 const controller = new OrganizationController();
 
 // ============================================================================
+// PUBLIC ENDPOINTS (No Authentication Required)
+// ============================================================================
+router.get(
+  "/invites/details/:token",
+  asyncHandler(controller.getInvitationDetailsByToken),
+);
+
+// ============================================================================
 // GLOBAL PROTECTED GATEWAY (Applies to ALL organization endpoints)
 // ============================================================================
 router.use(authMiddleware);
-
-// ============================================================================
-// 1. GENERAL WORKSPACE ENDPOINTS
-// ============================================================================
 
 router.get(
   "/",
@@ -41,10 +46,17 @@ router.get(
 // 2. INVITATION & TEAM MANAGEMENT ENDPOINTS
 // ============================================================================
 
+router.get(
+  "/:id/invites",
+  requireWorkspace,
+  validate(getWorkspaceInvitationsSchema), 
+  asyncHandler(controller.getWorkspaceInvitations)
+);
+
 router.post(
   "/:id/invites",
-  validate(inviteUserSchema),
   requireWorkspace,
+  validate(inviteUserSchema),
   requireRole(["OWNER", "ADMIN"]),
   asyncHandler(controller.inviteUser),
 );

@@ -7,7 +7,6 @@ export type VerifyEmailResult = ApiResponse<
 >;
 export type RequestOtpResult = ApiResponse<void, "USER_NOT_FOUND">;
 
-
 export function mapUser(user: any): UserProfileDto {
   return {
     id: user.id,
@@ -42,13 +41,11 @@ export interface UserProfileDto {
   updatedAt: Date;
 }
 
-
 export interface RegisterRequistDto {
   email: string;
   password: string;
   name?: string;
 }
-
 
 export type LoginRequestDto = {
   email: string;
@@ -71,7 +68,20 @@ export type RegisterResult = ApiResponse<
   { user: UserProfileDto; tokens: { accessToken: string } },
   "EMAIL_IS_USED" | "WEAK_PASSWORD"
 >;
+export type RegisterInvitedServiceResult = ApiResponse<
+  UserProfileDto,
+  "INVITATION_NOT_FOUND" | "INVITATION_ALREADY_USED" | "INVITATION_EXPIRED"
+>;
 
+export type RegisterInvitedResult = ApiResponse<
+  { user: UserProfileDto },
+  "INVITATION_NOT_FOUND" | "INVITATION_ALREADY_USED" | "INVITATION_EXPIRED"
+>;
+export interface RegisterInvitedRequestDto {
+  token: string;
+  name: string;
+  password: string;
+}
 
 export type ForgetPasswordResult = ApiResponse<void, "USER_NOT_FOUND">;
 

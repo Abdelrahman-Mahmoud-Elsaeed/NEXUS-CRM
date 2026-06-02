@@ -17,7 +17,6 @@ export const validate = (schema: ZodTypeAny) => {
         Object.keys(req.query).forEach((key) => delete req.query[key]);
         Object.assign(req.query, parsed.query);
       }
-
       return next();
     } catch (error) {
       if (error instanceof ZodError) {

@@ -20,5 +20,7 @@ model User {
   assignedTasks Task[] @relation("TaskAssignee")
   createdTasks  Task[] @relation("TaskCreator")
 
+  sentInvitations Invitation[] @relation("SentInvitations")
+
   @@map("users")
 }

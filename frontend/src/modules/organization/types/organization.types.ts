@@ -6,6 +6,18 @@ export interface Organization {
   createdAt: string;
 }
 
+export interface InvitationDto {
+  id: string;
+  email: string;
+  token: string;
+  role: string;
+  isUsed: boolean;
+  expiresAt: string;
+  createdAt: string;
+  acceptedAt: string | null;
+  organizationId: string;
+}
+
 export interface OrganizationMember {
   id: string;
   userId: string;

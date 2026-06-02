@@ -49,7 +49,7 @@ export default function VerifyEmail() {
               />
             ))}
           </div>
-          {/* Error Message Display */}
+
           {error && (
             <div className="mt-4 animate-in fade-in slide-in-from-top-2 duration-300">
               <p className="rounded-md bg-destructive/10 p-2.5 text-center text-xs font-medium text-destructive border border-destructive/20 text-red-600">

@@ -12,7 +12,11 @@ model Invitation {
   organizationId String       @db.Uuid @map("organization_id")
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
+  invitedById    String       @db.Uuid @map("invited_by_id")
+  invitedBy      User         @relation("SentInvitations", fields: [invitedById], references: [id], onDelete: Cascade)
+
   @@index([organizationId])
+  @@index([invitedById])
   @@index([email])
   @@map("invitations")
 }

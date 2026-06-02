@@ -11,6 +11,8 @@ import type {
   RequestOtpResult,
   VerifyResetTokenResult,
   VerifyAccessTokenResult,
+  RegisterInvitedRequestDto,
+  RegisterInvitedResult,
 } from "@/modules/auth/types/auth.types";
 
 const AUTH_BASE = "/auth";
@@ -60,6 +62,11 @@ export const AuthService = {
 
   verifyAccessToken: async (): Promise<VerifyAccessTokenResult> => {
     const response = await api.get(`${AUTH_BASE}/verifyAccessToken`);
+    return response.data;
+  },
+
+  registerInvited: async (data: RegisterInvitedRequestDto): Promise<RegisterInvitedResult> => {
+    const response = await api.post(`${AUTH_BASE}/register-invited`, data);
     return response.data;
   },
 };

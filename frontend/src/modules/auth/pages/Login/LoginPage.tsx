@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { Mail, Lock, Shield, LayoutGrid } from "lucide-react";
 
 import { Button } from "@ui/button";
@@ -42,7 +40,6 @@ export default function LoginPage() {
           </div>
 
           <form className="space-y-5" onSubmit={onSubmit}>
-            {/* Global API Error Alert */}
 
             {error && (
               <div className="p-3 text-sm font-medium text-destructive bg-destructive/10 rounded-md border border-destructive/20 animate-in fade-in zoom-in-95">
@@ -81,7 +78,6 @@ export default function LoginPage() {
               )}
             </div>
 
-            {/* Password Field */}
 
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
@@ -165,7 +161,7 @@ export default function LoginPage() {
             <Button
               variant="outline"
               type="button"
-              className="w-full space-x-2 bg-surface border-outline-variant text-foreground hover:bg-surface-container rounded-[var(--radius-md)]"
+              className="w-full space-x-2 bg-surface border-outline-variant text-foreground hover:bg-surface-container rounded-md"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24">
                 <path
@@ -195,7 +191,7 @@ export default function LoginPage() {
             <Button
               variant="outline"
               type="button"
-              className="w-full space-x-2 bg-surface border-outline-variant text-foreground hover:bg-surface-container rounded-[var(--radius-md)]"
+              className="w-full space-x-2 bg-surface border-outline-variant text-foreground hover:bg-surface-container rounded-md"
             >
               <svg className="h-4 w-4" viewBox="0 0 21 21">
                 <rect x="1" y="1" width="9" height="9" fill="#00a4ef" />
@@ -234,7 +230,7 @@ export default function LoginPage() {
           <div className="absolute inset-0 bg-surface-container/40 mix-blend-multiply" />
         </div>
 
-        <Card className="z-10 mt-auto mb-16 w-full max-w-[420px] rounded-xl border-outline-variant bg-surface/90 backdrop-blur-md shadow-xl animate-in fade-in slide-in-from-right-8 duration-700">
+        <Card className="z-10 mt-auto mb-16 w-full max-w-105 rounded-xl border-outline-variant bg-surface/90 backdrop-blur-md shadow-xl animate-in fade-in slide-in-from-right-8 duration-700">
           <CardContent className="p-8">
             <div className="flex items-start space-x-4">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary text-on-primary">

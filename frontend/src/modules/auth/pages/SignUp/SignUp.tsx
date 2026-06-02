@@ -12,13 +12,10 @@ export default function SignUpPage() {
 
   return (
     <div className="bg-surface-container-low min-h-screen flex items-center justify-center p-container-padding font-body-base text-body-base text-on-surface antialiased">
-      {/* Main Signup Container */}
       <div className="w-full max-w-105 bg-surface-container-lowest border border-outline-variant rounded-xl p-8 sm:p-10 shadow-sm">
         
-        {/* Header Section */}
         <div className="flex flex-col items-center mb-8">
           <div className="flex items-center gap-2 mb-6">
-            {/* Logo Icon matching material theme specs layout */}
             <LayoutGrid className="h-7 w-7 text-primary fill-primary" />
             <span className="text-3xl font-black text-primary tracking-tight">
               Nexus CRM
@@ -32,17 +29,14 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        {/* Form Section */}
         <form className="flex flex-col gap-5" onSubmit={onSubmit}>
           
-          {/* Safe handling of generic global/root form errors */}
           {errors.root && (
             <div className="text-sm text-error font-medium text-center bg-error/10 p-2 rounded-md border border-error/20">
               {errors.root.message}
             </div>
           )}
 
-          {/* Full Name Input */}
           <div className="flex flex-col gap-1.5">
             <Label 
               htmlFor="fullName"
@@ -66,7 +60,6 @@ export default function SignUpPage() {
             )}
           </div>
 
-          {/* Email Input */}
           <div className="flex flex-col gap-1.5">
             <Label 
               htmlFor="email"
@@ -91,7 +84,6 @@ export default function SignUpPage() {
             )}
           </div>
 
-          {/* Password Input */}
           <div className="flex flex-col gap-1.5">
             <Label 
               htmlFor="password"
@@ -116,7 +108,6 @@ export default function SignUpPage() {
             )}
           </div>
 
-          {/* Submit Button */}
           <Button
             type="submit"
             disabled={isSubmitting}
@@ -133,7 +124,6 @@ export default function SignUpPage() {
           </Button>
         </form>
 
-        {/* Divider Segment */}
         <div className="mt-6">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
@@ -146,7 +136,6 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          {/* Social Sign up Action Tray */}
           <div className="mt-6 grid grid-cols-2 gap-3">
             <Button
               variant="outline"
@@ -175,7 +164,6 @@ export default function SignUpPage() {
           </div>
         </div>
 
-        {/* Terms and Conditions Legal Parameters */}
         <p className="mt-6 text-center font-body-sm text-body-sm text-on-surface-variant px-4 leading-relaxed">
           By clicking continue, you agree to our{" "}
           <a className="underline hover:text-on-surface transition-colors" href="#">
@@ -188,7 +176,6 @@ export default function SignUpPage() {
           .
         </p>
 
-        {/* Login Redirect Router Navigation Entry */}
         <div className="mt-8 pt-6 border-t border-outline-variant text-center">
           <p className="font-body-base text-body-base text-on-surface-variant">
             Already have an account?{" "}

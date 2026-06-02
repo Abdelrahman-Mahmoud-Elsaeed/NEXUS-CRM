@@ -26,6 +26,7 @@ export const requireWorkspace = async (
       });
     }
 
+    // UPDATED: Now queries relational fields to fetch organization context parameters
     const membership = await prisma.organizationUser.findUnique({
       where: {
         organizationId_userId: {
@@ -35,6 +36,11 @@ export const requireWorkspace = async (
       },
       select: {
         role: true,
+        organization: {
+          select: {
+            name: true, // Pulls the organization name directly from DB
+          },
+        },
       },
     });
 
@@ -48,7 +54,8 @@ export const requireWorkspace = async (
 
     req.organizationId = targetOrgId;
     req.organizationRole = membership.role;
-
+    req.organizationName = membership.organization.name;
+    
     return next();
   } catch (error) {
     return res.status(500).json({

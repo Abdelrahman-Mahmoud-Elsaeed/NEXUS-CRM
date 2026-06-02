@@ -4,8 +4,28 @@ import { createUserQuery } from "@queries/auth/auth.queries";
 import { userWithOrganizationsInclude } from "@queries/auth/auth.include";
 import { CacheService } from "@/shared/services/cache.service";
 import { emailService } from "@config/email/email.service";
-import { ForgetPasswordResult, LoginRequestDto, LoginServiceResult, mapUser, RegisterRequistDto, RegisterServiceResult, RequestOtpResult, ResetPasswordResult, VerifyEmailResult } from "./auth.dto";
-import { consumeResetToken, generateOtp, generateResetToken, hashToken, storeOtp, storeResetToken, verifyOtp } from "./auth.util";
+import {
+  ForgetPasswordResult,
+  LoginRequestDto,
+  LoginServiceResult,
+  mapUser,
+  RegisterInvitedRequestDto,
+  RegisterInvitedServiceResult,
+  RegisterRequistDto,
+  RegisterServiceResult,
+  RequestOtpResult,
+  ResetPasswordResult,
+  VerifyEmailResult,
+} from "./auth.dto";
+import {
+  consumeResetToken,
+  generateOtp,
+  generateResetToken,
+  hashToken,
+  storeOtp,
+  storeResetToken,
+  verifyOtp,
+} from "./auth.util";
 
 export class AuthService {
   async register(data: RegisterRequistDto): Promise<RegisterServiceResult> {
@@ -25,7 +45,7 @@ export class AuthService {
     const result = await prisma.user.create(createUserQuery(data, hashed));
 
     const OTP = generateOtp();
-    console.log(OTP)
+    console.log(OTP);
     await storeOtp(`email_verify:${result.id}`, OTP, 5 * 60);
 
     await emailService.sendOtp(result.email, result.name, OTP);
@@ -35,7 +55,71 @@ export class AuthService {
       data: mapUser(result),
     };
   }
+  async registerInvitedUser(
+    data: RegisterInvitedRequestDto,
+  ): Promise<RegisterInvitedServiceResult> {
+    const { token, name, password } = data;
 
+    const invitation = await prisma.invitation.findUnique({
+      where: { token },
+    });
+
+    if (!invitation) {
+      return { success: false, reason: "INVITATION_NOT_FOUND" };
+    }
+
+    if (invitation.isUsed) {
+      return { success: false, reason: "INVITATION_ALREADY_USED" };
+    }
+
+    if (new Date(invitation.expiresAt) < new Date()) {
+      return { success: false, reason: "INVITATION_EXPIRED" };
+    }
+
+    const transactionResult = await prisma.$transaction(async (tx) => {
+      const passwordHash = await bcrypt.hash(password, 10);
+
+      const newUser = await tx.user.create({
+        data: {
+          email: invitation.email,
+          name: name,
+          password: passwordHash,
+        },
+      });
+
+      await tx.organizationUser.create({
+        data: {
+          userId: newUser.id,
+          organizationId: invitation.organizationId,
+          role: invitation.role,
+        },
+      });
+
+      await tx.invitation.update({
+        where: { id: invitation.id },
+        data: {
+          isUsed: true,
+          acceptedAt: new Date(),
+        },
+      });
+
+      const fullProfile = await tx.user.findUnique({
+        where: { id: newUser.id },
+        include: {
+          organizations: {
+            include: { organization: true },
+          },
+        },
+      });
+
+      return mapUser(fullProfile);
+    });
+
+    return {
+      success: true,
+      data: transactionResult,
+    };
+  }
   async login(data: LoginRequestDto): Promise<LoginServiceResult> {
     const user = await prisma.user.findUnique({
       where: { email: data.email },
@@ -52,12 +136,11 @@ export class AuthService {
     }
     if (!user.isVerified) {
       const OTP = generateOtp();
-      console.log(OTP)
+      console.log(OTP);
       await storeOtp(`email_verify:${user.id}`, OTP, 5 * 60);
 
       await emailService.sendOtp(user.email, user.name, OTP);
     }
-
 
     return {
       success: true,
@@ -173,13 +256,13 @@ export class AuthService {
   async verifyPasswordResetToken(token: string) {
     const hashed = hashToken(token);
     const key = `password_reset:${hashed}`;
-    
-    const userId = await CacheService.get(key); 
-    
+
+    const userId = await CacheService.get(key);
+
     if (!userId) {
-      return { 
-        success: false, 
-        reason: "INVALID_TOKEN" 
+      return {
+        success: false,
+        reason: "INVALID_TOKEN",
       };
     }
 

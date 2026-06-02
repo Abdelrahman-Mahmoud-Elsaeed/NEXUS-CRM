@@ -6,6 +6,7 @@ import {
   AcceptInviteServiceResult,
   CreateInviteRequestDto,
   CreateInviteServiceResult,
+  GetInvitationsServiceResult,
   GetOrgMembersServiceResult,
   GetUserOrganizationsServiceResult,
   OrganizationDto,
@@ -13,6 +14,7 @@ import {
   UpdateOrgNameRequestDto,
   UpdateOrgNameServiceResult,
 } from "./organization.dto";
+import { emailService } from "@/shared/config/email/email.service";
 
 export class OrganizationService {
   async getUserOrganizations(
@@ -38,7 +40,7 @@ export class OrganizationService {
         name: relation.organization.name,
         billingPlan: relation.organization.billingPlan,
         createdAt: relation.organization.createdAt,
-        avatar: relation.organization.avatar
+        avatar: relation.organization.avatar,
       }),
     );
 
@@ -51,6 +53,7 @@ export class OrganizationService {
   async createWorkspaceInvite(
     sessionOrgId: string,
     routeOrgId: string,
+    orgName: string,
     dto: CreateInviteRequestDto,
   ): Promise<CreateInviteServiceResult> {
     if (sessionOrgId !== routeOrgId) {
@@ -94,7 +97,32 @@ export class OrganizationService {
         expiresAt: expirationDate,
       },
     });
+    await emailService.sendWorkspaceInvitation(
+    invitation.email,
+    orgName,
+    invitation.token
+  );
     return { success: true, data: invitation };
+  }
+
+  async getWorkspaceInvitations(
+    sessionOrgId: string,
+    routeOrgId: string,
+  ): Promise<GetInvitationsServiceResult> {
+    if (sessionOrgId !== routeOrgId) {
+      return { success: false, reason: "ORGANIZATION_MISMATCH" };
+    }
+
+    const invitations = await prisma.invitation.findMany({
+      where: {
+        organizationId: sessionOrgId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return { success: true, data: [...invitations] };
   }
 
   async acceptWorkspaceInvite(
@@ -225,4 +253,63 @@ export class OrganizationService {
       return { success: false, reason: "ORGANIZATION_NOT_FOUND" };
     }
   }
+
+  async getInvitationDetailsByToken(
+    token: string,
+  ): Promise<any> {
+    try {
+      const invitation = await prisma.invitation.findUnique({
+        where: { token },
+        include: {
+          organization: {
+            select: {
+              name: true,
+            },
+          },
+          invitedBy: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+
+      if (!invitation) {
+        return { success: false, reason: "INVITATION_NOT_FOUND" };
+      }
+
+      if (invitation.isUsed) {
+        return { success: false, reason: "INVITATION_ALREADY_USED" };
+      }
+
+      if (new Date() > invitation.expiresAt) {
+        return { success: false, reason: "INVITATION_EXPIRED" };
+      }
+
+      const inviterRole = await prisma.organizationUser.findFirst({
+        where: {
+          organizationId: invitation.organizationId,
+          userId: invitation.invitedById,
+        },
+        select: {
+          role: true,
+        },
+      });
+
+      return {
+        success: true,
+        data: {
+          email: invitation.email,
+          workspaceName: invitation.organization.name,
+          inviterName: invitation.invitedBy.name,
+          inviterRole: inviterRole?.role || "MEMBER",
+          token: invitation.token,
+          expiresAt: invitation.expiresAt,
+        },
+      };
+    } catch (error) {
+      return { success: false, reason: "DATABASE_ERROR" };
+    }
+  }
 }
+

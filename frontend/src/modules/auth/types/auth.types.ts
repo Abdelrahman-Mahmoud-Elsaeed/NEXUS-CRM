@@ -111,3 +111,20 @@ export type VerifyAccessTokenResult = ApiResponse<
   },
   "UNAUTHORIZED" | "INVALID_TOKEN"
 >;
+
+// ==========================================
+// Register Invited User
+// ==========================================
+export interface RegisterInvitedRequestDto {
+  token: string;
+  name: string;
+  password: string;
+}
+
+export type RegisterInvitedResult = ApiResponse<
+  { user: UserProfileDto; tokens: { accessToken: string } },
+  | "INVALID_TOKEN"
+  | "EXPIRED_TOKEN"
+  | "WEAK_PASSWORD"
+  | "USER_ALREADY_REGISTERED"
+>;

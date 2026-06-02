@@ -34,7 +34,6 @@ export default function ForgotPassword() {
           )}
         </div>
 
-        {/* Display backend errors (like USER_NOT_FOUND) */}
         {error && (
           <div className="text-sm text-destructive font-medium text-center">
             {error}
@@ -45,7 +44,7 @@ export default function ForgotPassword() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full bg-primary text-on-primary hover:bg-primary/90 rounded-[var(--radius-md)]"
+            className="w-full bg-primary text-on-primary hover:bg-primary/90 rounded-md"
           >
             {loading ? "Sending..." : "Send Reset Link"}
           </Button>

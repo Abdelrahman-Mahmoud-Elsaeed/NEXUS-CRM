@@ -1,5 +1,4 @@
 import { Role as PrismaRole } from "@prisma/client";
-import { Multer } from "multer";
 declare global {
   namespace Express {
     interface Request {
@@ -16,6 +15,7 @@ declare global {
       };
       organizationId?: string;
       organizationRole?: PrismaRole;
+      organizationName:string;
     }
   }
 }
