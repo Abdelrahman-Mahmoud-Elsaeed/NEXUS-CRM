@@ -1,70 +1,61 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useRef, useEffect, type ChangeEvent, type FormEvent } from "react";
+import { useState, useRef, useCallback, type ChangeEvent, type FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectAuth, configureWorkspace } from "@/modules/auth/store/authSlice";
+import { selectOrg } from "@/modules/organization/store/org.slice";
+import { configureWorkspace } from "@/modules/organization/store/org.actions";
 
 export function useSetupWorkspace() {
-  const [orgName, setOrgName] = useState("");
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { currentOrganizationId, organizations } = useSelector(selectAuth);
+  const { currentOrganizationId, organizations, isConfiguringWorkspace, workspaceConfigError } = useSelector(selectOrg);
 
-  useEffect(() => {
-    if (currentOrganizationId && organizations.length > 0) {
-      const activeOrg = organizations.find((org) => org.id === currentOrganizationId);
-      if (activeOrg) {
-        setOrgName(activeOrg.name);
-      }
-    }
-  }, [currentOrganizationId, organizations]);
+  const [orgName, setOrgName] = useState(() => {
+    if (!currentOrganizationId || !organizations) return "";
+    const activeOrg = organizations.find((org) => org.id === currentOrganizationId);
+    return activeOrg?.name || "";
+  });
 
-  const handleAvatarChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+
+  const handleAvatarChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setAvatarFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatarPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+    if (!file) return;
 
-  const handleSubmit = async (e: FormEvent) => {
+    setAvatarFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setAvatarPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  }, []);
+
+  const handleSubmit = useCallback(async (e: FormEvent) => {
     e.preventDefault();
     if (!orgName.trim() || !currentOrganizationId) return;
 
-    setIsSubmitting(true);
-    try {
-      await dispatch(
-        configureWorkspace({
-          orgId: currentOrganizationId,
-          name: orgName.trim(),
-          avatarFile,
-        })
-      ).unwrap();
+    const result = await dispatch(
+      configureWorkspace({
+        orgId: currentOrganizationId,
+        name: orgName.trim(),
+        avatarFile,
+      })
+    );
 
+    if (configureWorkspace.fulfilled.match(result)) {
       navigate("/", { replace: true });
-    } catch (error) {
-      console.error("Failed to configure workspace view states:", error);
-    } finally {
-      setIsSubmitting(false);
     }
-  };
+  }, [orgName, currentOrganizationId, avatarFile, dispatch, navigate]);
 
   return {
     orgName,
     setOrgName,
     avatarPreview,
-    isSubmitting,
+    isSubmitting: isConfiguringWorkspace,
+    error: workspaceConfigError,
     fileInputRef,
     handleAvatarChange,
     handleSubmit,

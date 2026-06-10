@@ -31,6 +31,21 @@ CREATE TABLE "automations" (
 );
 
 -- CreateTable
+CREATE TABLE "File" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
+    "storageKey" TEXT NOT NULL,
+    "size" INTEGER NOT NULL,
+    "mimeType" TEXT NOT NULL,
+    "uploadedById" TEXT NOT NULL,
+    "organizationId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "File_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "invitations" (
     "id" UUID NOT NULL,
     "email" TEXT NOT NULL,
@@ -41,6 +56,8 @@ CREATE TABLE "invitations" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "accepted_at" TIMESTAMP(3),
     "organization_id" UUID NOT NULL,
+    "invited_by_id" UUID NOT NULL,
+    "isExistingUser" BOOLEAN NOT NULL,
 
     CONSTRAINT "invitations_pkey" PRIMARY KEY ("id")
 );
@@ -183,6 +200,9 @@ CREATE UNIQUE INDEX "invitations_token_key" ON "invitations"("token");
 CREATE INDEX "invitations_organization_id_idx" ON "invitations"("organization_id");
 
 -- CreateIndex
+CREATE INDEX "invitations_invited_by_id_idx" ON "invitations"("invited_by_id");
+
+-- CreateIndex
 CREATE INDEX "invitations_email_idx" ON "invitations"("email");
 
 -- CreateIndex
@@ -199,6 +219,9 @@ ALTER TABLE "automations" ADD CONSTRAINT "automations_organization_id_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "invitations" ADD CONSTRAINT "invitations_organization_id_fkey" FOREIGN KEY ("organization_id") REFERENCES "organizations"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "invitations" ADD CONSTRAINT "invitations_invited_by_id_fkey" FOREIGN KEY ("invited_by_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "leads" ADD CONSTRAINT "leads_pipeline_stage_id_fkey" FOREIGN KEY ("pipeline_stage_id") REFERENCES "pipeline_stages"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

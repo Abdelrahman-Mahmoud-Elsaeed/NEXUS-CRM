@@ -123,7 +123,9 @@ export const InvitationScalarFieldEnum = {
   expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   acceptedAt: 'acceptedAt',
-  organizationId: 'organizationId'
+  organizationId: 'organizationId',
+  invitedById: 'invitedById',
+  isExistingUser: 'isExistingUser'
 } as const
 
 export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]

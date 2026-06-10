@@ -2,13 +2,13 @@
 import { api } from "@/lib/axios";
 import type {
   AcceptInviteRequestDto,
+  ApiResponse,
   ApiSingleResponse,
   InvitationDto,
   InviteUserRequestDto,
   Organization,
   OrganizationMember,
 } from "../types/organization.types";
-import type { ApiResponse } from "@/modules/auth/types/auth.types";
 
 const ORGANIZATION_BASE = "/organization";
 
@@ -79,6 +79,25 @@ export const OrganizationService = {
   ): Promise<ApiSingleResponse<InvitationDto[]>> => {
     const response = await api.get(
       `${ORGANIZATION_BASE}/${organizationId}/invites`,
+    );
+    return response.data;
+  },
+
+  getWorkspaceInviteByToken: async (
+    organizationId: string,
+    token: string,
+  ): Promise<ApiSingleResponse<InvitationDto>> => {
+    const response = await api.get(
+      `${ORGANIZATION_BASE}/${organizationId}/invites/${token}`,
+    );
+    return response.data;
+  },
+
+  getInvitationDetailsByToken: async (
+    token: string,
+  ): Promise<ApiSingleResponse<any>> => {
+    const response = await api.get(
+      `${ORGANIZATION_BASE}/invites/details/${token}`,
     );
     return response.data;
   },

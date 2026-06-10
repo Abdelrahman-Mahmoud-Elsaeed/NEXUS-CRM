@@ -1,140 +1,116 @@
-import { useCallback, useState } from "react";
-import { AuthService } from "@/modules/auth/services/auth.service";
-
-export interface PasswordStrength {
-  label: string;
-  colorClass: string;
-  filledBars: number;
-  barClass: string;
-}
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useMemo } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useInvitationDetails } from "@/modules/organization/hooks/useInvitationDetails";
+import { selectAuth } from "@/modules/auth/store/auth.slice";
+import { acceptWorkspaceInvitation } from "@/modules/auth/store/auth.actions";
+import type { AcceptInvitationFormData } from "../types/organization.types";
+import { acceptInvitationSchema } from "../validations/organization.validation";
 
 export function useAcceptInvitation() {
-  const [token] = useState<string>(() => {
-    if (typeof window !== "undefined") {
-      return new URLSearchParams(window.location.search).get("token") || "";
-    }
-    return "";
-  });
-
-  const [apiError, setApiError] = useState<string | null>(() => {
-    if (typeof window !== "undefined") {
-      const verificationToken = new URLSearchParams(window.location.search).get(
-        "token",
-      );
-      return verificationToken
-        ? null
-        : "Invitation verification token parameter is missing.";
-    }
-    return null;
-  });
-
-  const [fullName, setFullName] = useState<string>("Julian Casablancas");
-  const [email] = useState<string>("colleague@acmecorp.com");
-  const [workspaceName] = useState<string>("Acme Corp");
-  const [inviterName] = useState<string>("Alex Rivera");
-  const [inviterRole] = useState<string>("Workspace Admin role");
-
-  const [password, setPassword] = useState<string>("");
+  const dispatch = useDispatch<any>();
+  const navigate = useNavigate();
+  
+  const { token, invitation, isLoading: isLoadingInvitation, error: invitationError } = useInvitationDetails();
+  const { isSubmittingInvite, inviteAcceptanceError } = useSelector(selectAuth);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const getPasswordStrength = useCallback((val: string): PasswordStrength => {
-    if (val.length === 0)
-      return {
-        label: "Weak",
-        colorClass: "text-destructive",
-        filledBars: 1,
-        barClass: "bg-destructive",
-      };
-    if (val.length < 6)
-      return {
-        label: "Weak",
-        colorClass: "text-destructive",
-        filledBars: 1,
-        barClass: "bg-destructive",
-      };
-    if (val.length < 10)
-      return {
-        label: "Fair",
-        colorClass: "text-amber-500",
-        filledBars: 2,
-        barClass: "bg-amber-500",
-      };
-    if (val.length < 14)
-      return {
-        label: "Good",
-        colorClass: "text-blue-500",
-        filledBars: 3,
-        barClass: "bg-blue-500",
-      };
-    return {
-      label: "Strong",
-      colorClass: "text-emerald-500",
-      filledBars: 4,
-      barClass: "bg-emerald-500",
-    };
-  }, []);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isValid }, // 🧠 Added isValid here
+  } = useForm<AcceptInvitationFormData>({
+    resolver: zodResolver(acceptInvitationSchema),
+    defaultValues: { fullName: "", password: "" },
+    mode: "onTouched",
+  });
 
-  const strength = getPasswordStrength(password);
+  // Watch the password field in real-time natively
+  const currentPassword = useWatch({
+    control,
+    name: "password",
+  }) || "";
 
-  const handleSubmit = useCallback(
-    async (e?: React.FormEvent) => {
-      e?.preventDefault();
-      setApiError(null);
+  // Compute live checkbox validation metrics
+  const validationRules = useMemo(() => {
+    return [
+      { label: "At least 8 characters", met: currentPassword.length >= 8 },
+      { label: "One uppercase letter (A-Z)", met: /[A-Z]/.test(currentPassword) },
+      { label: "One lowercase letter (a-z)", met: /[a-z]/.test(currentPassword) },
+      { label: "One special symbol (@, $, !, etc.)", met: /[^A-Za-z0-9]/.test(currentPassword) },
+    ];
+  }, [currentPassword]);
 
-      if (!token) {
-        setApiError("Cannot register without a valid secure token reference.");
-        return false;
-      }
+  // Determine if all criteria are fully satisfied
+  const isPasswordValid = useMemo(() => {
+    return validationRules.every((rule) => rule.met);
+  }, [validationRules]);
 
-      setIsSubmitting(true);
+  // Calculate strength segments dynamically based on rules met
+  const strength = useMemo(() => {
+    if (!currentPassword) {
+      return { label: "None", colorClass: "text-slate-400", filledBars: 0, barClass: "bg-slate-200" };
+    }
+    
+    const metCount = validationRules.filter((r) => r.met).length;
+    
+    switch (metCount) {
+      case 1:
+        return { label: "Weak", colorClass: "text-destructive", filledBars: 1, barClass: "bg-destructive" };
+      case 2:
+        return { label: "Fair", colorClass: "text-amber-500", filledBars: 2, barClass: "bg-amber-500" };
+      case 3:
+        return { label: "Good", colorClass: "text-blue-500", filledBars: 3, barClass: "bg-blue-500" };
+      case 4:
+        return { label: "Strong", colorClass: "text-emerald-500", filledBars: 4, barClass: "bg-emerald-500" };
+      default:
+        return { label: "Weak", colorClass: "text-destructive", filledBars: 1, barClass: "bg-destructive" };
+    }
+  }, [currentPassword, validationRules]);
 
-      const payload = {
+  const onSubmit = async (data: AcceptInvitationFormData) => {
+    if (!token) return;
+
+    const result = await dispatch(
+      acceptWorkspaceInvitation({
         token,
-        name: fullName,
-        password,
-      };
+        name: data.fullName,
+        password: data.password,
+      })
+    );
 
-      try {
-        const result = await AuthService.registerInvited(payload);
+    if (acceptWorkspaceInvitation.fulfilled.match(result)) {
+      navigate("/", { replace: true }); 
+    }
+  };
 
-        if (!result.success) {
-          setApiError(
-            result.reason || "An error occurred during registration execution.",
-          );
-          return false;
-        }
-
-        window.location.href = "/dashboard";
-        return true;
-      } catch {
-        setApiError(
-          "Network error: failed to complete workspace integration vectors.",
-        );
-        return false;
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
-    [token, fullName, password],
-  );
+  const togglePasswordVisibility = () => setShowPassword((prev) => !prev);
 
   return {
+    invitationData: invitation ? {
+      email: invitation.email,
+      workspaceName: invitation.workspaceName,
+      inviterName: invitation.inviterName,
+      inviterRole: invitation.inviterRole,
+    } : null,
+    
     token,
-    apiError,
-    setApiError,
-    fullName,
-    setFullName,
-    email,
-    workspaceName,
-    inviterName,
-    inviterRole,
-    password,
-    setPassword,
+    apiError: inviteAcceptanceError || invitationError,
+    isLoadingInvitation,
+    isSubmitting: isSubmittingInvite,
+    
     showPassword,
-    setShowPassword,
-    isSubmitting,
+    togglePasswordVisibility,
     strength,
-    handleSubmit,
-  } as const;
+    validationRules,
+    isPasswordValid,
+    isValid,
+    formErrors: errors,
+    registerField: register,
+    onSubmit: handleSubmit(onSubmit),
+  };
 }

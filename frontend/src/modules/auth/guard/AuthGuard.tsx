@@ -3,8 +3,8 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import type { RootState } from "@/app/store";
-import { initializeAuth } from "@/modules/auth/store/authSlice";
 import { Loader2 } from "lucide-react";
+import { initializeAuth } from "../store/auth.actions";
 
 export default function AuthGuard() {
   const dispatch = useDispatch<any>();

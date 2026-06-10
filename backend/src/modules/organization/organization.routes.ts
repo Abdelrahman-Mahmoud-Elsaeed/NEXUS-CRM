@@ -9,7 +9,8 @@ import {
   acceptInviteSchema, 
   getOrganizationMembersSchema, 
   getUserOrganizationsSchema, 
-  getWorkspaceInvitationsSchema, 
+  getWorkspaceInvitationsSchema,
+  getWorkspaceInviteByTokenSchema, 
   inviteUserSchema, 
   updateOrgNameSchema
 } from "./organization.validators";
@@ -51,6 +52,13 @@ router.get(
   requireWorkspace,
   validate(getWorkspaceInvitationsSchema), 
   asyncHandler(controller.getWorkspaceInvitations)
+);
+
+router.get(
+  "/:id/invites/:token",
+  requireWorkspace,
+  validate(getWorkspaceInviteByTokenSchema),
+  asyncHandler(controller.getWorkspaceInviteByToken)
 );
 
 router.post(

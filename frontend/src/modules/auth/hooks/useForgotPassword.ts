@@ -1,15 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
-import { AuthService } from "@/modules/auth/services/auth.service";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuth } from "../store/auth.slice";
+import { requestPasswordResetLink } from "../store/auth.actions";
 import { forgotPasswordSchema, type ForgotPasswordValues } from "../validations/auth";
 
 export function useForgotPassword() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch<any>();
   const navigate = useNavigate();
+
+  const { isSendingResetLink, forgotPasswordError } = useSelector(selectAuth);
 
   const form = useForm<ForgotPasswordValues>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -18,31 +21,21 @@ export function useForgotPassword() {
     },
   });
 
-  const onSubmit = async (values: ForgotPasswordValues) => {
-    setLoading(true);
-    setError(null);
+  const onSubmit = useCallback(async (values: ForgotPasswordValues) => {
+    const result = await dispatch(requestPasswordResetLink(values.email));
 
-    try {
-      console.log(values.email)
-      await AuthService.forgotPassword(values.email);
-      navigate("/check-email", { state: { email: values.email } });
-    } catch (err: any) {
-      const reason = err.response?.data?.reason;
-      
-      if (reason === "USER_NOT_FOUND") {
-        setError("We couldn't find an account associated with that email.");
-      } else {
-        setError("An unexpected error occurred. Please try again.");
-      }
-    } finally {
-      setLoading(false);
+    if (requestPasswordResetLink.fulfilled.match(result)) {
+      navigate("/check-email", { 
+        state: { email: values.email },
+        replace: true 
+      });
     }
-  };
+  }, [dispatch, navigate]);
 
   return {
     form,
-    loading,
-    error,
+    loading: isSendingResetLink,
+    error: forgotPasswordError,
     onSubmit: form.handleSubmit(onSubmit),
   };
 }

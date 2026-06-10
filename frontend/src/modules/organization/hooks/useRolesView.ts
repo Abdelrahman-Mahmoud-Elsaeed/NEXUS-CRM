@@ -1,13 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { ShieldCheck, Users, TrendingUp, Eye } from "lucide-react";
 import { useSelector } from "react-redux";
-import { selectAuth } from "@/modules/auth/store/authSlice";
 import { RolesViewService } from "@/modules/organization/services/rolesView.service";
-import {
-  type RoleDefinitionDto,
-  type RoleItem,
-  type UseRolesViewResult,
-} from "@/modules/organization/types/rolesView.types";
+import type { RoleDefinitionDto, RoleItem, UseRolesViewResult } from "../types/organization.types";
+import { selectAuth } from "@/modules/auth/store/auth.selectors";
 
 const DEFAULT_ROLES: RoleItem[] = [
   {
@@ -90,13 +86,23 @@ export function useRolesView(): UseRolesViewResult {
       return;
     }
 
+    // Resolving the linter rule: wrap synchronous initialization state updates 
+    // inside a microtask queue to isolate them from the synchronous effect chain
+    await Promise.resolve();
+
     setIsLoadingRoles(true);
     setRolesError(null);
 
     try {
       const response = await RolesViewService.fetchWorkspaceRoles(currentOrganizationId);
-      if (response.success) {
-        setRolesList(response.data.map(mapRoleDefinitionToItem));
+      if (response.success && response.data) {
+        const mappedRoles = response.data.map(mapRoleDefinitionToItem);
+        setRolesList(mappedRoles);
+        
+        // Auto-select first role safely if current selection is invalid or missing
+        if (mappedRoles.length > 0) {
+          setSelectedRole((prev) => mappedRoles.some(r => r.id === prev) ? prev : mappedRoles[0].id);
+        }
       } else {
         setRolesError(response.reason || "Failed to load workspace roles");
         setRolesList(DEFAULT_ROLES);
@@ -109,8 +115,21 @@ export function useRolesView(): UseRolesViewResult {
     }
   }, [currentOrganizationId]);
 
+  // Hook side-effect trigger
   useEffect(() => {
-    void fetchRoles();
+    let isMounted = true;
+    
+    const triggerFetch = async () => {
+      if (isMounted) {
+        await fetchRoles();
+      }
+    };
+
+    void triggerFetch();
+
+    return () => {
+      isMounted = false;
+    };
   }, [fetchRoles]);
 
   const onSelectRole = useCallback((roleId: string) => {

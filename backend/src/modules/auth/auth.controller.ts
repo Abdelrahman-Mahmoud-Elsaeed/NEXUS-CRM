@@ -3,8 +3,6 @@ import { AuthService } from "./auth.service";
 import { SessionService } from "@modules/session/session.service";
 import { getSessionMeta, setRefreshCookie } from "../session/session.utils";
 import { Request, Response } from "express";
-import { LoginResult, RegisterResult } from "./auth.dto";
-import { RegisterInvitedDto } from "./auth.validators";
 
 const authService = new AuthService();
 const sessionService = new SessionService();
@@ -12,40 +10,49 @@ const sessionService = new SessionService();
 export class AuthController {
   async register(req: Request, res: Response) {
     const result = await authService.register(req.body);
+
     if (!result.success) {
-      return res.status(400).json(result);
+      return res.status(result.statusCode).json({
+        success: false,
+        reason: result.reason,
+      });
     }
+
     const meta = await getSessionMeta(req);
-    const session = await sessionService.create(result.data, meta);
+
+    const session = await sessionService.create(result.data!, meta);
     setRefreshCookie(res, session.sessionId);
-    const responsePayload: RegisterResult = {
+
+    return res.status(result.statusCode).json({
       success: true,
       data: {
-        user: result.data,
+        user: result.data!,
         tokens: {
           accessToken: session.accessToken,
         },
       },
-    };
-
-    return res.status(201).json(responsePayload);
+    });
   }
 
   async registerInvited(req: Request, res: Response): Promise<void> {
     const serviceResult = await authService.registerInvitedUser(req.body);
 
     if (!serviceResult.success) {
-      res.status(400).json(serviceResult);
+      res.status(serviceResult.statusCode).json({
+        success: false,
+        reason: serviceResult.reason,
+      });
       return;
     }
+
     const meta = await getSessionMeta(req);
-    const session = await sessionService.create(serviceResult.data, meta);
+    const session = await sessionService.create(serviceResult.data!, meta);
     setRefreshCookie(res, session.sessionId);
 
-    res.status(201).json({
+    res.status(serviceResult.statusCode).json({
       success: true,
       data: {
-        user: serviceResult.data ,
+        user: serviceResult.data,
         tokens: {
           accessToken: session.accessToken,
         },
@@ -57,14 +64,39 @@ export class AuthController {
     const result = await authService.login(req.body);
 
     if (!result.success) {
-      return res.status(401).json(result);
+      if (result.reason === "EMAIL_NOT_VERIFIED") {
+        const meta = await getSessionMeta(req);
+
+        const session = await sessionService.create(result.data!, meta);
+
+        setRefreshCookie(res, session.sessionId);
+
+        return res.status(result.statusCode).json({
+          success: false,
+          statusCode: result.statusCode,
+          reason: "EMAIL_NOT_VERIFIED",
+          data: {
+            user: result.data,
+            tokens: {
+              accessToken: session.accessToken,
+            },
+            isVerified: false,
+          },
+        });
+      }
+
+      return res.status(result.statusCode).json({
+        success: false,
+        reason: result.reason,
+      });
     }
+
     const meta = await getSessionMeta(req);
-    const session = await sessionService.create(result.data, meta);
+    const session = await sessionService.create(result.data!, meta);
 
     setRefreshCookie(res, session.sessionId);
 
-    const response: LoginResult = {
+    return res.status(result.statusCode).json({
       success: true,
       data: {
         user: result.data,
@@ -72,15 +104,22 @@ export class AuthController {
           accessToken: session.accessToken,
         },
       },
-    };
-
-    return res.status(200).json(response);
+    });
   }
 
   async requestPasswordReset(req: Request, res: Response) {
     const result = await authService.requestPasswordReset(req.body.email);
 
-    return res.json(result);
+    if (!result.success) {
+      return res.status(result.statusCode).json({
+        success: false,
+        reason: result.reason,
+      });
+    }
+
+    return res.status(result.statusCode).json({
+      success: true,
+    });
   }
 
   async resetPassword(req: Request, res: Response) {
@@ -88,37 +127,38 @@ export class AuthController {
     const result = await authService.resetPassword(token, newPassword);
 
     if (!result.success) {
-      return res.status(400).json(result);
+      return res.status(result.statusCode).json({
+        success: false,
+        reason: result.reason,
+      });
     }
 
-    return res.status(200).json(result);
+    return res.status(result.statusCode).json({
+      success: true,
+    });
   }
 
   async verifyEmail(req: Request, res: Response) {
     const { OTP } = req.body;
-    const userId = req.user.userId;
+    const userId = req.user?.userId;
 
-    if (!userId) {
-      return res.status(401).json({
+    const result = await authService.verifyEmail(userId!, OTP);
+
+    if (!result.success) {
+      return res.status(result.statusCode).json({
         success: false,
-        reason: "UNAUTHORIZED",
+        reason: result.reason,
       });
     }
 
-    const result = await authService.verifyEmail(userId, OTP);
-
-    if (!result.success) {
-      return res.status(400).json(result);
-    }
-
     const updatedSession = await sessionService.verifySessionOtp(
-      userId,
+      userId!,
       req.sessionId,
     );
 
     setRefreshCookie(res, updatedSession.sessionId);
 
-    return res.status(200).json({
+    return res.status(result.statusCode).json({
       success: true,
       data: {
         tokens: {
@@ -130,31 +170,29 @@ export class AuthController {
 
   async requestEmailOTP(req: Request, res: Response) {
     const { name } = req.body || {};
-    const user = req.user;
-    if (!user.userId) {
-      return res.status(401).json({
-        success: false,
-        reason: "UNAUTHORIZED",
-      });
-    }
+    const userId = req.user?.userId;
+    const email = req.user?.email;
+
     const result = await authService.requestEmailVerificationOTP(
-      user.userId,
-      user.email,
+      userId!,
+      email,
       name,
     );
-    return res.json(result);
+
+    if (!result.success) {
+      return res.status(result.statusCode).json({
+        success: false,
+        reason: result.reason,
+      });
+    }
+
+    return res.status(result.statusCode).json({
+      success: true,
+    });
   }
 
   async verifyAccessToken(req: Request, res: Response) {
     const user = req.user;
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        reason: "UNAUTHORIZED",
-        message: "User session not found.",
-      });
-    }
-
     return res.status(200).json({
       success: true,
       data: {
@@ -173,9 +211,14 @@ export class AuthController {
     const result = await authService.verifyPasswordResetToken(token);
 
     if (!result.success) {
-      return res.status(400).json(result);
+      return res.status(result.statusCode).json({
+        success: false,
+        reason: result.reason,
+      });
     }
 
-    return res.status(200).json(result);
+    return res.status(result.statusCode).json({
+      success: true,
+    });
   }
 }

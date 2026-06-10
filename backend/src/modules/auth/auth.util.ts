@@ -46,7 +46,7 @@ export const storeOtp = async (key: string, otp: string, ttl = 300) => {
   await CacheService.set(key, hashed, ttl);
 };
 
-export const verifyOtp = async (key: string, otp: string) => {
+export const verifyOtp = async (key: string, otp: string):Promise<{ success: true } | { success: false; reason: "OTP_EXPIRED" | "INVALID_OTP" }> => {
   const stored = await CacheService.get<string>(key);
 
   if (!stored) {

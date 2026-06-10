@@ -3,7 +3,7 @@ import { useForm, type DefaultValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/app/store/hooks";
-import { signupUser } from "@/modules/auth/store/authSlice";
+import { signupUser } from "@/modules/auth/store/auth.actions";
 import { signupSchema, type SignupValues } from "@modules/auth/validations/auth";
 
 export function useSignup() {

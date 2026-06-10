@@ -1,20 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// src/modules/auth/hooks/useLogin.ts
-
-import { useState } from "react";
-import { loginUser } from "../store/authSlice";
-import { loginSchema, type LoginValues } from "../validations/auth";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "@/app/store/hooks";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuth } from "../store/auth.slice";
+import { loginUser } from "../store/auth.actions";
+import { loginSchema, type LoginValues } from "../validations/auth";
 
 export function useLogin() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  
+  const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+
+  const { isLoggingIn, loginError } = useSelector(selectAuth);
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -25,38 +23,30 @@ export function useLogin() {
     },
   });
 
-  const onSubmit = async (values: LoginValues) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const result = await dispatch(loginUser({
+  const onSubmit = useCallback(async (values: LoginValues) => {
+    const result = await dispatch(
+      loginUser({
         email: values.email,
         password: values.password,
-      })).unwrap();
+      })
+    );
 
-      if (result.user.isVerified) {
-        navigate("/");
+    if (loginUser.fulfilled.match(result)) {
+      const user = result.payload?.user;
+      
+      console.log(user)
+      if (user?.isVerified) {
+        navigate("/", { replace: true });
       } else {
-        navigate("/verify-email");
+        navigate("/verify-email", { replace: true });
       }
-    } catch (reason: any) {
-      if (reason === "INVALID_CREDENTIALS") {
-        setError("Invalid email or password.");
-      } else if (reason === "USER_DISABLED") {
-        setError("This account has been disabled.");
-      } else {
-        setError(reason || "An unexpected error occurred. Please try again.");
-      }
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [dispatch, navigate]);
 
   return {
     form,
-    loading,
-    error,
+    loading: isLoggingIn,
+    error: loginError,
     onSubmit: form.handleSubmit(onSubmit),
   };
 }

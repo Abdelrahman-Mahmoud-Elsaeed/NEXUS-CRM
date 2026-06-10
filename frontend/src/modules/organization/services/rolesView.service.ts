@@ -22,7 +22,6 @@ export const RolesViewService = {
     roleId: string,
     payload: RoleUpdatePayload,
   ): Promise<ApiSingleResponse<RoleDefinitionDto>> => {
-    // TODO: Missing Backend Implementation - Developer to build matching endpoint
     const response = await api.patch(
       `/organization/${organizationId}/roles/${roleId}`,
       payload,

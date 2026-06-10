@@ -1,15 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo, useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useOrganizationData } from "./useOrganization";
-import {
-  invitationFormSchema,
-  type InvitationFormValues,
-  type InvitationRow,
-  type RoleSelectOption,
-  type UseInvitationsViewResult,
-} from "@/modules/organization/types/invitationsView.types";
-import type { InvitationDto } from "@/modules/organization/types/organization.types";
+import { useDispatch, useSelector } from "react-redux";
+import { selectOrg } from "../store/org.slice";
+import type {
+  InvitationDto,
+  InvitationFormValues,
+  InvitationRow,
+  RoleSelectOption,
+  UseInvitationsViewResult,
+} from "../types/organization.types";
+import { invitationFormSchema } from "../validations/organization.validation";
+import { createWorkspaceInvitation } from "../store/invitations.actions";
+import { selectInvitations } from "../store/invitations.slice";
 
 const ROLE_OPTIONS: RoleSelectOption[] = [
   { label: "Member", value: "MEMBER" },
@@ -18,24 +22,15 @@ const ROLE_OPTIONS: RoleSelectOption[] = [
 
 const getInvitationStatus = (invitation: InvitationDto) => {
   if (invitation.isUsed) {
-    return {
-      label: "ACCEPTED" as const,
-      severity: "accepted" as const,
-    };
+    return { label: "ACCEPTED" as const, severity: "accepted" as const };
   }
 
-  const isExpired = new Date(invitation.expiresAt) < new Date();
+  const isExpired = new Date(invitation.expiresAt).getTime() < Date.now();
   if (isExpired) {
-    return {
-      label: "EXPIRED" as const,
-      severity: "expired" as const,
-    };
+    return { label: "EXPIRED" as const, severity: "expired" as const };
   }
 
-  return {
-    label: "PENDING" as const,
-    severity: "pending" as const,
-  };
+  return { label: "PENDING" as const, severity: "pending" as const };
 };
 
 const formatDate = (value: string) =>
@@ -46,14 +41,8 @@ const formatDate = (value: string) =>
   });
 
 const formatExpiryLabel = (invitation: InvitationDto) => {
-  if (invitation.isUsed) {
-    return "Claimed";
-  }
-
-  if (new Date(invitation.expiresAt) < new Date()) {
-    return "Expired";
-  }
-
+  if (invitation.isUsed) return "Claimed";
+  if (new Date(invitation.expiresAt).getTime() < Date.now()) return "Expired";
   return "Active Link";
 };
 
@@ -74,27 +63,29 @@ const mapInvitationToRow = (invitation: InvitationDto): InvitationRow => {
 };
 
 export function useInvitationsView(): UseInvitationsViewResult {
+  const dispatch = useDispatch<any>();
+
   const {
-    organizationId,
     invitations: invitationsRaw,
     isLoadingInvitations,
     invitationsError,
-    inviteUser,
     isInviting,
-  } = useOrganizationData();
+    inviteSubmissionError,
+  } = useSelector(selectInvitations);
+  
+  const { currentOrganizationId } = useSelector(selectOrg);
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [inviteSubmissionError, setInviteSubmissionError] = useState<string | null>(null);
-
-  const { register, handleSubmit, reset, formState } = useForm<InvitationFormValues>({
-    resolver: zodResolver(invitationFormSchema),
-    defaultValues: {
-      email: "",
-      role: "MEMBER",
-    },
-    mode: "onTouched",
-  });
+  const { register, handleSubmit, reset, formState } =
+    useForm<InvitationFormValues>({
+      resolver: zodResolver(invitationFormSchema),
+      defaultValues: {
+        email: "",
+        role: "MEMBER",
+      },
+      mode: "onTouched",
+    });
 
   const filteredInvitations = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -112,26 +103,25 @@ export function useInvitationsView(): UseInvitationsViewResult {
 
   const onSubmitInvite = useCallback(
     async (formValues: InvitationFormValues) => {
-      if (!organizationId) {
-        throw new Error("No active organization selected");
+      if (!currentOrganizationId) return;
+
+      const result = await dispatch(
+        createWorkspaceInvitation({
+          orgId: currentOrganizationId,
+          email: formValues.email,
+          role: formValues.role,
+        }),
+      );
+
+      if (createWorkspaceInvitation.fulfilled.match(result)) {
+        reset();
       }
-
-      setInviteSubmissionError(null);
-
-      const response = await inviteUser(formValues);
-      if (!response.success) {
-        console.log("run")
-        setInviteSubmissionError(response.reason || "Failed to send invitation");
-        return;
-      }
-
-      reset();
     },
-    [inviteUser, organizationId, reset],
+    [currentOrganizationId, dispatch, reset],
   );
 
   return {
-    organizationId,
+    organizationId: currentOrganizationId,
     invitations,
     filteredInvitationsCount: invitations.length,
     totalInvitationsCount: invitationsRaw.length,

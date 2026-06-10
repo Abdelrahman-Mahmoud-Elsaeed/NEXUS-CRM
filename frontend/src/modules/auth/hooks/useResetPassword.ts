@@ -1,93 +1,71 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// src/modules/auth/hooks/useResetPassword.ts
-import { useState, useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router-dom";
-import { AuthService } from "@/modules/auth/services/auth.service";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuth } from "../store/auth.slice";
+import { verifyResetToken, submitPasswordReset } from "../store/auth.actions";
 import { resetPasswordSchema, type ResetPasswordValues } from "../validations/auth";
 
 export function useResetPassword() {
-  const [loading, setLoading] = useState(false);
-  const [isVerifyingLink, setIsVerifyingLink] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
+  const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const { token } = useParams<{ token: string }>();
+
+  // 1. Core API state variables sourced from Redux
+  const { isVerifyingResetToken, isResettingPassword, resetPasswordError } = useSelector(selectAuth);
 
   const form = useForm<ResetPasswordValues>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: { password: "", confirmPassword: "" }
   });
 
-  // Verify token on mount
+  // 2. Continuous token verification guard on mount
   useEffect(() => {
-    const checkTokenValidity = async () => {
-      if (!token) {
-        navigate("/link-expired");
-        return;
-      }
+    if (!token) {
+      navigate("/link-expired", { replace: true });
+      return;
+    }
 
-      try {
-        await AuthService.verifyResetToken(token);
-        
-        // If successful, stop loading and allow user to see the form
-        setIsVerifyingLink(false);
-      } catch (err) {
-        // If interceptor catches an error (INVALID_TOKEN), redirect
-        navigate("/link-expired");
+    const checkToken = async () => {
+      const result = await dispatch(verifyResetToken(token));
+      if (verifyResetToken.rejected.match(result)) {
+        navigate("/link-expired", { replace: true });
       }
     };
 
-    checkTokenValidity();
-  }, [token, navigate]);
+    checkToken();
+  }, [token, dispatch, navigate]);
 
-  const onSubmit = async (values: ResetPasswordValues) => {
+  // 3. Isolated form submission handler
+  const onSubmit = useCallback(async (values: ResetPasswordValues) => {
     if (!token) return;
 
-    setLoading(true);
-    setError(null); // Clear generic errors before new request
-    
-    try {
-      await AuthService.resetPassword(values.password, token);
-      navigate("/login", { state: { message: "Password reset successful. Please log in." } });
-    } catch (err: any) {
-      // Safely extract the reason from your backend response
-      const reason = err.response?.data?.reason;
-      switch (reason) {
-        case "PASSWORD_REUSE_NOT_ALLOWED":
-          // Attach this error directly to the password input field!
-          form.setError("password", {
-            type: "server",
-            message: "You cannot reuse your current or recently used passwords. Please choose a new one.",
-          });
-          // Clear the confirm password field to force them to re-type
-          form.setValue("confirmPassword", ""); 
-          break;
+    const result = await dispatch(
+      submitPasswordReset({ password: values.password, token })
+    );
 
-        case "INVALID_TOKEN":
-          setError("This reset link has expired or has already been used. Please request a new one.");
-          break;
-
-        case "USER_NOT_FOUND":
-          setError("We couldn't find an account associated with this request.");
-          break;
-
-        default:
-          setError("Something went wrong while resetting your password. Please try again.");
-          break;
-      }
-    } finally {
-      setLoading(false);
+    if (submitPasswordReset.fulfilled.match(result)) {
+      navigate("/login", { 
+        state: { message: "Password reset successful. Please log in." },
+        replace: true 
+      });
+    } else if (result.payload === "PASSWORD_REUSE_NOT_ALLOWED") {
+      // Catch specific validation exception to re-attach directly to input field
+      form.setError("password", {
+        type: "server",
+        message: "You cannot reuse your current or recently used passwords. Please choose a new one.",
+      });
+      form.setValue("confirmPassword", "");
     }
-  };
+  }, [token, dispatch, navigate, form]);
 
   return { 
     form, 
-    loading, 
-    isVerifyingLink, 
-    error, // This handles top-level generic errors
+    loading: isResettingPassword, 
+    isVerifyingLink: isVerifyingResetToken, 
+    error: resetPasswordError === "PASSWORD_REUSE_NOT_ALLOWED" ? null : resetPasswordError,
     onSubmit: form.handleSubmit(onSubmit) 
   };
 }

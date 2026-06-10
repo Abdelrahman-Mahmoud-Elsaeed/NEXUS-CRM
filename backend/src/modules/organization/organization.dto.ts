@@ -1,65 +1,16 @@
-import { ApiResponse } from "@/shared/types/api.types";
-import { Role as PrismaRole } from "@prisma/client";
-import { Invitation } from "@prisma/client";
+import { Role as PrismaRole, Invitation } from "@prisma/client";
+import { ServiceResult } from "@/shared/types/api.types";
 
-export interface AcceptInviteRequestDto {
-  token: string;
+// ============================================================================
+// Core Domain DTO Data Transfer Objects
+// ============================================================================
+export interface OrganizationDto {
+  id: string;
+  name: string;
+  billingPlan: string;
+  createdAt: Date;
+  avatar: string | null;
 }
-
-export interface AcceptInviteSuccessData {
-  organizationId: string;
-  role: string;
-}
-
-export type AcceptInviteServiceResult = ApiResponse<
-  AcceptInviteSuccessData,
-  | "INVITE_NOT_FOUND"
-  | "INVITE_EXPIRED"
-  | "INVITE_ALREADY_USED"
-  | "DATABASE_ERROR"
->;
-
-export type AcceptInviteApiResponse = ApiResponse<
-  {
-    organizationId: string;
-    message: string;
-  },
-  | "UNAUTHORIZED"
-  | "INVALID_INPUT"
-  | "INVITE_NOT_FOUND"
-  | "INVITE_EXPIRED"
-  | "INVITE_ALREADY_USED"
-  | "INTERNAL_SERVER_ERROR"
->;
-
-export interface CreateInviteRequestDto {
-  email: string;
-  role: PrismaRole;
-}
-
-export type CreateInviteServiceResult = ApiResponse<
-  Invitation,
-  | "ORGANIZATION_MISMATCH"
-  | "USER_ALREADY_MEMBER"
-  | "INVITE_ALREADY_PENDING"
-  | "DATABASE_ERROR"
->;
-
-export type CreateInviteApiResponse = ApiResponse<
-  {
-    invitationId: string;
-    email: string;
-    expiresAt: Date;
-  },
-  | "UNAUTHORIZED"
-  | "INSUFFICIENT_PERMISSIONS"
-  | "INVALID_INPUT"
-  | "ORGANIZATION_MISMATCH"
-  | "USER_ALREADY_MEMBER"
-  | "INVITE_ALREADY_PENDING"
-  | "INTERNAL_SERVER_ERROR"
->;
-
 
 export interface OrgMemberDto {
   id: string;
@@ -68,67 +19,6 @@ export interface OrgMemberDto {
   role: PrismaRole;
   joinedAt: Date;
 }
-
-export type GetOrgMembersServiceResult =
-  | { success: true; data: OrgMemberDto[] }
-  | {
-      success: false;
-      reason: "NOT_A_MEMBER" | "ORGANIZATION_MISMATCH" | "DATABASE_ERROR";
-    };
-
-export interface GetOrgMembersApiResponse {
-  success: boolean;
-  data?: {
-    members: OrgMemberDto[];
-  };
-  reason?: string;
-}
-
-export type GetUserOrganizationsServiceResult = ApiResponse<
-  OrganizationDto[],
-  "USER_NOT_FOUND" | "DATABASE_ERROR"
->;
-
-export type GetUserOrganizationsResponse = ApiResponse<
-  {
-    organizations: OrganizationDto[];
-  },
-  "UNAUTHORIZED" | "USER_NOT_FOUND" | "INTERNAL_SERVER_ERROR"
->;
-export type GetOrganizationsResponse = ApiResponse<
-  {
-    organizations: OrganizationDto[];
-  },
-  "UNAUTHORIZED" | "USER_NOT_FOUND" | "INTERNAL_SERVER_ERROR"
->;
-
-export interface OrganizationDto {
-  id: string;
-  name: string;
-  billingPlan: string;
-  createdAt: Date;
-  avatar:string
-}
-
-
-export interface UpdateOrgNameRequestDto {
-  name: string;
-}
-
-export type UpdateOrgNameServiceResult =
-  | { success: true; data: { id: string; name: string } }
-  | { success: false; reason: "NOT_A_MEMBER" | "ORGANIZATION_NOT_FOUND" };
-
-
-export type UpdateOrgNameApiResponse = ApiResponse<
-  { id: string; name: string },                               // Success Payload Type (T)
-  "UNAUTHORIZED" | "FORBIDDEN_ORGANIZATION_ACCESS" | "ORGANIZATION_NOT_FOUND" | "INTERNAL_SERVER_ERROR" // Error Reasons (E)
->;
-
-
-export type GetInvitationsServiceResult =
-  | { success: true; data: Invitation[] }
-  | { success: false; reason: "ORGANIZATION_MISMATCH" | "FETCH_FAILED" };
 
 export interface InvitationDetailsDto {
   email: string;
@@ -139,16 +29,108 @@ export interface InvitationDetailsDto {
   expiresAt: Date;
 }
 
-export type GetInvitationDetailsByTokenServiceResult = ApiResponse<
-  InvitationDetailsDto,
-  "INVITATION_NOT_FOUND" | "INVITATION_EXPIRED" | "INVITATION_ALREADY_USED" | "DATABASE_ERROR"
+export interface AcceptInviteSuccessData {
+  organizationId: string;
+  role: PrismaRole;
+}
+
+// ============================================================================
+// Request Inputs Payload Signatures
+// ============================================================================
+export interface AcceptInviteRequestDto {
+  token: string;
+}
+
+export interface CreateInviteRequestDto {
+  email: string;
+  role: PrismaRole;
+}
+
+export interface UpdateOrgNameRequestDto {
+  name: string;
+}
+
+// ============================================================================
+// Unified Service Return Type Aliases (No Unexpected Server Errors)
+// ============================================================================
+export type GetUserOrganizationsServiceResult = ServiceResult<
+  OrganizationDto[]
 >;
 
-export type GetInvitationDetailsByTokenApiResponse = ApiResponse<
+export type CreateWorkspaceInviteServiceResult = ServiceResult<
+  Invitation,
+  | "ORGANIZATION_MISMATCH"
+  | "UNAUTHORIZED_ACTION"
+  | "USER_ALREADY_MEMBER"
+  | "INVITE_ALREADY_PENDING"
+>;
+
+export type GetWorkspaceInvitationsServiceResult = ServiceResult<
+  Invitation[],
+  "ORGANIZATION_MISMATCH"
+>;
+
+export type AcceptWorkspaceInviteServiceResult = ServiceResult<
+  AcceptInviteSuccessData,
+  | "INVITE_NOT_FOUND"
+  | "EMAIL_MISMATCH"
+  | "INVITE_ALREADY_USED"
+  | "INVITE_EXPIRED"
+>;
+
+export type GetOrganizationMembersServiceResult = ServiceResult<
+  OrgMemberDto[],
+  "NOT_A_MEMBER"
+>;
+
+export type UpdateOrganizationNameServiceResult = ServiceResult<
+  { id: string; name: string },
+  "NOT_A_MEMBER" | "UNAUTHORIZED_ACTION"
+>;
+
+export type GetWorkspaceInviteByTokenServiceResult = ServiceResult<
+  Invitation,
+  "ORGANIZATION_MISMATCH" | "INVITATION_NOT_FOUND"
+>;
+
+export type GetInvitationDetailsByTokenServiceResult = ServiceResult<
   InvitationDetailsDto,
+  "INVITATION_NOT_FOUND" | "INVITATION_ALREADY_USED" | "INVITATION_EXPIRED"
+>;
+
+// ============================================================================
+// Client Facing API Response Wrapper Signatures
+// ============================================================================
+export type GetUserOrganizationsResponse = ServiceResult<
+  { organizations: OrganizationDto[] },
+  "UNAUTHORIZED"
+>;
+
+export type CreateInviteApiResponse = ServiceResult<
+  { invitationId: string; email: string; expiresAt: Date },
+  | "UNAUTHORIZED"
+  | "INSUFFICIENT_PERMISSIONS"
+  | "ORGANIZATION_MISMATCH"
+  | "USER_ALREADY_MEMBER"
+  | "INVITE_ALREADY_PENDING"
+>;
+
+export type AcceptInviteApiResponse = ServiceResult<
+  { organizationId: string; message: string },
+  | "UNAUTHORIZED"
   | "INVALID_INPUT"
-  | "INVITATION_NOT_FOUND"
-  | "INVITATION_EXPIRED"
-  | "INVITATION_ALREADY_USED"
-  | "INTERNAL_SERVER_ERROR"
+  | "INVITE_NOT_FOUND"
+  | "EMAIL_MISMATCH"
+  | "INVITE_ALREADY_USED"
+  | "INVITE_EXPIRED"
+>;
+
+export type GetOrgMembersApiResponse = ServiceResult<
+  { members: OrgMemberDto[] },
+  "UNAUTHORIZED" | "FORBIDDEN_ORGANIZATION_ACCESS"
+>;
+
+export type UpdateOrgNameApiResponse = ServiceResult<
+  { id: string; name: string },
+  "UNAUTHORIZED" | "FORBIDDEN_ORGANIZATION_ACCESS"
 >;

@@ -1,88 +1,91 @@
 import { prisma } from "@/shared/config/db/prisma";
-
 import crypto from "crypto";
 import {
   AcceptInviteRequestDto,
-  AcceptInviteServiceResult,
   CreateInviteRequestDto,
-  CreateInviteServiceResult,
-  GetInvitationsServiceResult,
-  GetOrgMembersServiceResult,
+  UpdateOrgNameRequestDto,
   GetUserOrganizationsServiceResult,
+  CreateWorkspaceInviteServiceResult,
+  GetWorkspaceInvitationsServiceResult,
+  AcceptWorkspaceInviteServiceResult,
+  GetOrganizationMembersServiceResult,
+  UpdateOrganizationNameServiceResult,
+  GetWorkspaceInviteByTokenServiceResult,
+  GetInvitationDetailsByTokenServiceResult,
   OrganizationDto,
   OrgMemberDto,
-  UpdateOrgNameRequestDto,
-  UpdateOrgNameServiceResult,
+  InvitationDetailsDto,
 } from "./organization.dto";
 import { emailService } from "@/shared/config/email/email.service";
 
 export class OrganizationService {
-  async getUserOrganizations(
-    userId: string,
-  ): Promise<GetUserOrganizationsServiceResult> {
+
+  async getUserOrganizations(userId: string): Promise<GetUserOrganizationsServiceResult> {
     const userWorkspaceRelations = await prisma.organizationUser.findMany({
       where: { userId },
-      include: {
-        organization: {
-          include: {
-            tags: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
+      include: { organization: true },
+      orderBy: { createdAt: "desc" },
     });
 
-    const organizations: OrganizationDto[] = userWorkspaceRelations.map(
-      (relation: any) => ({
-        id: relation.organization.id,
-        name: relation.organization.name,
-        billingPlan: relation.organization.billingPlan,
-        createdAt: relation.organization.createdAt,
-        avatar: relation.organization.avatar,
-      }),
-    );
+    const organizations: OrganizationDto[] = userWorkspaceRelations.map((relation) => ({
+      id: relation.organization.id,
+      name: relation.organization.name,
+      billingPlan: relation.organization.billingPlan,
+      createdAt: relation.organization.createdAt,
+      avatar: relation.organization.avatar,
+    }));
 
-    return {
-      success: true,
-      data: organizations,
-    };
+    return { success: true, statusCode: 200, data: organizations };
   }
 
   async createWorkspaceInvite(
     sessionOrgId: string,
     routeOrgId: string,
+    userId: string,
     orgName: string,
     dto: CreateInviteRequestDto,
-  ): Promise<CreateInviteServiceResult> {
+  ): Promise<CreateWorkspaceInviteServiceResult> {
     if (sessionOrgId !== routeOrgId) {
-      return { success: false, reason: "ORGANIZATION_MISMATCH" };
+      return { success: false, statusCode: 400, reason: "ORGANIZATION_MISMATCH" };
     }
+
+    const inviterMembership = await prisma.organizationUser.findFirst({
+      where: { organizationId: sessionOrgId, userId },
+    });
+
+    if (!inviterMembership || !["OWNER", "ADMIN"].includes(inviterMembership.role)) {
+      return { success: false, statusCode: 403, reason: "UNAUTHORIZED_ACTION" };
+    }
+
+    const sanitizedEmail = dto.email.toLowerCase().trim();
 
     const existingMember = await prisma.organizationUser.findFirst({
       where: {
         organizationId: sessionOrgId,
-        user: { email: dto.email.toLowerCase().trim() },
+        user: { email: sanitizedEmail },
       },
     });
 
     if (existingMember) {
-      return { success: false, reason: "USER_ALREADY_MEMBER" };
+      return { success: false, statusCode: 409, reason: "USER_ALREADY_MEMBER" };
     }
 
     const activeInvite = await prisma.invitation.findFirst({
       where: {
         organizationId: sessionOrgId,
-        email: dto.email.toLowerCase().trim(),
+        email: sanitizedEmail,
         isUsed: false,
         expiresAt: { gte: new Date() },
       },
     });
 
     if (activeInvite) {
-      return { success: false, reason: "INVITE_ALREADY_PENDING" };
+      return { success: false, statusCode: 409, reason: "INVITE_ALREADY_PENDING" };
     }
+
+    const existingUser = await prisma.user.findUnique({
+      where: { email: sanitizedEmail },
+    });
 
     const secureToken = crypto.randomBytes(32).toString("hex");
     const expirationDate = new Date();
@@ -91,58 +94,58 @@ export class OrganizationService {
     const invitation = await prisma.invitation.create({
       data: {
         organizationId: sessionOrgId,
-        email: dto.email.toLowerCase().trim(),
+        email: sanitizedEmail,
         role: dto.role,
         token: secureToken,
         expiresAt: expirationDate,
+        invitedById: userId,
+        isExistingUser: !!existingUser,
       },
     });
-    await emailService.sendWorkspaceInvitation(
-    invitation.email,
-    orgName,
-    invitation.token
-  );
-    return { success: true, data: invitation };
+    emailService.sendWorkspaceInvitation(invitation.email, orgName, invitation.token);
+
+    return { success: true, statusCode: 201, data: invitation };
   }
 
   async getWorkspaceInvitations(
     sessionOrgId: string,
     routeOrgId: string,
-  ): Promise<GetInvitationsServiceResult> {
+  ): Promise<GetWorkspaceInvitationsServiceResult> {
     if (sessionOrgId !== routeOrgId) {
-      return { success: false, reason: "ORGANIZATION_MISMATCH" };
+      return { success: false, statusCode: 400, reason: "ORGANIZATION_MISMATCH" };
     }
 
     const invitations = await prisma.invitation.findMany({
-      where: {
-        organizationId: sessionOrgId,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
+      where: { organizationId: sessionOrgId },
+      orderBy: { createdAt: "desc" },
     });
 
-    return { success: true, data: [...invitations] };
+    return { success: true, statusCode: 200, data: invitations };
   }
 
   async acceptWorkspaceInvite(
     userId: string,
+    authEmail: string,
     dto: AcceptInviteRequestDto,
-  ): Promise<AcceptInviteServiceResult> {
+  ): Promise<AcceptWorkspaceInviteServiceResult> {
     const invitation = await prisma.invitation.findUnique({
       where: { token: dto.token },
     });
 
     if (!invitation) {
-      return { success: false, reason: "INVITE_NOT_FOUND" };
+      return { success: false, statusCode: 404, reason: "INVITE_NOT_FOUND" };
+    }
+
+    if (invitation.email.toLowerCase().trim() !== authEmail.toLowerCase().trim()) {
+      return { success: false, statusCode: 403, reason: "EMAIL_MISMATCH" };
     }
 
     if (invitation.isUsed) {
-      return { success: false, reason: "INVITE_ALREADY_USED" };
+      return { success: false, statusCode: 410, reason: "INVITE_ALREADY_USED" };
     }
 
     if (new Date() > invitation.expiresAt) {
-      return { success: false, reason: "INVITE_EXPIRED" };
+      return { success: false, statusCode: 410, reason: "INVITE_EXPIRED" };
     }
 
     await prisma.$transaction([
@@ -153,163 +156,130 @@ export class OrganizationService {
           role: invitation.role,
         },
       }),
-
       prisma.invitation.update({
         where: { id: invitation.id },
-        data: {
-          isUsed: true,
-          acceptedAt: new Date(),
-        },
+        data: { isUsed: true, acceptedAt: new Date() },
       }),
     ]);
 
     return {
       success: true,
-      data: {
-        organizationId: invitation.organizationId,
-        role: invitation.role,
-      },
+      statusCode: 200,
+      data: { organizationId: invitation.organizationId, role: invitation.role },
     };
   }
 
   async getOrganizationMembers(
     sessionUserId: string,
     targetOrgId: string,
-  ): Promise<GetOrgMembersServiceResult> {
-    const isUserInOrg = await prisma.organizationUser.findFirst({
-      where: {
-        organizationId: targetOrgId,
-        userId: sessionUserId,
-      },
+  ): Promise<GetOrganizationMembersServiceResult> {
+    const checkMembership = await prisma.organizationUser.findFirst({
+      where: { organizationId: targetOrgId, userId: sessionUserId },
     });
 
-    if (!isUserInOrg) {
-      return { success: false, reason: "NOT_A_MEMBER" };
+    if (!checkMembership) {
+      return { success: false, statusCode: 403, reason: "NOT_A_MEMBER" };
     }
 
     const memberRelations = await prisma.organizationUser.findMany({
-      where: {
-        organizationId: targetOrgId,
-      },
+      where: { organizationId: targetOrgId },
       include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
+        user: { select: { id: true, name: true, email: true } },
       },
-      orderBy: {
-        createdAt: "asc",
-      },
+      orderBy: { createdAt: "asc" },
     });
 
     const members: OrgMemberDto[] = memberRelations.map((relation) => ({
       id: relation.user.id,
-      name: relation.user.name ?? "Unknown Member",
+      name: relation.user.name,
       email: relation.user.email,
       role: relation.role,
       joinedAt: relation.createdAt,
     }));
 
-    return {
-      success: true,
-      data: members,
-    };
+    return { success: true, statusCode: 200, data: members };
   }
 
   async updateOrganizationName(
     sessionUserId: string,
     targetOrgId: string,
     dto: UpdateOrgNameRequestDto,
-  ): Promise<UpdateOrgNameServiceResult> {
+  ): Promise<UpdateOrganizationNameServiceResult> {
     const membership = await prisma.organizationUser.findFirst({
-      where: {
-        organizationId: targetOrgId,
-        userId: sessionUserId,
-      },
+      where: { organizationId: targetOrgId, userId: sessionUserId },
     });
 
     if (!membership) {
-      return { success: false, reason: "NOT_A_MEMBER" };
+      return { success: false, statusCode: 403, reason: "NOT_A_MEMBER" };
     }
 
-    try {
-      // 2. Perform the update operation
-      const updatedOrg = await prisma.organization.update({
-        where: { id: targetOrgId },
-        data: { name: dto.name.trim() },
-      });
-
-      return {
-        success: true,
-        data: {
-          id: updatedOrg.id,
-          name: updatedOrg.name,
-        },
-      };
-    } catch (error) {
-      return { success: false, reason: "ORGANIZATION_NOT_FOUND" };
+    if (!["OWNER", "ADMIN"].includes(membership.role)) {
+      return { success: false, statusCode: 403, reason: "UNAUTHORIZED_ACTION" };
     }
+
+    const updatedOrg = await prisma.organization.update({
+      where: { id: targetOrgId },
+      data: { name: dto.name.trim() },
+    });
+
+    return { success: true, statusCode: 200, data: { id: updatedOrg.id, name: updatedOrg.name } };
   }
 
-  async getInvitationDetailsByToken(
+  async getWorkspaceInviteByToken(
+    sessionOrgId: string,
+    routeOrgId: string,
     token: string,
-  ): Promise<any> {
-    try {
-      const invitation = await prisma.invitation.findUnique({
-        where: { token },
-        include: {
-          organization: {
-            select: {
-              name: true,
-            },
-          },
-          invitedBy: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      });
-
-      if (!invitation) {
-        return { success: false, reason: "INVITATION_NOT_FOUND" };
-      }
-
-      if (invitation.isUsed) {
-        return { success: false, reason: "INVITATION_ALREADY_USED" };
-      }
-
-      if (new Date() > invitation.expiresAt) {
-        return { success: false, reason: "INVITATION_EXPIRED" };
-      }
-
-      const inviterRole = await prisma.organizationUser.findFirst({
-        where: {
-          organizationId: invitation.organizationId,
-          userId: invitation.invitedById,
-        },
-        select: {
-          role: true,
-        },
-      });
-
-      return {
-        success: true,
-        data: {
-          email: invitation.email,
-          workspaceName: invitation.organization.name,
-          inviterName: invitation.invitedBy.name,
-          inviterRole: inviterRole?.role || "MEMBER",
-          token: invitation.token,
-          expiresAt: invitation.expiresAt,
-        },
-      };
-    } catch (error) {
-      return { success: false, reason: "DATABASE_ERROR" };
+  ): Promise<GetWorkspaceInviteByTokenServiceResult> {
+    if (sessionOrgId !== routeOrgId) {
+      return { success: false, statusCode: 400, reason: "ORGANIZATION_MISMATCH" };
     }
+
+    const invitation = await prisma.invitation.findFirst({
+      where: { organizationId: sessionOrgId, token: token },
+    });
+
+    if (!invitation) {
+      return { success: false, statusCode: 404, reason: "INVITATION_NOT_FOUND" };
+    }
+
+    return { success: true, statusCode: 200, data: invitation };
+  }
+
+  async getInvitationDetailsByToken(token: string): Promise<GetInvitationDetailsByTokenServiceResult> {
+    const invitation = await prisma.invitation.findUnique({
+      where: { token },
+      include: {
+        organization: { select: { name: true } },
+        invitedBy: { select: { name: true } },
+      },
+    });
+
+    if (!invitation) {
+      return { success: false, statusCode: 404, reason: "INVITATION_NOT_FOUND" };
+    }
+
+    if (invitation.isUsed) {
+      return { success: false, statusCode: 410, reason: "INVITATION_ALREADY_USED" };
+    }
+
+    if (new Date() > invitation.expiresAt) {
+      return { success: false, statusCode: 410, reason: "INVITATION_EXPIRED" };
+    }
+
+    const inviterRole = await prisma.organizationUser.findFirst({
+      where: { organizationId: invitation.organizationId, userId: invitation.invitedById },
+      select: { role: true },
+    });
+
+    const details: InvitationDetailsDto = {
+      email: invitation.email,
+      workspaceName: invitation.organization.name,
+      inviterName: invitation.invitedBy?.name ?? null,
+      inviterRole: inviterRole?.role || "MEMBER",
+      token: invitation.token,
+      expiresAt: invitation.expiresAt,
+    };
+
+    return { success: true, statusCode: 200, data: details };
   }
 }
-

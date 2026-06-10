@@ -5,17 +5,18 @@ import { userWithOrganizationsInclude } from "@queries/auth/auth.include";
 import { CacheService } from "@/shared/services/cache.service";
 import { emailService } from "@config/email/email.service";
 import {
-  ForgetPasswordResult,
   LoginRequestDto,
   LoginServiceResult,
   mapUser,
   RegisterInvitedRequestDto,
   RegisterInvitedServiceResult,
-  RegisterRequistDto,
+  RegisterRequestDto,
   RegisterServiceResult,
-  RequestOtpResult,
-  ResetPasswordResult,
-  VerifyEmailResult,
+  RequestEmailOtpServiceResult,
+  RequestPasswordResetResult,
+  ResetPasswordServiceResult,
+  VerifyEmailServiceResult,
+  VerifyPasswordResetTokenResult,
 } from "./auth.dto";
 import {
   consumeResetToken,
@@ -28,9 +29,7 @@ import {
 } from "./auth.util";
 
 export class AuthService {
-  async register(data: RegisterRequistDto): Promise<RegisterServiceResult> {
-    const hashed = await bcrypt.hash(data.password, 10);
-
+  async register(data: RegisterRequestDto): Promise<RegisterServiceResult> {
     const user = await prisma.user.findUnique({
       where: { email: data.email },
     });
@@ -38,23 +37,27 @@ export class AuthService {
     if (user) {
       return {
         success: false,
+        statusCode: 409,
         reason: "EMAIL_IS_USED",
       };
     }
 
+    const hashed = await bcrypt.hash(data.password, 10);
     const result = await prisma.user.create(createUserQuery(data, hashed));
 
     const OTP = generateOtp();
     console.log(OTP);
     await storeOtp(`email_verify:${result.id}`, OTP, 5 * 60);
 
-    await emailService.sendOtp(result.email, result.name, OTP);
+    emailService.sendOtp(result.email, result.name, OTP);
 
     return {
       success: true,
+      statusCode: 201,
       data: mapUser(result),
     };
   }
+
   async registerInvitedUser(
     data: RegisterInvitedRequestDto,
   ): Promise<RegisterInvitedServiceResult> {
@@ -65,15 +68,27 @@ export class AuthService {
     });
 
     if (!invitation) {
-      return { success: false, reason: "INVITATION_NOT_FOUND" };
+      return {
+        success: false,
+        statusCode: 404,
+        reason: "INVITATION_NOT_FOUND",
+      };
     }
 
     if (invitation.isUsed) {
-      return { success: false, reason: "INVITATION_ALREADY_USED" };
+      return {
+        success: false,
+        statusCode: 409,
+        reason: "INVITATION_ALREADY_USED",
+      };
     }
 
     if (new Date(invitation.expiresAt) < new Date()) {
-      return { success: false, reason: "INVITATION_EXPIRED" };
+      return {
+        success: false,
+        statusCode: 410,
+        reason: "INVITATION_EXPIRED",
+      };
     }
 
     const transactionResult = await prisma.$transaction(async (tx) => {
@@ -84,6 +99,7 @@ export class AuthService {
           email: invitation.email,
           name: name,
           password: passwordHash,
+          isVerified: true,
         },
       });
 
@@ -92,6 +108,21 @@ export class AuthService {
           userId: newUser.id,
           organizationId: invitation.organizationId,
           role: invitation.role,
+        },
+      });
+
+      const personalOrg = await tx.organization.create({
+        data: {
+          name: `${name}'s Workspace`,
+          billingPlan: "free",
+        },
+      });
+
+      await tx.organizationUser.create({
+        data: {
+          userId: newUser.id,
+          organizationId: personalOrg.id,
+          role: "OWNER",
         },
       });
 
@@ -117,9 +148,11 @@ export class AuthService {
 
     return {
       success: true,
+      statusCode: 201,
       data: transactionResult,
     };
   }
+
   async login(data: LoginRequestDto): Promise<LoginServiceResult> {
     const user = await prisma.user.findUnique({
       where: { email: data.email },
@@ -127,52 +160,86 @@ export class AuthService {
     });
 
     if (!user) {
-      return { success: false, reason: "INVALID_CREDENTIALS" };
+      return {
+        success: false,
+        statusCode: 401,
+        reason: "INVALID_CREDENTIALS",
+      };
     }
 
     const valid = await bcrypt.compare(data.password, user.password);
     if (!valid) {
-      return { success: false, reason: "INVALID_CREDENTIALS" };
+      return {
+        success: false,
+        statusCode: 401,
+        reason: "INVALID_CREDENTIALS",
+      };
     }
+
     if (!user.isVerified) {
       const OTP = generateOtp();
       console.log(OTP);
       await storeOtp(`email_verify:${user.id}`, OTP, 5 * 60);
+      emailService.sendOtp(user.email, user.name || "User", OTP);
 
-      await emailService.sendOtp(user.email, user.name, OTP);
+      return {
+        success: false,
+        statusCode: 403,
+        reason: "EMAIL_NOT_VERIFIED",
+        data: mapUser(user)
+      };
     }
 
     return {
       success: true,
+      statusCode: 200,
       data: mapUser(user),
     };
   }
 
-  async requestPasswordReset(email: string): Promise<ForgetPasswordResult> {
+  async requestPasswordReset(
+    email: string,
+  ): Promise<RequestPasswordResetResult> {
     const user = await prisma.user.findUnique({
       where: { email },
     });
 
     if (!user) {
-      return { success: false, reason: "USER_NOT_FOUND" };
+      return {
+        success: false,
+        statusCode: 404,
+        reason: "USER_NOT_FOUND",
+      };
     }
 
     const token = generateResetToken();
     await storeResetToken(user.id, token, 60 * 15);
 
-    await emailService.sendResetPassword(user.email, user.name, token);
+    emailService.sendResetPassword(
+      user.email,
+      user.name || "User",
+      token,
+    );
 
-    return { success: true, data: undefined };
+    return {
+      success: true,
+      statusCode: 200,
+      data: undefined,
+    };
   }
 
   async resetPassword(
     token: string,
     newPassword: string,
-  ): Promise<ResetPasswordResult> {
+  ): Promise<ResetPasswordServiceResult> {
     const userId = await consumeResetToken(token);
 
     if (!userId) {
-      return { success: false, reason: "INVALID_TOKEN" };
+      return {
+        success: false,
+        statusCode: 400,
+        reason: "INVALID_TOKEN",
+      };
     }
 
     const user = await prisma.user.findUnique({
@@ -186,21 +253,35 @@ export class AuthService {
     });
 
     if (!user) {
-      return { success: false, reason: "USER_NOT_FOUND" };
+      return {
+        success: false,
+        statusCode: 404,
+        reason: "USER_NOT_FOUND",
+      };
     }
 
     const isSameAsCurrent = await bcrypt.compare(newPassword, user.password);
     if (isSameAsCurrent) {
-      return { success: false, reason: "PASSWORD_REUSE_NOT_ALLOWED" };
+      return {
+        success: false,
+        statusCode: 400,
+        reason: "PASSWORD_REUSE_NOT_ALLOWED",
+      };
     }
 
     for (const old of user.passwordHistory) {
       const isReused = await bcrypt.compare(newPassword, old.password);
       if (isReused) {
-        return { success: false, reason: "PASSWORD_REUSE_NOT_ALLOWED" };
+        return {
+          success: false,
+          statusCode: 400,
+          reason: "PASSWORD_REUSE_NOT_ALLOWED",
+        };
       }
     }
+
     const hashedPassword = await bcrypt.hash(newPassword, 10);
+
     await prisma.$transaction([
       prisma.user.update({
         where: { id: userId },
@@ -213,19 +294,24 @@ export class AuthService {
       }),
     ]);
 
-    return { success: true, data: undefined };
+    return {
+      success: true,
+      statusCode: 200,
+      data: undefined,
+    };
   }
 
-  async verifyEmail(userId: string, OTP: string): Promise<VerifyEmailResult> {
+  async verifyEmail(
+    userId: string,
+    OTP: string,
+  ): Promise<VerifyEmailServiceResult> {
     const otpResult = await verifyOtp(`email_verify:${userId}`, OTP);
 
     if (!otpResult.success) {
       return {
         success: false,
-        reason: otpResult.reason as
-          | "INVALID_OTP"
-          | "OTP_EXPIRED"
-          | "USER_ALREADY_VERIFIED",
+        statusCode: 400,
+        reason: otpResult.reason 
       };
     }
 
@@ -236,24 +322,35 @@ export class AuthService {
 
     await CacheService.delete(`email_verify:${userId}`);
 
-    return { success: true, data: undefined };
+    return {
+      success: true,
+      statusCode: 200,
+      data: undefined,
+    };
   }
 
   async requestEmailVerificationOTP(
     userId: string,
     email: string,
     name: string | null,
-  ): Promise<RequestOtpResult> {
+  ): Promise<RequestEmailOtpServiceResult> {
     const OTP = generateOtp();
     console.log(OTP);
 
     await storeOtp(`email_verify:${userId}`, OTP, 5 * 60);
 
-    await emailService.sendOtp(email, name, OTP);
-    return { success: true, data: undefined };
+    emailService.sendOtp(email, name || "User", OTP);
+
+    return {
+      success: true,
+      statusCode: 200,
+      data: undefined,
+    };
   }
 
-  async verifyPasswordResetToken(token: string) {
+  async verifyPasswordResetToken(
+    token: string,
+  ): Promise<VerifyPasswordResetTokenResult> {
     const hashed = hashToken(token);
     const key = `password_reset:${hashed}`;
 
@@ -262,10 +359,15 @@ export class AuthService {
     if (!userId) {
       return {
         success: false,
+        statusCode: 400,
         reason: "INVALID_TOKEN",
       };
     }
 
-    return { success: true };
+    return {
+      success: true,
+      statusCode: 200,
+      data: undefined,
+    };
   }
 }

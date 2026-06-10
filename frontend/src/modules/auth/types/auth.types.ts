@@ -3,8 +3,8 @@
 // ==========================================
 // Base API Response Wrapper
 // ==========================================
-export type ApiResponse<T = void, E = string> = 
-  | { success: true; data: T } 
+export type ApiResponse<T = void, E = string> =
+  | { success: true; data: T }
   | { success: false; reason: E };
 
 // ==========================================
@@ -56,7 +56,7 @@ export interface RegisterRequestDto {
 }
 
 export type RegisterResponseDto = ApiResponse<
-  { user: UserProfileDto; tokens: { accessToken: string } }, 
+  { user: UserProfileDto; tokens: { accessToken: string } },
   "EMAIL_IS_USED" | "WEAK_PASSWORD"
 >;
 
@@ -68,10 +68,17 @@ export interface LoginRequestDto {
   password: string;
 }
 
-export type LoginResult = ApiResponse<
-  { user: UserProfileDto; tokens: { accessToken: string } }, 
-  "INVALID_CREDENTIALS" | "USER_DISABLED"
->;
+export type LoginResult =
+  | ApiResponse<
+      { user: UserProfileDto; tokens: { accessToken: string } },
+      "INVALID_CREDENTIALS" | "USER_DISABLED"
+    >
+  | {
+      success: false;
+      statusCode: number;
+      reason: "EMAIL_NOT_VERIFIED";
+      data:{ user: UserProfileDto; tokens: { accessToken: string } },
+    };
 
 // ==========================================
 // Recovery & Verification
@@ -79,26 +86,23 @@ export type LoginResult = ApiResponse<
 export type ForgetPasswordResult = ApiResponse<void, "USER_NOT_FOUND">;
 
 export type ResetPasswordResult = ApiResponse<
-  void, 
-  | "INVALID_TOKEN" 
-  | "EXPIRED_TOKEN" 
-  | "USER_NOT_FOUND" 
+  void,
+  | "INVALID_TOKEN"
+  | "EXPIRED_TOKEN"
+  | "USER_NOT_FOUND"
   | "PASSWORD_REUSE_NOT_ALLOWED"
 >;
 
 export type VerifyEmailResult = ApiResponse<
-  { tokens: { accessToken: string } }, 
-  | "INVALID_OTP" 
-  | "OTP_EXPIRED" 
-  | "USER_ALREADY_VERIFIED"
+  { tokens: { accessToken: string } },
+  "INVALID_OTP" | "OTP_EXPIRED" | "USER_ALREADY_VERIFIED"
 >;
 
 export type VerifyResetTokenResult = ApiResponse<
-  void, 
+  void,
   "INVALID_TOKEN" | "EXPIRED_TOKEN"
 >;
 export type RequestOtpResult = ApiResponse<void, "USER_NOT_FOUND">;
-
 
 export type VerifyAccessTokenResult = ApiResponse<
   {
@@ -128,3 +132,39 @@ export type RegisterInvitedResult = ApiResponse<
   | "WEAK_PASSWORD"
   | "USER_ALREADY_REGISTERED"
 >;
+
+export interface CachedOrganization {
+  id: string;
+  name: string;
+  role: string;
+  avatar?: string | null;
+}
+
+export interface AuthState {
+  isAuthenticated: boolean;
+  isVerified: boolean;
+  hasSetupWorkspace: boolean;
+  isConfiguringWorkspace: boolean;
+  token: string | null;
+  currentOrganizationId: string | null;
+  organizations: CachedOrganization[];
+  status: "idle" | "loading" | "succeeded" | "failed";
+  error: string | null;
+}
+
+export interface UserPayload {
+  id: string;
+  email: string;
+  isVerified: boolean;
+  name?: string;
+  organizations?: CachedOrganization[];
+}
+
+export const loadCachedOrgs = (): CachedOrganization[] => {
+  try {
+    const cached = localStorage.getItem("user_organizations");
+    return cached ? JSON.parse(cached) : [];
+  } catch {
+    return [];
+  }
+};

@@ -4,8 +4,13 @@ import { prisma } from "@config/db/prisma";
 import { PORT } from "@config/env";
 
 async function connectDatabase() {
-  await prisma.$connect();
-  console.log("Database connected successfully");
+  try {
+    await prisma.$connect();
+    console.log("Database connected successfully");
+  } catch (err) {
+    console.error("Database connection failed:", err);
+    process.exit(1);
+  }
 }
 
 

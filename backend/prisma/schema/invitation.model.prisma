@@ -14,7 +14,8 @@ model Invitation {
 
   invitedById    String       @db.Uuid @map("invited_by_id")
   invitedBy      User         @relation("SentInvitations", fields: [invitedById], references: [id], onDelete: Cascade)
-
+  isExistingUser Boolean
+  
   @@index([organizationId])
   @@index([invitedById])
   @@index([email])

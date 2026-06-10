@@ -1,8 +1,8 @@
-import { RegisterRequistDto } from "@/modules/auth/auth.dto";
+import { RegisterRequestDto } from "@/modules/auth/auth.dto";
 import { Prisma } from "@/shared/generated/client/client";
 
 export const createUserQuery = (
-  data: RegisterRequistDto,
+  data: RegisterRequestDto,
   hashed: string,
 ): Prisma.UserCreateArgs => {
   return {

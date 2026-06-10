@@ -42,6 +42,14 @@ export const getWorkspaceInvitationsSchema = z.object({
   organizationId: strictUuid,
 });
 
+export const getWorkspaceInviteByTokenSchema = z.object({
+  params: z.object({
+    id: strictUuid,
+    token: z.string().min(1, "Invitation token is required"),
+  }),
+  organizationId: strictUuid,
+});
+
 
 export const acceptInviteSchema = z.object({
   user: z.object({

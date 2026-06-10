@@ -25,36 +25,44 @@ export default function MembersView() {
     roleOptions,
     register,
     handleSubmit,
-    formState,
-    onSubmitInvite,
+    formState: { errors },
     organizationId,
+    onSubmitInvite,
+    formKey, // 1. Consume formKey here
   } = useMembersView();
-
 
   return (
     <div className="space-y-6">
-      
-      {/* 1. Invite New Workspace Members Form Card Section */}
       <section className="bg-surface-container-low border border-outline-variant rounded-xl p-5 shadow-sm">
         <h3 className="text-lg font-bold mb-4">Invite new members</h3>
-        <form onSubmit={handleSubmit(onSubmitInvite)} className="flex flex-col md:flex-row gap-4 items-end">
-          <div className="flex-1 space-y-1.5 w-full">
+
+        {/* 2. key={formKey} tears down and remounts the form clean on success */}
+        <form
+          key={formKey} 
+          onSubmit={handleSubmit(onSubmitInvite)}
+          noValidate
+          className="flex flex-col md:flex-row gap-4 items-start"
+        >
+          <div className="flex-1 space-y-1.5 w-full relative pb-5">
             <label className="block font-label-sm text-label-sm text-on-surface-variant font-medium">
               Email Address
             </label>
             <Input
-              className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2 px-4 text-body-base shadow-none h-auto outline-none focus-visible:ring-2 focus-visible:ring-primary/20 disabled:opacity-60"
+              className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-2 px-4 text-body-base shadow-none h-10 outline-none focus-visible:ring-2 focus-visible:ring-primary/20 disabled:opacity-60"
               placeholder="colleague@acmecorp.com"
               type="email"
-              required
               disabled={isInviting || !organizationId}
               {...register("email")}
             />
-            {formState.errors.email?.message && (
-              <p className="text-error text-sm mt-1">{formState.errors.email.message}</p>
+
+            {errors.email?.message && (
+              <p className="text-error text-sm absolute bottom-0 left-0 leading-none">
+                {errors.email.message}
+              </p>
             )}
           </div>
-          <div className="w-full md:w-48 space-y-1.5">
+
+          <div className="w-full md:w-48 space-y-1.5 pb-5">
             <label className="block font-label-sm text-label-sm text-on-surface-variant font-medium">
               Assign Role
             </label>
@@ -81,10 +89,11 @@ export default function MembersView() {
               </div>
             </div>
           </div>
-          <Button 
+
+          <Button
             type="submit"
             disabled={isInviting || !organizationId}
-            className="w-full md:w-auto bg-primary text-on-primary h-10 px-6 rounded-xl font-label-md flex items-center justify-center gap-2 shadow-none disabled:opacity-50"
+            className="w-full md:w-auto bg-primary text-on-primary h-10 px-6 rounded-xl font-label-md flex items-center justify-center gap-2 shadow-none disabled:opacity-50 md:mt-7"
           >
             {isInviting ? (
               <Loader2 className="h-4 w-4 animate-spin" />
@@ -94,12 +103,13 @@ export default function MembersView() {
             <span>{isInviting ? "Sending..." : "Send invitation"}</span>
           </Button>
         </form>
+
         {inviteSubmissionError && (
           <p className="text-error text-sm mt-3">{inviteSubmissionError}</p>
         )}
       </section>
 
-      {/* 2. Directory Toolbar & Table Block Ledger */}
+      {/* Directory Toolbar & Table Block Ledger */}
       <div className="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
         <div className="p-3 border-b border-outline-variant flex flex-col sm:flex-row justify-between items-center gap-3">
           <div className="relative w-full sm:max-w-xs">
@@ -144,11 +154,12 @@ export default function MembersView() {
               </tr>
             </thead>
             <tbody className="divide-y divide-outline-variant/30">
-              
-              {/* State 1: Global Error Prompt */}
               {membersError && (
                 <tr>
-                  <td colSpan={5} className="py-12 text-center text-error font-medium">
+                  <td
+                    colSpan={5}
+                    className="py-12 text-center text-error font-medium"
+                  >
                     <div className="flex flex-col items-center justify-center gap-2">
                       <AlertCircle className="h-6 w-6" />
                       <span>{membersError}</span>
@@ -157,113 +168,127 @@ export default function MembersView() {
                 </tr>
               )}
 
-              {/* State 2: Active Loading Viewport Spinner */}
               {isLoadingMembers && !membersError && (
                 <tr>
-                  <td colSpan={5} className="py-16 text-center text-on-surface-variant">
+                  <td
+                    colSpan={5}
+                    className="py-16 text-center text-on-surface-variant"
+                  >
                     <div className="flex flex-col items-center justify-center gap-3">
                       <Loader2 className="h-7 w-7 animate-spin text-primary" />
-                      <p className="text-body-sm">Loading workspace directory details...</p>
+                      <p className="text-body-sm">
+                        Loading workspace directory details...
+                      </p>
                     </div>
                   </td>
                 </tr>
               )}
 
-              {/* State 3: Populated Active Records Ledger Output Loop */}
-              {!isLoadingMembers && !membersError && filteredMembers.map((member:any) => {
-                // Dynamically fall back to string slice rules if member.name isn't provided/registered yet
-                const fallbackInitials = member.name 
-                  ? member.name.split(" ").map((n:any) => n[0]).join("").toUpperCase().slice(0, 2)
-                  : member.email.slice(0, 2).toUpperCase();
+              {!isLoadingMembers &&
+                !membersError &&
+                filteredMembers.map((member: any) => {
+                  const fallbackInitials = member.name
+                    ? member.name
+                        .split(" ")
+                        .map((n: any) => n[0])
+                        .join("")
+                        .toUpperCase()
+                        .slice(0, 2)
+                    : member.email.slice(0, 2).toUpperCase();
 
-                return (
-                  <tr
-                    key={member.id}
-                    className="hover:bg-surface-container-low/50 transition-colors"
-                  >
-                    <td className="px-6 py-3.5 whitespace-nowrap">
-                      <div className="flex items-center gap-3">
-                        {member.user?.avatarUrl ? (
-                          <img
-                            alt={member.name || "Workspace User"}
-                            className="w-9 h-9 rounded-full border border-outline-variant object-cover"
-                            src={member.user.avatarUrl}
-                          />
-                        ) : (
-                          <div className="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-sm tracking-tight border border-outline-variant">
-                            {fallbackInitials}
-                          </div>
-                        )}
-                        <div>
-                          <div className="font-body-base text-body-base font-semibold text-on-surface leading-snug">
-                            {member.name || "Pending Registration"}
-                          </div>
-                          <div className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wide">
-                            {member.role}
+                  return (
+                    <tr
+                      key={member.id}
+                      className="hover:bg-surface-container-low/50 transition-colors"
+                    >
+                      <td className="px-6 py-3.5 whitespace-nowrap">
+                        <div className="flex items-center gap-3">
+                          {member.user?.avatarUrl ? (
+                            <img
+                              alt={member.name || "Workspace User"}
+                              className="w-9 h-9 rounded-full border border-outline-variant object-cover"
+                              src={member.user.avatarUrl}
+                            />
+                          ) : (
+                            <div className="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-sm tracking-tight border border-outline-variant">
+                              {fallbackInitials}
+                            </div>
+                          )}
+                          <div>
+                            <div className="font-body-base text-body-base font-semibold text-on-surface leading-snug">
+                              {member.name || "Pending Registration"}
+                            </div>
+                            <div className="text-[10px] text-on-surface-variant font-bold uppercase tracking-wide">
+                              {member.role}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-3.5 whitespace-nowrap text-body-base text-on-surface-variant">
-                      {member.email}
-                    </td>
-                    <td className="px-6 py-3.5 whitespace-nowrap">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide ${
-                          member.role === "OWNER" 
-                            ? "bg-primary/10 text-primary border border-primary/20" 
-                            : "bg-surface-container-highest text-on-surface-variant border border-outline-variant"
-                        }`}
-                      >
-                        {member.role}
-                      </span>
-                    </td>
-                    <td className="px-6 py-3.5 whitespace-nowrap">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-tertiary" />
-                        <span className="text-body-base text-on-surface font-medium">
-                          Active
+                      </td>
+                      <td className="px-6 py-3.5 whitespace-nowrap text-body-base text-on-surface-variant">
+                        {member.email}
+                      </td>
+                      <td className="px-6 py-3.5 whitespace-nowrap">
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide ${
+                            member.role === "OWNER"
+                              ? "bg-primary/10 text-primary border border-primary/20"
+                              : "bg-surface-container-highest text-on-surface-variant border border-outline-variant"
+                          }`}
+                        >
+                          {member.role}
                         </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-3.5 whitespace-nowrap text-right">
-                      <div className="flex justify-end gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          disabled={member.role === "OWNER"} // Safeguard primary tenant administrators
-                          className="h-8 w-8 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-lg transition-all disabled:opacity-30"
-                          title="Change role"
-                        >
-                          <UserCog className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          disabled={member.role === "OWNER"}
-                          className="h-8 w-8 text-on-surface-variant hover:text-error hover:bg-error/10 rounded-lg transition-all disabled:opacity-30"
-                          title="Remove member"
-                        >
-                          <UserMinus className="h-4 w-4" />
-                        </Button>
+                      </td>
+                      <td className="px-6 py-3.5 whitespace-nowrap">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-tertiary" />
+                          <span className="text-body-base text-on-surface font-medium">
+                            Active
+                          </span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-3.5 whitespace-nowrap text-right">
+                        <div className="flex justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            disabled={member.role === "OWNER"}
+                            className="h-8 w-8 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-lg transition-all disabled:opacity-30"
+                            title="Change role"
+                          >
+                            <UserCog className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            disabled={member.role === "OWNER"}
+                            className="h-8 w-8 text-on-surface-variant hover:text-error hover:bg-error/10 rounded-lg transition-all disabled:opacity-30"
+                            title="Remove member"
+                          >
+                            <UserMinus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+
+              {!isLoadingMembers &&
+                !membersError &&
+                filteredMembers.length === 0 && (
+                  <tr>
+                    <td
+                      colSpan={5}
+                      className="py-12 text-center text-on-surface-variant"
+                    >
+                      <div className="flex flex-col items-center justify-center gap-2">
+                        <Inbox className="h-8 w-8 opacity-40" />
+                        <p className="text-body-base font-medium">
+                          No matching workspace members found
+                        </p>
                       </div>
                     </td>
                   </tr>
-                );
-              })}
-
-              {/* State 4: Clean Query Filter Boundary Fallback State */}
-              {!isLoadingMembers && !membersError && filteredMembers.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="py-12 text-center text-on-surface-variant">
-                    <div className="flex flex-col items-center justify-center gap-2">
-                      <Inbox className="h-8 w-8 opacity-40" />
-                      <p className="text-body-base font-medium">No matching workspace members found</p>
-                    </div>
-                  </td>
-                </tr>
-              )}
-
+                )}
             </tbody>
           </table>
         </div>

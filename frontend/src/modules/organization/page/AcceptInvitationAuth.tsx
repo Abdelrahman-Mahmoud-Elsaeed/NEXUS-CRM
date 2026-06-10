@@ -24,7 +24,6 @@ export const AcceptInvitationAuth: React.FC = () => {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#fcf8ff] p-4 font-sans relative overflow-hidden select-none">
       
-      {/* Decorative Atmospheric Vectors */}
       <div className="absolute inset-0 pointer-events-none -z-10">
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(at_0%_0%,rgba(53,37,205,0.03)_0px,transparent_50%)]" />
         <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(at_100%_100%,rgba(53,37,205,0.03)_0px,transparent_50%)]" />

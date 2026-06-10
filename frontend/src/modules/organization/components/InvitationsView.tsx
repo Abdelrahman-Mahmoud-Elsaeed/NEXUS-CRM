@@ -27,6 +27,8 @@ export default function InvitationsView() {
     <main className="bg-surface-bright text-on-surface font-sans">
       <div className="mx-auto space-y-6">
         <div className="grid grid-cols-12 gap-6 lg:gap-8">
+          
+          {/* Form Section */}
           <section className="col-span-12 lg:col-span-4 order-last lg:order-first space-y-4">
             <div className="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-sm">
               <h3 className="text-lg font-bold text-on-surface mb-1">Invite New Member</h3>
@@ -84,6 +86,7 @@ export default function InvitationsView() {
                   <span>{isInviting ? "Sending Link..." : "Send Invitation"}</span>
                 </Button>
               </form>
+              
               {inviteSubmissionError && (
                 <div className="rounded-xl border border-error/10 bg-error-container/10 p-4 text-error text-sm mt-4">
                   {inviteSubmissionError}
@@ -99,6 +102,7 @@ export default function InvitationsView() {
             </div>
           </section>
 
+          {/* Table Data Section */}
           <section className="col-span-12 lg:col-span-8">
             <div className="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
               <div className="p-4 md:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-outline-variant">
@@ -166,75 +170,81 @@ export default function InvitationsView() {
                       </tr>
                     )}
 
-                    {!isLoadingInvitations && !invitationsError && invitations.map((inv) => (
-                      <tr key={inv.id} className="hover:bg-surface-container-low/50 transition-colors group">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <p className="font-table-data text-on-surface font-medium">{inv.email}</p>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className="text-body-sm text-on-surface-variant bg-surface-container px-2 py-1 rounded-md border border-outline-variant/10">
-                            {inv.role}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-body-sm text-on-surface-variant">{inv.sentDateLabel}</td>
-                        <td className={cn(
-                          "px-6 py-4 whitespace-nowrap text-body-sm",
-                          inv.statusSeverity === "expired" ? "text-error font-medium" : "text-on-surface-variant"
-                        )}>
-                          {inv.expiryLabel}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={cn(
-                            "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide",
-                            inv.statusSeverity === "pending" && "bg-tertiary-fixed text-on-tertiary-fixed border border-tertiary/10",
-                            inv.statusSeverity === "expired" && "bg-error-container text-on-error-container border border-error/10",
-                            inv.statusSeverity === "accepted" && "bg-secondary-container text-on-secondary-container border border-secondary/10"
-                          )}>
-                            <span className={cn(
-                              "w-1.5 h-1.5 rounded-full",
-                              inv.statusSeverity === "pending" && "bg-tertiary animate-pulse",
-                              inv.statusSeverity === "expired" && "bg-error",
-                              inv.statusSeverity === "accepted" && "bg-secondary"
-                            )} />
-                            {inv.statusLabel}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right">
-                          <div className="flex items-center justify-end gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                            <Button
-                              variant="ghost"
-                              size="icon"
-                              disabled={inv.statusLabel === "ACCEPTED"}
-                              className="h-8 w-8 text-primary hover:bg-primary/10 rounded-lg transition-colors disabled:opacity-20"
-                              title="Resend Invitation Link"
-                            >
-                              <RotateCw className="h-4 w-4" />
-                            </Button>
+                    {!isLoadingInvitations && !invitationsError && invitations.map((inv) => {
+                      // Normalize string casing to protect UI layout execution states safely
+                      const severity = inv.statusSeverity?.toLowerCase();
+                      const statusLabelNormalized = inv.statusLabel?.toUpperCase();
 
-                            {inv.statusLabel === "EXPIRED" ? (
+                      return (
+                        <tr key={inv.id} className="hover:bg-surface-container-low/50 transition-colors group">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <p className="font-table-data text-on-surface font-medium">{inv.email}</p>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className="text-body-sm text-on-surface-variant bg-surface-container px-2 py-1 rounded-md border border-outline-variant/10">
+                              {inv.role}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-body-sm text-on-surface-variant">{inv.sentDateLabel}</td>
+                          <td className={cn(
+                            "px-6 py-4 whitespace-nowrap text-body-sm",
+                            severity === "expired" ? "text-error font-medium" : "text-on-surface-variant"
+                          )}>
+                            {inv.expiryLabel}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className={cn(
+                              "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide",
+                              severity === "pending" && "bg-tertiary-fixed text-on-tertiary-fixed border border-tertiary/10",
+                              severity === "expired" && "bg-error-container text-on-error-container border border-error/10",
+                              severity === "accepted" && "bg-secondary-container text-on-secondary-container border border-secondary/10"
+                            )}>
+                              <span className={cn(
+                                "w-1.5 h-1.5 rounded-full",
+                                severity === "pending" && "bg-tertiary animate-pulse",
+                                severity === "expired" && "bg-error",
+                                severity === "accepted" && "bg-secondary"
+                              )} />
+                              {inv.statusLabel}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-right">
+                            <div className="flex items-center justify-end gap-1 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-8 w-8 text-error hover:bg-error/10 rounded-lg transition-colors"
-                                title="Delete Record"
+                                disabled={statusLabelNormalized === "ACCEPTED"}
+                                className="h-8 w-8 text-primary hover:bg-primary/10 rounded-lg transition-colors disabled:opacity-20"
+                                title="Resend Invitation Link"
                               >
-                                <Trash2 className="h-4 w-4" />
+                                <RotateCw className="h-4 w-4" />
                               </Button>
-                            ) : (
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                disabled={inv.statusLabel === "ACCEPTED"}
-                                className="h-8 w-8 text-error hover:bg-error/10 rounded-lg transition-colors disabled:opacity-20"
-                                title="Revoke Access Invitation"
-                              >
-                                <UserX className="h-4 w-4" />
-                              </Button>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
+
+                              {statusLabelNormalized === "EXPIRED" ? (
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-8 w-8 text-error hover:bg-error/10 rounded-lg transition-colors"
+                                  title="Delete Record"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              ) : (
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  disabled={statusLabelNormalized === "ACCEPTED"}
+                                  className="h-8 w-8 text-error hover:bg-error/10 rounded-lg transition-colors disabled:opacity-20"
+                                  title="Revoke Access Invitation"
+                                >
+                                  <UserX className="h-4 w-4" />
+                                </Button>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
 
                     {!isLoadingInvitations && !invitationsError && invitations.length === 0 && (
                       <tr>
@@ -250,6 +260,7 @@ export default function InvitationsView() {
                 </table>
               </div>
 
+              {/* Pagination */}
               <div className="px-6 py-4 border-t border-outline-variant flex items-center justify-between">
                 <p className="text-body-sm text-on-surface-variant">
                   Showing {filteredInvitationsCount} of {totalInvitationsCount} entries
@@ -273,6 +284,7 @@ export default function InvitationsView() {
                   </Button>
                 </div>
               </div>
+
             </div>
           </section>
         </div>

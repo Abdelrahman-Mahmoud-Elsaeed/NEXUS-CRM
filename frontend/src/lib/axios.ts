@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { logout, setUnverified, tokenRefreshed } from '@/modules/auth/store/authSlice';
-import axios from 'axios';
+import {
+  logout,
+  setUnverified,
+  tokenRefreshed,
+} from "@/modules/auth/store/auth.slice";
+import axios from "axios";
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3000/v1/api',
-  withCredentials: true, 
+  baseURL: "http://localhost:3000/v1/api",
+  withCredentials: true,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
@@ -24,16 +28,13 @@ api.interceptors.request.use(
     }
 
     const activeOrgId = localStorage.getItem("current_organization_id");
-
     if (activeOrgId && config.headers) {
-      config.headers['x-organization-id'] = activeOrgId;
+      config.headers["x-organization-id"] = activeOrgId;
     }
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error),
 );
 
 api.interceptors.response.use(
@@ -48,28 +49,38 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.data) {
       const data = error.response.data;
-      console.log("API Error Intercepted:", data);
 
-      if (data.success === false && data.reason && store) {
-        switch (data.reason) {
-          case "SESSION_EXPIRED_OR_REVOKED":
-          case "ACCOUNT_HAS_BEEN_DELETED":
-          case "ACCOUNT_IS_INACTIVE_OR_SUSPENDED":
-          case "INVALID_TOKEN":
-          case "UNAUTHORIZED":
-            store.dispatch(logout());
-            break;
-          
-          case "USER_NOT_VERIFIED":
-            store.dispatch(setUnverified());
-            break;
+      if (data.success === false && data.reason) {
+        
+        if (store) {
+          switch (data.reason) {
+            case "SESSION_EXPIRED_OR_REVOKED":
+            case "ACCOUNT_HAS_BEEN_DELETED":
+            case "ACCOUNT_IS_INACTIVE_OR_SUSPENDED":
+            case "UNAUTHORIZED":
+            case "INVALID_TOKEN":
+              store.dispatch(logout());
+              return Promise.reject(error);
 
-          case "OTP_EXPIRED":
-          case "INVALID_OTP":
-            break;
-            
-          default:
-            break;
+            case "EMAIL_NOT_VERIFIED":
+              store.dispatch(setUnverified());
+              break;
+              
+            default:
+              break;
+          }
+        }
+
+        const criticalErrors = [
+          "SESSION_EXPIRED_OR_REVOKED", 
+          "ACCOUNT_HAS_BEEN_DELETED", 
+          "ACCOUNT_IS_INACTIVE_OR_SUSPENDED", 
+          "UNAUTHORIZED", 
+          "INVALID_TOKEN"
+        ];
+
+        if (!criticalErrors.includes(data.reason)) {
+          return Promise.resolve({ data, status: error.response.status });
         }
       }
     }
@@ -79,5 +90,5 @@ api.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
