@@ -49,7 +49,7 @@ export function InvitationAcceptGateway() {
       </div>
     );
   }
-
+  console.log(invitation)
   if (invitation.isExistingUser) {
     if (isAuthenticated) {
       return <AcceptInvitationAuth />;

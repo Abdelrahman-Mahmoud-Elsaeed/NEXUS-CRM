@@ -27,6 +27,8 @@ export interface InvitationDetailsDto {
   inviterRole: string;
   token: string;
   expiresAt: Date;
+  isExistingUser: boolean;
+  assignedRole:string;
 }
 
 export interface AcceptInviteSuccessData {

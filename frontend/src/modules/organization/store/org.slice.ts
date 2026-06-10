@@ -1,11 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { 
-  fetchUserOrganizations, 
-  configureWorkspace, 
-  type CachedOrganization 
+import {
+  fetchUserOrganizations,
+  configureWorkspace,
+  type CachedOrganization,
 } from "./org.actions";
-import { signupUser, loginUser, initializeAuth } from "@/modules/auth/store/auth.actions";
+import {
+  signupUser,
+  loginUser,
+  initializeAuth,
+} from "@/modules/auth/store/auth.actions";
 import { logout } from "@/modules/auth/store/auth.slice";
 
 export interface OrgState {
@@ -31,22 +35,24 @@ const initialState: OrgState = {
   hasSetupWorkspace: localStorage.getItem("has_setup_workspace") === "true",
   isConfiguringWorkspace: false,
   currentOrganizationId: localStorage.getItem("current_organization_id"),
-  organizations: loadCachedOrgs(),
+  organizations: [],
   status: "idle",
   workspaceConfigError: null,
   error: null,
 };
 
 const clearWorkspacePersistence = () => {
-  ["current_organization_id", "user_organizations", "has_setup_workspace"].forEach((k) =>
-    localStorage.removeItem(k)
-  );
+  [
+    "current_organization_id",
+    "user_organizations",
+    "has_setup_workspace",
+  ].forEach((k) => localStorage.removeItem(k));
 };
 
 const handleIncomingOrgs = (
   state: OrgState,
   organizations: any[],
-  defaultRole: "OWNER" | "MEMBER" = "MEMBER"
+  defaultRole: "OWNER" | "MEMBER" = "MEMBER",
 ) => {
   state.organizations = organizations.map((org: any) => ({
     id: org.id,
@@ -54,7 +60,10 @@ const handleIncomingOrgs = (
     role: org.role || defaultRole,
     avatar: org.avatar ?? null,
   }));
-  localStorage.setItem("user_organizations", JSON.stringify(state.organizations));
+  localStorage.setItem(
+    "user_organizations",
+    JSON.stringify(state.organizations),
+  );
 
   if (state.organizations.length > 0 && !state.currentOrganizationId) {
     state.currentOrganizationId = state.organizations[0].id;
@@ -72,7 +81,12 @@ export const orgSlice = createSlice({
     },
     clearOrgCache: () => {
       clearWorkspacePersistence();
-      return { ...initialState, organizations: [], currentOrganizationId: null, status: "failed" as const };
+      return {
+        ...initialState,
+        organizations: [],
+        currentOrganizationId: null,
+        status: "failed" as const,
+      };
     },
   },
   extraReducers: (builder) => {
@@ -83,7 +97,9 @@ export const orgSlice = createSlice({
       })
       .addCase(fetchUserOrganizations.fulfilled, (state, action) => {
         state.status = "succeeded";
+
         const payloadData = action.payload || { organizations: [] };
+        console.log(payloadData);
         handleIncomingOrgs(state, payloadData.organizations, "MEMBER");
       })
       .addCase(fetchUserOrganizations.rejected, (state, action) => {
@@ -98,33 +114,56 @@ export const orgSlice = createSlice({
       })
       .addCase(configureWorkspace.fulfilled, (state, action) => {
         state.isConfiguringWorkspace = false;
-        if (action.meta.arg) {
-          const targetOrg = state.organizations.find((o) => o.id === action.meta.arg.orgId);
-          if (targetOrg) {
-            targetOrg.name = action.meta.arg.name;
+        const updated = action.payload;
+        const targetOrg = state.organizations.find((o) => o.id === updated.id);
+        if (targetOrg) {
+          targetOrg.name = updated.name;
+          if (updated.avatar !== null) {
+            targetOrg.avatar = updated.avatar;
           }
         }
+        localStorage.setItem(
+          "user_organizations",
+          JSON.stringify(state.organizations),
+        );
       })
       .addCase(configureWorkspace.rejected, (state, action) => {
         state.isConfiguringWorkspace = false;
-        state.workspaceConfigError = (action.payload as string) || "Failed to configure workspace profiles.";
+        state.workspaceConfigError =
+          (action.payload as string) ||
+          "Failed to configure workspace profiles.";
       })
 
       // Cross-Slice App Lifecycle Auth Integrations
       .addCase(signupUser.fulfilled, (state, action) => {
-        handleIncomingOrgs(state, action.payload.user.organizations || [], "OWNER");
+        handleIncomingOrgs(
+          state,
+          action.payload.user.organizations || [],
+          "OWNER",
+        );
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        handleIncomingOrgs(state, action.payload.user.organizations || [], "MEMBER");
+        handleIncomingOrgs(
+          state,
+          action.payload.user.organizations || [],
+          "MEMBER",
+        );
       })
       .addCase(initializeAuth.fulfilled, (state) => {
-        state.currentOrganizationId ||= localStorage.getItem("current_organization_id");
-        if (state.organizations.length === 0) state.organizations = loadCachedOrgs();
+        state.currentOrganizationId ||= localStorage.getItem(
+          "current_organization_id",
+        );
+        if (state.organizations.length === 0)
+          state.organizations = loadCachedOrgs();
       })
 
       .addCase(logout, () => {
         clearWorkspacePersistence();
-        return { ...initialState, organizations: [], currentOrganizationId: null };
+        return {
+          ...initialState,
+          organizations: [],
+          currentOrganizationId: null,
+        };
       });
   },
 });

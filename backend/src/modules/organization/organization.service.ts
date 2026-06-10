@@ -276,9 +276,16 @@ export class OrganizationService {
       workspaceName: invitation.organization.name,
       inviterName: invitation.invitedBy?.name ?? null,
       inviterRole: inviterRole?.role || "MEMBER",
+      assignedRole: invitation.role || "MEMBER",
       token: invitation.token,
       expiresAt: invitation.expiresAt,
+      isExistingUser : invitation.isExistingUser
     };
+
+
+
+
+
 
     return { success: true, statusCode: 200, data: details };
   }

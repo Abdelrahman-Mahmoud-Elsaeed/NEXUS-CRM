@@ -4,6 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { OrganizationService } from "../services/organization.service";
 import type { AcceptInviteRequestDto } from "../types/organization.types";
 import { fetchOrganizationMembers } from "./members.actions";
+import { fetchUserOrganizations } from "./org.actions";
 
 const isAxiosErrorLike = (error: unknown): error is { response?: { data?: { message?: string, reason?: string } }; message?: string } => {
   return typeof error === "object" && error !== null && ("response" in error || "message" in error);
@@ -64,22 +65,41 @@ export const fetchWorkspaceInvitations = createAsyncThunk(
   }
 );
 
-// 3. Accept Outbound App Workspace Invitation Link
 export const acceptWorkspaceInvitation = createAsyncThunk(
   "invitations/accept",
-  async ({ currentOrgId, data }: { currentOrgId: string | null; data: AcceptInviteRequestDto }, { dispatch, rejectWithValue }) => {
+  async (
+    {
+      currentOrgId,
+      data,
+    }: {
+      currentOrgId: string | null;
+      data: AcceptInviteRequestDto;
+    },
+    { dispatch, rejectWithValue }
+  ) => {
     try {
       const response = await OrganizationService.acceptInvite(data);
+
       if (response.success) {
-        if (currentOrgId && response.data?.organizationId === currentOrgId) {
+        dispatch(fetchUserOrganizations());
+        if (
+          currentOrgId &&
+          response.data?.organizationId === currentOrgId
+        ) {
           dispatch(fetchWorkspaceInvitations(currentOrgId));
           dispatch(fetchOrganizationMembers(currentOrgId));
         }
+
         return response.data;
       }
-      return rejectWithValue(response.reason || "Failed to accept invitation.");
+
+      return rejectWithValue(
+        response.reason || "Failed to accept invitation."
+      );
     } catch (error) {
-      return rejectWithValue(getErrorMessage(error, "Failed to accept invitation."));
+      return rejectWithValue(
+        getErrorMessage(error, "Failed to accept invitation.")
+      );
     }
   }
 );
@@ -112,6 +132,7 @@ export const fetchInvitationDetailsByToken = createAsyncThunk(
   async (token: string, { rejectWithValue }) => {
     try {
       const response = await OrganizationService.getInvitationDetailsByToken(token);
+      console.log(response)
       if (response.success && response.data) return response.data;
       return rejectWithValue(response.reason || "Failed to fetch invitation details");
     } catch (error: any) {
