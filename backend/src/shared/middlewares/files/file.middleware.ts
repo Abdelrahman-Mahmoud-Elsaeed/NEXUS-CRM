@@ -1,6 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { file } from "zod";
-
 
 export const setUploadFolder = (folder: string) => {
   return (req: Request, res: Response, next: NextFunction): void => {
@@ -9,14 +7,19 @@ export const setUploadFolder = (folder: string) => {
   };
 };
 
-
-export const requireFile = (req: Request, res: Response, next: NextFunction): void => {
+export const requireFile = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   if (!req.file) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
+      statusCode: 400,
       reason: "NO_FILE_PROVIDED",
+      msg: "No file was uploaded. Please attach a file and try again.",
     });
-    return;
   }
+
   next();
 };

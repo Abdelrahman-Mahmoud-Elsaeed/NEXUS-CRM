@@ -1,0 +1,5 @@
+enum DealStatus {
+  OPEN
+  WON
+  LOST
+}

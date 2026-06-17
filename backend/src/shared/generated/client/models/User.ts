@@ -224,8 +224,10 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   passwordHistory?: Prisma.PasswordHistoryListRelationFilter
   organizations?: Prisma.OrganizationUserListRelationFilter
-  assignedLeads?: Prisma.LeadListRelationFilter
-  createdLeads?: Prisma.LeadListRelationFilter
+  assignedContacts?: Prisma.ContactListRelationFilter
+  createdContacts?: Prisma.ContactListRelationFilter
+  assignedDeals?: Prisma.DealListRelationFilter
+  createdDeals?: Prisma.DealListRelationFilter
   assignedTasks?: Prisma.TaskListRelationFilter
   createdTasks?: Prisma.TaskListRelationFilter
   sentInvitations?: Prisma.InvitationListRelationFilter
@@ -244,8 +246,10 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   passwordHistory?: Prisma.PasswordHistoryOrderByRelationAggregateInput
   organizations?: Prisma.OrganizationUserOrderByRelationAggregateInput
-  assignedLeads?: Prisma.LeadOrderByRelationAggregateInput
-  createdLeads?: Prisma.LeadOrderByRelationAggregateInput
+  assignedContacts?: Prisma.ContactOrderByRelationAggregateInput
+  createdContacts?: Prisma.ContactOrderByRelationAggregateInput
+  assignedDeals?: Prisma.DealOrderByRelationAggregateInput
+  createdDeals?: Prisma.DealOrderByRelationAggregateInput
   assignedTasks?: Prisma.TaskOrderByRelationAggregateInput
   createdTasks?: Prisma.TaskOrderByRelationAggregateInput
   sentInvitations?: Prisma.InvitationOrderByRelationAggregateInput
@@ -267,8 +271,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   passwordHistory?: Prisma.PasswordHistoryListRelationFilter
   organizations?: Prisma.OrganizationUserListRelationFilter
-  assignedLeads?: Prisma.LeadListRelationFilter
-  createdLeads?: Prisma.LeadListRelationFilter
+  assignedContacts?: Prisma.ContactListRelationFilter
+  createdContacts?: Prisma.ContactListRelationFilter
+  assignedDeals?: Prisma.DealListRelationFilter
+  createdDeals?: Prisma.DealListRelationFilter
   assignedTasks?: Prisma.TaskListRelationFilter
   createdTasks?: Prisma.TaskListRelationFilter
   sentInvitations?: Prisma.InvitationListRelationFilter
@@ -319,8 +325,10 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealCreateNestedManyWithoutCreatorInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
   createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
@@ -339,8 +347,10 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealUncheckedCreateNestedManyWithoutCreatorInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
   createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
@@ -359,8 +369,10 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUpdateManyWithoutCreatorNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
   createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
@@ -379,8 +391,10 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUncheckedUpdateManyWithoutCreatorNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
   createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
@@ -425,14 +439,14 @@ export type UserUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type UserScalarRelationFilter = {
-  is?: Prisma.UserWhereInput
-  isNot?: Prisma.UserWhereInput
-}
-
 export type UserNullableScalarRelationFilter = {
   is?: Prisma.UserWhereInput | null
   isNot?: Prisma.UserWhereInput | null
+}
+
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
 }
 
 export type UserCountOrderByAggregateInput = {
@@ -474,6 +488,70 @@ export type UserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type UserCreateNestedOneWithoutCreatedContactsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedContactsInput, Prisma.UserUncheckedCreateWithoutCreatedContactsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedContactsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutAssignedContactsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedContactsInput, Prisma.UserUncheckedCreateWithoutAssignedContactsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedContactsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutCreatedContactsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedContactsInput, Prisma.UserUncheckedCreateWithoutCreatedContactsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedContactsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedContactsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedContactsInput, Prisma.UserUpdateWithoutCreatedContactsInput>, Prisma.UserUncheckedUpdateWithoutCreatedContactsInput>
+}
+
+export type UserUpdateOneWithoutAssignedContactsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedContactsInput, Prisma.UserUncheckedCreateWithoutAssignedContactsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedContactsInput
+  upsert?: Prisma.UserUpsertWithoutAssignedContactsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedContactsInput, Prisma.UserUpdateWithoutAssignedContactsInput>, Prisma.UserUncheckedUpdateWithoutAssignedContactsInput>
+}
+
+export type UserCreateNestedOneWithoutAssignedDealsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedDealsInput, Prisma.UserUncheckedCreateWithoutAssignedDealsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedDealsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutCreatedDealsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedDealsInput, Prisma.UserUncheckedCreateWithoutCreatedDealsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedDealsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutAssignedDealsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedDealsInput, Prisma.UserUncheckedCreateWithoutAssignedDealsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedDealsInput
+  upsert?: Prisma.UserUpsertWithoutAssignedDealsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedDealsInput, Prisma.UserUpdateWithoutAssignedDealsInput>, Prisma.UserUncheckedUpdateWithoutAssignedDealsInput>
+}
+
+export type UserUpdateOneWithoutCreatedDealsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedDealsInput, Prisma.UserUncheckedCreateWithoutCreatedDealsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedDealsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedDealsInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedDealsInput, Prisma.UserUpdateWithoutCreatedDealsInput>, Prisma.UserUncheckedUpdateWithoutCreatedDealsInput>
+}
+
 export type UserCreateNestedOneWithoutSentInvitationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutSentInvitationsInput, Prisma.UserUncheckedCreateWithoutSentInvitationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentInvitationsInput
@@ -486,38 +564,6 @@ export type UserUpdateOneRequiredWithoutSentInvitationsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutSentInvitationsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSentInvitationsInput, Prisma.UserUpdateWithoutSentInvitationsInput>, Prisma.UserUncheckedUpdateWithoutSentInvitationsInput>
-}
-
-export type UserCreateNestedOneWithoutCreatedLeadsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedLeadsInput, Prisma.UserUncheckedCreateWithoutCreatedLeadsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedLeadsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserCreateNestedOneWithoutAssignedLeadsInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedLeadsInput, Prisma.UserUncheckedCreateWithoutAssignedLeadsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedLeadsInput
-  connect?: Prisma.UserWhereUniqueInput
-}
-
-export type UserUpdateOneWithoutCreatedLeadsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedLeadsInput, Prisma.UserUncheckedCreateWithoutCreatedLeadsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedLeadsInput
-  upsert?: Prisma.UserUpsertWithoutCreatedLeadsInput
-  disconnect?: Prisma.UserWhereInput | boolean
-  delete?: Prisma.UserWhereInput | boolean
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedLeadsInput, Prisma.UserUpdateWithoutCreatedLeadsInput>, Prisma.UserUncheckedUpdateWithoutCreatedLeadsInput>
-}
-
-export type UserUpdateOneWithoutAssignedLeadsNestedInput = {
-  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedLeadsInput, Prisma.UserUncheckedCreateWithoutAssignedLeadsInput>
-  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedLeadsInput
-  upsert?: Prisma.UserUpsertWithoutAssignedLeadsInput
-  disconnect?: Prisma.UserWhereInput | boolean
-  delete?: Prisma.UserWhereInput | boolean
-  connect?: Prisma.UserWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedLeadsInput, Prisma.UserUpdateWithoutAssignedLeadsInput>, Prisma.UserUncheckedUpdateWithoutAssignedLeadsInput>
 }
 
 export type UserCreateNestedOneWithoutOrganizationsInput = {
@@ -580,6 +626,406 @@ export type UserUpdateOneWithoutCreatedTasksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedTasksInput, Prisma.UserUpdateWithoutCreatedTasksInput>, Prisma.UserUncheckedUpdateWithoutCreatedTasksInput>
 }
 
+export type UserCreateWithoutCreatedContactsInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  avatar?: string | null
+  isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  assignedContacts?: Prisma.ContactCreateNestedManyWithoutAssigneeInput
+  assignedDeals?: Prisma.DealCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealCreateNestedManyWithoutCreatorInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutCreatedContactsInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  avatar?: string | null
+  isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  assignedContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAssigneeInput
+  assignedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealUncheckedCreateNestedManyWithoutCreatorInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutCreatedContactsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedContactsInput, Prisma.UserUncheckedCreateWithoutCreatedContactsInput>
+}
+
+export type UserCreateWithoutAssignedContactsInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  avatar?: string | null
+  isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealCreateNestedManyWithoutCreatorInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutAssignedContactsInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  avatar?: string | null
+  isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealUncheckedCreateNestedManyWithoutCreatorInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutAssignedContactsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedContactsInput, Prisma.UserUncheckedCreateWithoutAssignedContactsInput>
+}
+
+export type UserUpsertWithoutCreatedContactsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedContactsInput, Prisma.UserUncheckedUpdateWithoutCreatedContactsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedContactsInput, Prisma.UserUncheckedCreateWithoutCreatedContactsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedContactsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedContactsInput, Prisma.UserUncheckedUpdateWithoutCreatedContactsInput>
+}
+
+export type UserUpdateWithoutCreatedContactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  assignedContacts?: Prisma.ContactUpdateManyWithoutAssigneeNestedInput
+  assignedDeals?: Prisma.DealUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUpdateManyWithoutCreatorNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedContactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  assignedContacts?: Prisma.ContactUncheckedUpdateManyWithoutAssigneeNestedInput
+  assignedDeals?: Prisma.DealUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUpsertWithoutAssignedContactsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAssignedContactsInput, Prisma.UserUncheckedUpdateWithoutAssignedContactsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedContactsInput, Prisma.UserUncheckedCreateWithoutAssignedContactsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAssignedContactsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAssignedContactsInput, Prisma.UserUncheckedUpdateWithoutAssignedContactsInput>
+}
+
+export type UserUpdateWithoutAssignedContactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  createdContacts?: Prisma.ContactUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUpdateManyWithoutCreatorNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAssignedContactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserCreateWithoutAssignedDealsInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  avatar?: string | null
+  isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  assignedContacts?: Prisma.ContactCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatorInput
+  createdDeals?: Prisma.DealCreateNestedManyWithoutCreatorInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutAssignedDealsInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  avatar?: string | null
+  isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  assignedContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatorInput
+  createdDeals?: Prisma.DealUncheckedCreateNestedManyWithoutCreatorInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutAssignedDealsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedDealsInput, Prisma.UserUncheckedCreateWithoutAssignedDealsInput>
+}
+
+export type UserCreateWithoutCreatedDealsInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  avatar?: string | null
+  isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
+  assignedContacts?: Prisma.ContactCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealCreateNestedManyWithoutAssigneeInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutCreatedDealsInput = {
+  id?: string
+  email: string
+  password: string
+  name?: string | null
+  avatar?: string | null
+  isVerified?: boolean
+  isDisabled?: boolean
+  isDeleted?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
+  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
+  assignedContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutAssigneeInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutCreatedDealsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedDealsInput, Prisma.UserUncheckedCreateWithoutCreatedDealsInput>
+}
+
+export type UserUpsertWithoutAssignedDealsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAssignedDealsInput, Prisma.UserUncheckedUpdateWithoutAssignedDealsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedDealsInput, Prisma.UserUncheckedCreateWithoutAssignedDealsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAssignedDealsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAssignedDealsInput, Prisma.UserUncheckedUpdateWithoutAssignedDealsInput>
+}
+
+export type UserUpdateWithoutAssignedDealsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  assignedContacts?: Prisma.ContactUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUpdateManyWithoutCreatorNestedInput
+  createdDeals?: Prisma.DealUpdateManyWithoutCreatorNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAssignedDealsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  assignedContacts?: Prisma.ContactUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatorNestedInput
+  createdDeals?: Prisma.DealUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUpsertWithoutCreatedDealsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedDealsInput, Prisma.UserUncheckedUpdateWithoutCreatedDealsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedDealsInput, Prisma.UserUncheckedCreateWithoutCreatedDealsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedDealsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedDealsInput, Prisma.UserUncheckedUpdateWithoutCreatedDealsInput>
+}
+
+export type UserUpdateWithoutCreatedDealsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
+  assignedContacts?: Prisma.ContactUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUpdateManyWithoutAssigneeNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedDealsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
+  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
+  assignedContacts?: Prisma.ContactUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUncheckedUpdateManyWithoutAssigneeNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
 export type UserCreateWithoutSentInvitationsInput = {
   id?: string
   email: string
@@ -593,8 +1039,10 @@ export type UserCreateWithoutSentInvitationsInput = {
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealCreateNestedManyWithoutCreatorInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
   createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
 }
@@ -612,8 +1060,10 @@ export type UserUncheckedCreateWithoutSentInvitationsInput = {
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealUncheckedCreateNestedManyWithoutCreatorInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
   createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
 }
@@ -647,8 +1097,10 @@ export type UserUpdateWithoutSentInvitationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUpdateManyWithoutCreatorNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
   createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
 }
@@ -666,194 +1118,12 @@ export type UserUncheckedUpdateWithoutSentInvitationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUncheckedUpdateManyWithoutCreatorNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
   createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
-}
-
-export type UserCreateWithoutCreatedLeadsInput = {
-  id?: string
-  email: string
-  password: string
-  name?: string | null
-  avatar?: string | null
-  isVerified?: boolean
-  isDisabled?: boolean
-  isDeleted?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
-  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
-  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
-  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
-  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
-}
-
-export type UserUncheckedCreateWithoutCreatedLeadsInput = {
-  id?: string
-  email: string
-  password: string
-  name?: string | null
-  avatar?: string | null
-  isVerified?: boolean
-  isDisabled?: boolean
-  isDeleted?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
-  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
-  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
-  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
-  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
-}
-
-export type UserCreateOrConnectWithoutCreatedLeadsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedLeadsInput, Prisma.UserUncheckedCreateWithoutCreatedLeadsInput>
-}
-
-export type UserCreateWithoutAssignedLeadsInput = {
-  id?: string
-  email: string
-  password: string
-  name?: string | null
-  avatar?: string | null
-  isVerified?: boolean
-  isDisabled?: boolean
-  isDeleted?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
-  organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
-  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
-  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
-  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
-  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
-}
-
-export type UserUncheckedCreateWithoutAssignedLeadsInput = {
-  id?: string
-  email: string
-  password: string
-  name?: string | null
-  avatar?: string | null
-  isVerified?: boolean
-  isDisabled?: boolean
-  isDeleted?: boolean
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
-  organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
-  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
-  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
-  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
-  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
-}
-
-export type UserCreateOrConnectWithoutAssignedLeadsInput = {
-  where: Prisma.UserWhereUniqueInput
-  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedLeadsInput, Prisma.UserUncheckedCreateWithoutAssignedLeadsInput>
-}
-
-export type UserUpsertWithoutCreatedLeadsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedLeadsInput, Prisma.UserUncheckedUpdateWithoutCreatedLeadsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedLeadsInput, Prisma.UserUncheckedCreateWithoutCreatedLeadsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutCreatedLeadsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedLeadsInput, Prisma.UserUncheckedUpdateWithoutCreatedLeadsInput>
-}
-
-export type UserUpdateWithoutCreatedLeadsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
-  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
-  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
-  createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
-  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutCreatedLeadsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
-  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
-  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
-  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
-  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
-}
-
-export type UserUpsertWithoutAssignedLeadsInput = {
-  update: Prisma.XOR<Prisma.UserUpdateWithoutAssignedLeadsInput, Prisma.UserUncheckedUpdateWithoutAssignedLeadsInput>
-  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedLeadsInput, Prisma.UserUncheckedCreateWithoutAssignedLeadsInput>
-  where?: Prisma.UserWhereInput
-}
-
-export type UserUpdateToOneWithWhereWithoutAssignedLeadsInput = {
-  where?: Prisma.UserWhereInput
-  data: Prisma.XOR<Prisma.UserUpdateWithoutAssignedLeadsInput, Prisma.UserUncheckedUpdateWithoutAssignedLeadsInput>
-}
-
-export type UserUpdateWithoutAssignedLeadsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
-  organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
-  createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
-  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
-  createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
-  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
-}
-
-export type UserUncheckedUpdateWithoutAssignedLeadsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  isVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDisabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  isDeleted?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
-  organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
-  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
-  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
-  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
-  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutOrganizationsInput = {
@@ -868,8 +1138,10 @@ export type UserCreateWithoutOrganizationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealCreateNestedManyWithoutCreatorInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
   createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
@@ -887,8 +1159,10 @@ export type UserUncheckedCreateWithoutOrganizationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealUncheckedCreateNestedManyWithoutCreatorInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
   createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
@@ -922,8 +1196,10 @@ export type UserUpdateWithoutOrganizationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUpdateManyWithoutCreatorNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
   createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
@@ -941,8 +1217,10 @@ export type UserUncheckedUpdateWithoutOrganizationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUncheckedUpdateManyWithoutCreatorNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
   createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
@@ -960,8 +1238,10 @@ export type UserCreateWithoutPasswordHistoryInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealCreateNestedManyWithoutCreatorInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
   createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
@@ -979,8 +1259,10 @@ export type UserUncheckedCreateWithoutPasswordHistoryInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealUncheckedCreateNestedManyWithoutCreatorInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
   createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
@@ -1014,8 +1296,10 @@ export type UserUpdateWithoutPasswordHistoryInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUpdateManyWithoutCreatorNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
   createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
@@ -1033,8 +1317,10 @@ export type UserUncheckedUpdateWithoutPasswordHistoryInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUncheckedUpdateManyWithoutCreatorNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
   createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
@@ -1053,8 +1339,10 @@ export type UserCreateWithoutAssignedTasksInput = {
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealCreateNestedManyWithoutCreatorInput
   createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatorInput
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
@@ -1072,8 +1360,10 @@ export type UserUncheckedCreateWithoutAssignedTasksInput = {
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealUncheckedCreateNestedManyWithoutCreatorInput
   createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatorInput
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
@@ -1096,8 +1386,10 @@ export type UserCreateWithoutCreatedTasksInput = {
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealCreateNestedManyWithoutCreatorInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
@@ -1115,8 +1407,10 @@ export type UserUncheckedCreateWithoutCreatedTasksInput = {
   updatedAt?: Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedCreateNestedManyWithoutUserInput
   organizations?: Prisma.OrganizationUserUncheckedCreateNestedManyWithoutUserInput
-  assignedLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutAssigneeInput
-  createdLeads?: Prisma.LeadUncheckedCreateNestedManyWithoutCreatorInput
+  assignedContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutAssigneeInput
+  createdContacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCreatorInput
+  assignedDeals?: Prisma.DealUncheckedCreateNestedManyWithoutAssigneeInput
+  createdDeals?: Prisma.DealUncheckedCreateNestedManyWithoutCreatorInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
@@ -1150,8 +1444,10 @@ export type UserUpdateWithoutAssignedTasksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUpdateManyWithoutCreatorNestedInput
   createdTasks?: Prisma.TaskUpdateManyWithoutCreatorNestedInput
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
@@ -1169,8 +1465,10 @@ export type UserUncheckedUpdateWithoutAssignedTasksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUncheckedUpdateManyWithoutCreatorNestedInput
   createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatorNestedInput
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
@@ -1199,8 +1497,10 @@ export type UserUpdateWithoutCreatedTasksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUpdateManyWithoutCreatorNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
@@ -1218,8 +1518,10 @@ export type UserUncheckedUpdateWithoutCreatedTasksInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   passwordHistory?: Prisma.PasswordHistoryUncheckedUpdateManyWithoutUserNestedInput
   organizations?: Prisma.OrganizationUserUncheckedUpdateManyWithoutUserNestedInput
-  assignedLeads?: Prisma.LeadUncheckedUpdateManyWithoutAssigneeNestedInput
-  createdLeads?: Prisma.LeadUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedContacts?: Prisma.ContactUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdContacts?: Prisma.ContactUncheckedUpdateManyWithoutCreatorNestedInput
+  assignedDeals?: Prisma.DealUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdDeals?: Prisma.DealUncheckedUpdateManyWithoutCreatorNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
@@ -1232,8 +1534,10 @@ export type UserUncheckedUpdateWithoutCreatedTasksInput = {
 export type UserCountOutputType = {
   passwordHistory: number
   organizations: number
-  assignedLeads: number
-  createdLeads: number
+  assignedContacts: number
+  createdContacts: number
+  assignedDeals: number
+  createdDeals: number
   assignedTasks: number
   createdTasks: number
   sentInvitations: number
@@ -1242,8 +1546,10 @@ export type UserCountOutputType = {
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   passwordHistory?: boolean | UserCountOutputTypeCountPasswordHistoryArgs
   organizations?: boolean | UserCountOutputTypeCountOrganizationsArgs
-  assignedLeads?: boolean | UserCountOutputTypeCountAssignedLeadsArgs
-  createdLeads?: boolean | UserCountOutputTypeCountCreatedLeadsArgs
+  assignedContacts?: boolean | UserCountOutputTypeCountAssignedContactsArgs
+  createdContacts?: boolean | UserCountOutputTypeCountCreatedContactsArgs
+  assignedDeals?: boolean | UserCountOutputTypeCountAssignedDealsArgs
+  createdDeals?: boolean | UserCountOutputTypeCountCreatedDealsArgs
   assignedTasks?: boolean | UserCountOutputTypeCountAssignedTasksArgs
   createdTasks?: boolean | UserCountOutputTypeCountCreatedTasksArgs
   sentInvitations?: boolean | UserCountOutputTypeCountSentInvitationsArgs
@@ -1276,15 +1582,29 @@ export type UserCountOutputTypeCountOrganizationsArgs<ExtArgs extends runtime.Ty
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountAssignedLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.LeadWhereInput
+export type UserCountOutputTypeCountAssignedContactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContactWhereInput
 }
 
 /**
  * UserCountOutputType without action
  */
-export type UserCountOutputTypeCountCreatedLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.LeadWhereInput
+export type UserCountOutputTypeCountCreatedContactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContactWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAssignedDealsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DealWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedDealsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DealWhereInput
 }
 
 /**
@@ -1322,8 +1642,10 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   passwordHistory?: boolean | Prisma.User$passwordHistoryArgs<ExtArgs>
   organizations?: boolean | Prisma.User$organizationsArgs<ExtArgs>
-  assignedLeads?: boolean | Prisma.User$assignedLeadsArgs<ExtArgs>
-  createdLeads?: boolean | Prisma.User$createdLeadsArgs<ExtArgs>
+  assignedContacts?: boolean | Prisma.User$assignedContactsArgs<ExtArgs>
+  createdContacts?: boolean | Prisma.User$createdContactsArgs<ExtArgs>
+  assignedDeals?: boolean | Prisma.User$assignedDealsArgs<ExtArgs>
+  createdDeals?: boolean | Prisma.User$createdDealsArgs<ExtArgs>
   assignedTasks?: boolean | Prisma.User$assignedTasksArgs<ExtArgs>
   createdTasks?: boolean | Prisma.User$createdTasksArgs<ExtArgs>
   sentInvitations?: boolean | Prisma.User$sentInvitationsArgs<ExtArgs>
@@ -1373,8 +1695,10 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   passwordHistory?: boolean | Prisma.User$passwordHistoryArgs<ExtArgs>
   organizations?: boolean | Prisma.User$organizationsArgs<ExtArgs>
-  assignedLeads?: boolean | Prisma.User$assignedLeadsArgs<ExtArgs>
-  createdLeads?: boolean | Prisma.User$createdLeadsArgs<ExtArgs>
+  assignedContacts?: boolean | Prisma.User$assignedContactsArgs<ExtArgs>
+  createdContacts?: boolean | Prisma.User$createdContactsArgs<ExtArgs>
+  assignedDeals?: boolean | Prisma.User$assignedDealsArgs<ExtArgs>
+  createdDeals?: boolean | Prisma.User$createdDealsArgs<ExtArgs>
   assignedTasks?: boolean | Prisma.User$assignedTasksArgs<ExtArgs>
   createdTasks?: boolean | Prisma.User$createdTasksArgs<ExtArgs>
   sentInvitations?: boolean | Prisma.User$sentInvitationsArgs<ExtArgs>
@@ -1388,8 +1712,10 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     passwordHistory: Prisma.$PasswordHistoryPayload<ExtArgs>[]
     organizations: Prisma.$OrganizationUserPayload<ExtArgs>[]
-    assignedLeads: Prisma.$LeadPayload<ExtArgs>[]
-    createdLeads: Prisma.$LeadPayload<ExtArgs>[]
+    assignedContacts: Prisma.$ContactPayload<ExtArgs>[]
+    createdContacts: Prisma.$ContactPayload<ExtArgs>[]
+    assignedDeals: Prisma.$DealPayload<ExtArgs>[]
+    createdDeals: Prisma.$DealPayload<ExtArgs>[]
     assignedTasks: Prisma.$TaskPayload<ExtArgs>[]
     createdTasks: Prisma.$TaskPayload<ExtArgs>[]
     sentInvitations: Prisma.$InvitationPayload<ExtArgs>[]
@@ -1801,8 +2127,10 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   passwordHistory<T extends Prisma.User$passwordHistoryArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$passwordHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PasswordHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   organizations<T extends Prisma.User$organizationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$organizationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OrganizationUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  assignedLeads<T extends Prisma.User$assignedLeadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  createdLeads<T extends Prisma.User$createdLeadsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdLeadsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignedContacts<T extends Prisma.User$assignedContactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedContactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdContacts<T extends Prisma.User$createdContactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdContactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignedDeals<T extends Prisma.User$assignedDealsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedDealsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdDeals<T extends Prisma.User$createdDealsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdDealsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   assignedTasks<T extends Prisma.User$assignedTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdTasks<T extends Prisma.User$createdTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sentInvitations<T extends Prisma.User$sentInvitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2286,51 +2614,99 @@ export type User$organizationsArgs<ExtArgs extends runtime.Types.Extensions.Inte
 }
 
 /**
- * User.assignedLeads
+ * User.assignedContacts
  */
-export type User$assignedLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$assignedContactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Lead
+   * Select specific fields to fetch from the Contact
    */
-  select?: Prisma.LeadSelect<ExtArgs> | null
+  select?: Prisma.ContactSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Lead
+   * Omit specific fields from the Contact
    */
-  omit?: Prisma.LeadOmit<ExtArgs> | null
+  omit?: Prisma.ContactOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.LeadInclude<ExtArgs> | null
-  where?: Prisma.LeadWhereInput
-  orderBy?: Prisma.LeadOrderByWithRelationInput | Prisma.LeadOrderByWithRelationInput[]
-  cursor?: Prisma.LeadWhereUniqueInput
+  include?: Prisma.ContactInclude<ExtArgs> | null
+  where?: Prisma.ContactWhereInput
+  orderBy?: Prisma.ContactOrderByWithRelationInput | Prisma.ContactOrderByWithRelationInput[]
+  cursor?: Prisma.ContactWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.LeadScalarFieldEnum | Prisma.LeadScalarFieldEnum[]
+  distinct?: Prisma.ContactScalarFieldEnum | Prisma.ContactScalarFieldEnum[]
 }
 
 /**
- * User.createdLeads
+ * User.createdContacts
  */
-export type User$createdLeadsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type User$createdContactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Lead
+   * Select specific fields to fetch from the Contact
    */
-  select?: Prisma.LeadSelect<ExtArgs> | null
+  select?: Prisma.ContactSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Lead
+   * Omit specific fields from the Contact
    */
-  omit?: Prisma.LeadOmit<ExtArgs> | null
+  omit?: Prisma.ContactOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.LeadInclude<ExtArgs> | null
-  where?: Prisma.LeadWhereInput
-  orderBy?: Prisma.LeadOrderByWithRelationInput | Prisma.LeadOrderByWithRelationInput[]
-  cursor?: Prisma.LeadWhereUniqueInput
+  include?: Prisma.ContactInclude<ExtArgs> | null
+  where?: Prisma.ContactWhereInput
+  orderBy?: Prisma.ContactOrderByWithRelationInput | Prisma.ContactOrderByWithRelationInput[]
+  cursor?: Prisma.ContactWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.LeadScalarFieldEnum | Prisma.LeadScalarFieldEnum[]
+  distinct?: Prisma.ContactScalarFieldEnum | Prisma.ContactScalarFieldEnum[]
+}
+
+/**
+ * User.assignedDeals
+ */
+export type User$assignedDealsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Deal
+   */
+  select?: Prisma.DealSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Deal
+   */
+  omit?: Prisma.DealOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DealInclude<ExtArgs> | null
+  where?: Prisma.DealWhereInput
+  orderBy?: Prisma.DealOrderByWithRelationInput | Prisma.DealOrderByWithRelationInput[]
+  cursor?: Prisma.DealWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DealScalarFieldEnum | Prisma.DealScalarFieldEnum[]
+}
+
+/**
+ * User.createdDeals
+ */
+export type User$createdDealsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Deal
+   */
+  select?: Prisma.DealSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Deal
+   */
+  omit?: Prisma.DealOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DealInclude<ExtArgs> | null
+  where?: Prisma.DealWhereInput
+  orderBy?: Prisma.DealOrderByWithRelationInput | Prisma.DealOrderByWithRelationInput[]
+  cursor?: Prisma.DealWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DealScalarFieldEnum | Prisma.DealScalarFieldEnum[]
 }
 
 /**

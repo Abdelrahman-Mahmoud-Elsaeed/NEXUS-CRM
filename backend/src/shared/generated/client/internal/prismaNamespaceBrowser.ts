@@ -52,10 +52,12 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Automation: 'Automation',
+  Company: 'Company',
+  Contact: 'Contact',
+  ContactTag: 'ContactTag',
+  Deal: 'Deal',
   File: 'File',
   Invitation: 'Invitation',
-  Lead: 'Lead',
-  LeadTag: 'LeadTag',
   Organization: 'Organization',
   OrganizationUser: 'OrganizationUser',
   PasswordHistory: 'PasswordHistory',
@@ -99,6 +101,76 @@ export const AutomationScalarFieldEnum = {
 export type AutomationScalarFieldEnum = (typeof AutomationScalarFieldEnum)[keyof typeof AutomationScalarFieldEnum]
 
 
+export const CompanyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  domain: 'domain',
+  logoUrl: 'logoUrl',
+  organizationId: 'organizationId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeof CompanyScalarFieldEnum]
+
+
+export const ContactScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  jobTitle: 'jobTitle',
+  website: 'website',
+  avatarUrl: 'avatarUrl',
+  initials: 'initials',
+  companyId: 'companyId',
+  status: 'status',
+  priority: 'priority',
+  source: 'source',
+  notes: 'notes',
+  pipelineStageId: 'pipelineStageId',
+  organizationId: 'organizationId',
+  createdById: 'createdById',
+  assignedToId: 'assignedToId',
+  channels: 'channels',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContactScalarFieldEnum = (typeof ContactScalarFieldEnum)[keyof typeof ContactScalarFieldEnum]
+
+
+export const ContactTagScalarFieldEnum = {
+  contactId: 'contactId',
+  tagId: 'tagId'
+} as const
+
+export type ContactTagScalarFieldEnum = (typeof ContactTagScalarFieldEnum)[keyof typeof ContactTagScalarFieldEnum]
+
+
+export const DealScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  value: 'value',
+  currency: 'currency',
+  status: 'status',
+  expectedCloseDate: 'expectedCloseDate',
+  actualCloseDate: 'actualCloseDate',
+  notes: 'notes',
+  organizationId: 'organizationId',
+  companyId: 'companyId',
+  primaryContactId: 'primaryContactId',
+  pipelineId: 'pipelineId',
+  stageId: 'stageId',
+  assignedToId: 'assignedToId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DealScalarFieldEnum = (typeof DealScalarFieldEnum)[keyof typeof DealScalarFieldEnum]
+
+
 export const FileScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -129,36 +201,6 @@ export const InvitationScalarFieldEnum = {
 } as const
 
 export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
-
-
-export const LeadScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  email: 'email',
-  phone: 'phone',
-  jobTitle: 'jobTitle',
-  company: 'company',
-  website: 'website',
-  pipelineStageId: 'pipelineStageId',
-  priority: 'priority',
-  source: 'source',
-  notes: 'notes',
-  organizationId: 'organizationId',
-  createdById: 'createdById',
-  assignedToId: 'assignedToId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type LeadScalarFieldEnum = (typeof LeadScalarFieldEnum)[keyof typeof LeadScalarFieldEnum]
-
-
-export const LeadTagScalarFieldEnum = {
-  leadId: 'leadId',
-  tagId: 'tagId'
-} as const
-
-export type LeadTagScalarFieldEnum = (typeof LeadTagScalarFieldEnum)[keyof typeof LeadTagScalarFieldEnum]
 
 
 export const OrganizationScalarFieldEnum = {
@@ -195,10 +237,9 @@ export type PasswordHistoryScalarFieldEnum = (typeof PasswordHistoryScalarFieldE
 export const PipelineScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  description: 'description',
+  organizationId: 'organizationId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  organizationId: 'organizationId'
+  updatedAt: 'updatedAt'
 } as const
 
 export type PipelineScalarFieldEnum = (typeof PipelineScalarFieldEnum)[keyof typeof PipelineScalarFieldEnum]
@@ -207,10 +248,11 @@ export type PipelineScalarFieldEnum = (typeof PipelineScalarFieldEnum)[keyof typ
 export const PipelineStageScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  color: 'color',
-  position: 'position',
+  order: 'order',
   pipelineId: 'pipelineId',
-  organizationId: 'organizationId'
+  organizationId: 'organizationId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PipelineStageScalarFieldEnum = (typeof PipelineStageScalarFieldEnum)[keyof typeof PipelineStageScalarFieldEnum]
@@ -235,7 +277,7 @@ export const TaskScalarFieldEnum = {
   dueDate: 'dueDate',
   status: 'status',
   priority: 'priority',
-  leadId: 'leadId',
+  contactId: 'contactId',
   organizationId: 'organizationId',
   assignedToId: 'assignedToId',
   createdById: 'createdById',

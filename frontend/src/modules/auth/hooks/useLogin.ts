@@ -33,8 +33,6 @@ export function useLogin() {
 
     if (loginUser.fulfilled.match(result)) {
       const user = result.payload?.user;
-      
-      console.log(user)
       if (user?.isVerified) {
         navigate("/", { replace: true });
       } else {

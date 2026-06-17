@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { configureWorkspace } from "@/modules/team/store/org.actions";
+import { selectOrg } from "@/modules/team/store/org.slice";
 import { useState, useRef, useCallback, type ChangeEvent, type FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectOrg } from "@/modules/organization/store/org.slice";
-import { configureWorkspace } from "@/modules/organization/store/org.actions";
 
 export function useSetupWorkspace() {
   const dispatch = useDispatch<any>();

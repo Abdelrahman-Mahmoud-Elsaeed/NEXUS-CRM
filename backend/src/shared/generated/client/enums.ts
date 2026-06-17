@@ -28,6 +28,24 @@ export const TaskStatus = {
 export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
 
 
+export const ContactStatus = {
+  ACTIVE: 'ACTIVE',
+  PROSPECT: 'PROSPECT',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type ContactStatus = (typeof ContactStatus)[keyof typeof ContactStatus]
+
+
+export const DealStatus = {
+  OPEN: 'OPEN',
+  WON: 'WON',
+  LOST: 'LOST'
+} as const
+
+export type DealStatus = (typeof DealStatus)[keyof typeof DealStatus]
+
+
 export const LeadPriority = {
   LOW: 'LOW',
   MEDIUM: 'MEDIUM',

@@ -1,3 +1,5 @@
+
+
 model User {
   id         String  @id @default(uuid()) @db.Uuid
   email      String  @unique
@@ -8,19 +10,22 @@ model User {
   isDisabled Boolean @default(false) @map("is_disabled")
   isDeleted  Boolean @default(false) @map("is_deleted")
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
   passwordHistory PasswordHistory[]
   organizations   OrganizationUser[]
 
-  assignedLeads Lead[] @relation("LeadAssignee")
-  createdLeads  Lead[] @relation("LeadCreator")
+  assignedContacts Contact[] @relation("ContactAssignee")
+  createdContacts  Contact[] @relation("ContactCreator")
 
-  assignedTasks Task[] @relation("TaskAssignee")
-  createdTasks  Task[] @relation("TaskCreator")
+  assignedDeals    Deal[] @relation("DealAssignee")
+  createdDeals     Deal[] @relation("DealCreator")
+  
+  assignedTasks    Task[] @relation("TaskAssignee")
+  createdTasks     Task[] @relation("TaskCreator")
 
-  sentInvitations Invitation[] @relation("SentInvitations")
+  sentInvitations  Invitation[] @relation("SentInvitations")
 
   @@map("users")
 }

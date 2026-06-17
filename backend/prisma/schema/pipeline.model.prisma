@@ -1,14 +1,15 @@
 model Pipeline {
   id             String          @id @default(uuid()) @db.Uuid
-  name           String
-  description    String?
-  createdAt      DateTime        @default(now()) @map("created_at")
-  updatedAt      DateTime        @updatedAt @map("updated_at")
-
+  name           String          // e.g., "Standard Sales Process"
+  
   organizationId String          @db.Uuid @map("organization_id")
   organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-
+  
   stages         PipelineStage[]
+  deals          Deal[]
+  
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
 
   @@map("pipelines")
 }

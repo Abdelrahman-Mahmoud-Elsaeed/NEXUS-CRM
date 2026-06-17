@@ -23,6 +23,26 @@ export * from './enums';
  */
 export type Automation = Prisma.AutomationModel
 /**
+ * Model Company
+ * 
+ */
+export type Company = Prisma.CompanyModel
+/**
+ * Model Contact
+ * 
+ */
+export type Contact = Prisma.ContactModel
+/**
+ * Model ContactTag
+ * 
+ */
+export type ContactTag = Prisma.ContactTagModel
+/**
+ * Model Deal
+ * 
+ */
+export type Deal = Prisma.DealModel
+/**
  * Model File
  * 
  */
@@ -32,16 +52,6 @@ export type File = Prisma.FileModel
  * 
  */
 export type Invitation = Prisma.InvitationModel
-/**
- * Model Lead
- * 
- */
-export type Lead = Prisma.LeadModel
-/**
- * Model LeadTag
- * 
- */
-export type LeadTag = Prisma.LeadTagModel
 /**
  * Model Organization
  * 

@@ -21,8 +21,11 @@ import SetupWorkspace from "@/modules/auth/pages/SetupWorkspace/SetupWorkspace";
 
 // Core App Module
 import Dashboard from "@/modules/dashboard/pages/Dashboard";
-import TeamManagement from "@/modules/organization/page/TeamManagement";
-import { InvitationAcceptGateway } from "@/modules/organization/guard/InvitationAcceptGateway";
+import { InvitationAcceptGateway } from "@/modules/invitation/guard/InvitationAcceptGateway";
+import TeamManagement from "@/modules/team/page/TeamManagement";
+import { Contacts } from "@/modules/contact/page/Contacts";
+import { Companies } from "@/modules/companie/page/Companies";
+
 
 export const router = createBrowserRouter([
   {
@@ -63,7 +66,7 @@ export const router = createBrowserRouter([
     element: <AuthLayout />,
     children: [
       {
-        path: "/organization/invitation-accept",
+        path: "/invitation/accept",
         element: <InvitationAcceptGateway />,
       },
     ],
@@ -115,11 +118,11 @@ export const router = createBrowserRouter([
           },
           {
             path: "/contacts",
-            element: <div className="p-6">Contacts List Management Matrix</div>,
+            element: <Contacts />,
           },
           {
             path: "/companies",
-            element: <div className="p-6">Corporate Accounts Directory</div>,
+            element: <Companies/>,
           },
           {
             path: "/deals",

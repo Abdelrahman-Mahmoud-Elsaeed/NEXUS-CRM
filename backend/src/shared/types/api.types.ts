@@ -1,6 +1,6 @@
 export type ApiResponse<T = void, E = string> =
-  | { success: true; data: T }
-  | { success: false; reason: E };
+  | { success: true; data: T  }
+  | { success: false; reason: E , msg: string };
 
 /**
  * T = The successful data payload type (Defaults to void)
@@ -18,4 +18,5 @@ export type ServiceResult<T, E extends string = string> =
       statusCode: number;
       data?: never;
       reason: E;
+      msg: string
     };

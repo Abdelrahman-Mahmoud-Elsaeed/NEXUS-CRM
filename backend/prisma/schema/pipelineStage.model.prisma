@@ -1,16 +1,19 @@
 model PipelineStage {
   id             String       @id @default(uuid()) @db.Uuid
-  name           String
-  color          String?
-  position       Int
-
+  name           String       // e.g., "Meeting Scheduled", "Contract Sent"
+  order          Int          @default(0) // Used to sort stages left-to-right on a Kanban board
+  
   pipelineId     String       @db.Uuid @map("pipeline_id")
   pipeline       Pipeline     @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
 
   organizationId String       @db.Uuid @map("organization_id")
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  leads          Lead[]
+  deals          Deal[]
+  contacts       Contact[]
+  
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
 
   @@map("pipeline_stages")
 }

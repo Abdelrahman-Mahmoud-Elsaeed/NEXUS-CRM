@@ -9,10 +9,12 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Automation'
+export type * from './models/Company'
+export type * from './models/Contact'
+export type * from './models/ContactTag'
+export type * from './models/Deal'
 export type * from './models/File'
 export type * from './models/Invitation'
-export type * from './models/Lead'
-export type * from './models/LeadTag'
 export type * from './models/Organization'
 export type * from './models/OrganizationUser'
 export type * from './models/PasswordHistory'

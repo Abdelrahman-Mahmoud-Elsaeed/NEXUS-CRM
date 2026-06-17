@@ -11,8 +11,8 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { OrganizationSwitcher } from "@/modules/organization/components/organizationSwitcher";
 import { useState } from "react";
+import { OrganizationSwitcher } from "@/modules/team/components/organizationSwitcher";
 
 export function Navbar() {
   const [isSearchFocused, setIsSearchFocused] = useState(false);

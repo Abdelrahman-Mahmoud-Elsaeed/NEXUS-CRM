@@ -29,4 +29,21 @@ router.post(
   asyncHandler(controller.uploadFile)
 );
 
+router.post(
+  "/contacts/avatars",
+  parseUploadedFile({ fieldName: "avatar", maxSizeInBytes: 2 * 1024 * 1024 }),
+  requireFile,
+  setUploadFolder("avatars_contact"),
+  asyncHandler(controller.uploadFile)
+);
+
+
+router.post(
+  "/companies/avatars",
+  parseUploadedFile({ fieldName: "avatar", maxSizeInBytes: 2 * 1024 * 1024 }),
+  requireFile,
+  setUploadFolder("avatars_companies"),
+  asyncHandler(controller.uploadFile)
+);
+
 export default router;

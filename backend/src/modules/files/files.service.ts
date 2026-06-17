@@ -24,59 +24,61 @@ export class FilesService {
     const secureRandomId = crypto.randomUUID();
 
     const storagePath = `${organizationId}/${uploadFolder}/${Date.now()}-${secureRandomId}${fileExtension}`;
-    try {
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from(CRM_BUCKET)
-        .upload(storagePath, fileBuffer, {
-          contentType: mimeType,
-          upsert: false,
-        });
 
-      if (uploadError || !uploadData) {
-        console.log(uploadError, uploadData);
-
-        return { success: false, reason: "UPLOAD_FAILED" };
-      }
-
-      const { data: urlData } = supabase.storage
-        .from(CRM_BUCKET)
-        .getPublicUrl(storagePath);
-
-      const savedFile = await prisma.file.create({
-        data: {
-          name: originalName,
-          url: urlData.publicUrl,
-          storageKey: storagePath,
-          size: size,
-          mimeType: mimeType,
-          uploadedById: userId,
-          organizationId: organizationId,
-        },
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from(CRM_BUCKET)
+      .upload(storagePath, fileBuffer, {
+        contentType: mimeType,
+        upsert: false,
       });
 
-      if (uploadFolder === "avatars_organization") {
-        await prisma.organization.update({
-          where: { id: organizationId },
-          data: { avatar: urlData.publicUrl },
-        });
-      }
-      if (uploadFolder === "avatars_user") {
-        await prisma.user.update({
-          where: { id: userId },
-          data: { avatar: urlData.publicUrl },
-        });
-      }
-
+    if (uploadError || !uploadData) {
       return {
-        success: true,
-        data: {
-          ...savedFile,
-          name: he.encode(savedFile.name),
-        },
+        success: false,
+        statusCode: 500,
+        reason: "UPLOAD_FAILED",
+        msg: "File upload failed. Please try again.",
       };
-    } catch (error) {
-      return { success: false, reason: "UPLOAD_FAILED" };
     }
+
+    const { data: urlData } = supabase.storage
+      .from(CRM_BUCKET)
+      .getPublicUrl(storagePath);
+
+    const savedFile = await prisma.file.create({
+      data: {
+        name: originalName,
+        url: urlData.publicUrl,
+        storageKey: storagePath,
+        size,
+        mimeType,
+        uploadedById: userId,
+        organizationId,
+      },
+    });
+
+    if (uploadFolder === "avatars_organization") {
+      await prisma.organization.update({
+        where: { id: organizationId },
+        data: { avatar: urlData.publicUrl },
+      });
+    }
+
+    if (uploadFolder === "avatars_user") {
+      await prisma.user.update({
+        where: { id: userId },
+        data: { avatar: urlData.publicUrl },
+      });
+    }
+
+    return {
+      success: true,
+      statusCode: 201,
+      data: {
+        ...savedFile,
+        name: he.encode(savedFile.name),
+      },
+    };
   }
 
   async getFileMetadata(fileId: string): Promise<GetFileServiceResult> {
@@ -85,11 +87,17 @@ export class FilesService {
     });
 
     if (!file) {
-      return { success: false, reason: "FILE_NOT_FOUND" };
+      return {
+        success: false,
+        statusCode: 404,
+        reason: "FILE_NOT_FOUND",
+        msg: "File not found.",
+      };
     }
 
     return {
       success: true,
+      statusCode: 200,
       data: {
         ...file,
         name: he.encode(file.name),
@@ -103,25 +111,35 @@ export class FilesService {
     });
 
     if (!file) {
-      return { success: false, reason: "FILE_NOT_FOUND" };
+      return {
+        success: false,
+        statusCode: 404,
+        reason: "FILE_NOT_FOUND",
+        msg: "File not found.",
+      };
     }
 
-    try {
-      const { error: deleteError } = await supabase.storage
-        .from(CRM_BUCKET)
-        .remove([file.storageKey]);
+    const { error: deleteError } = await supabase.storage
+      .from(CRM_BUCKET)
+      .remove([file.storageKey]);
 
-      if (deleteError) {
-        return { success: false, reason: "DELETE_FAILED" };
-      }
-
-      await prisma.file.delete({
-        where: { id: fileId },
-      });
-
-      return { success: true, data: null };
-    } catch (error) {
-      return { success: false, reason: "DELETE_FAILED" };
+    if (deleteError) {
+      return {
+        success: false,
+        statusCode: 500,
+        reason: "DELETE_FAILED",
+        msg: "Failed to delete file from storage.",
+      };
     }
+
+    await prisma.file.delete({
+      where: { id: fileId },
+    });
+
+    return {
+      success: true,
+      statusCode: 200,
+      data: null,
+    };
   }
 }

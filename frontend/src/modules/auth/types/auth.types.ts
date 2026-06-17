@@ -3,10 +3,17 @@
 // ==========================================
 // Base API Response Wrapper
 // ==========================================
-export type ApiResponse<T = void, E = string> =
-  | { success: true; data: T }
-  | { success: false; reason: E };
-
+export type ApiResponse<T, E extends string = string> =
+  | {
+      success: true;
+      data: T;
+    }
+  | {
+      success: false;
+      reason: E;
+      msg: string;
+    };
+    
 // ==========================================
 // Enums & Constants
 // ==========================================
@@ -43,7 +50,7 @@ export interface UserProfileDto {
     name: string;
   }[];
   createdAt: Date;
-  updatedAt: Date; // Note: You might want to parse this as a string on the frontend depending on your JSON parsing
+  updatedAt: Date; 
 }
 
 // ==========================================
@@ -77,7 +84,7 @@ export type LoginResult =
       success: false;
       statusCode: number;
       reason: "EMAIL_NOT_VERIFIED";
-      data:{ user: UserProfileDto; tokens: { accessToken: string } },
+      data: { user: UserProfileDto; tokens: { accessToken: string } };
     };
 
 // ==========================================

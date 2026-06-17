@@ -7,6 +7,15 @@ import type {
   RegisterRequestDto,
 } from "@/modules/auth/types/auth.types";
 
+const getErrorMsg = (error: any) => {
+  return (
+    error?.response?.data?.msg ||
+    error?.response?.data?.message ||
+    error?.message ||
+    "Something went wrong."
+  );
+};
+
 export const initializeAuth = createAsyncThunk(
   "auth/initializeAuth",
   async (_, { rejectWithValue }) => {
@@ -17,9 +26,9 @@ export const initializeAuth = createAsyncThunk(
       if (response.success) {
         return { token, user: response.data.user };
       }
-      return rejectWithValue(response.reason);
+      return rejectWithValue(response.msg);
     } catch (error: any) {
-      return rejectWithValue("INVALID_TOKEN");
+      return rejectWithValue(getErrorMsg(error));
     }
   },
 );
@@ -34,7 +43,6 @@ export const acceptWorkspaceInvitation = createAsyncThunk(
       const response = await AuthService.registerInvited(payload);
 
       if (response.success) {
-        // If your backend returns tokens upon successful acceptance, save them here
         if (response.data?.tokens?.accessToken) {
           localStorage.setItem(
             "access_token",
@@ -44,35 +52,9 @@ export const acceptWorkspaceInvitation = createAsyncThunk(
         return response.data;
       }
 
-      // Parse known business reasons safely at the network layer
-      const errorMap: Record<string, string> = {
-        WEAK_PASSWORD: "Password does not meet complexity rules.",
-        INVALID_TOKEN: "Invalid or expired invitation token.",
-        EXPIRED_TOKEN: "This invitation has expired.",
-        USER_ALREADY_REGISTERED: "This email is already registered.",
-      };
-      return rejectWithValue(
-        errorMap[response.reason || ""] ||
-          response.reason ||
-          "An unexpected error occurred during registration.",
-      );
+      return rejectWithValue(response.msg);
     } catch (error: any) {
-      const reason = error?.response?.data?.reason;
-      if (reason) {
-        const errorMap: Record<string, string> = {
-          WEAK_PASSWORD: "Password does not meet complexity rules.",
-          INVALID_TOKEN: "Invalid or expired invitation token.",
-          EXPIRED_TOKEN: "This invitation has expired.",
-          USER_ALREADY_REGISTERED: "This email is already registered.",
-        };
-        return rejectWithValue(
-          errorMap[reason] ||
-            "An unexpected error occurred during registration.",
-        );
-      }
-      return rejectWithValue(
-        "Network error: failed to complete workspace integration. Please try again.",
-      );
+      return rejectWithValue(getErrorMsg(error));
     }
   },
 );
@@ -86,9 +68,9 @@ export const signupUser = createAsyncThunk(
         localStorage.setItem("access_token", response.data.tokens.accessToken);
         return response.data;
       }
-      return rejectWithValue(response.reason);
+      return rejectWithValue(response.msg);
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.reason || "UNKNOWN_ERROR");
+      return rejectWithValue(getErrorMsg(error));
     }
   },
 );
@@ -102,10 +84,9 @@ export const loginUser = createAsyncThunk(
         localStorage.setItem("access_token", response.data.tokens.accessToken);
         return response.data;
       }
-      return rejectWithValue(response.reason);
+      return rejectWithValue(response.msg);
     } catch (error: any) {
-      console.log(error)
-      return rejectWithValue(error.response?.data?.reason || "Login failed");
+      return rejectWithValue(getErrorMsg(error));
     }
   },
 );
@@ -116,11 +97,11 @@ export const resendOtpCode = createAsyncThunk(
     try {
       const response = await AuthService.requestOtp();
       if (response.success) return;
-      return rejectWithValue(response.reason || "Failed to resend OTP.");
+      return rejectWithValue(response.msg);
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.reason || "Failed to resend OTP. Please try again.");
+      return rejectWithValue(getErrorMsg(error));
     }
-  }
+  },
 );
 
 export const verifyUserOtp = createAsyncThunk(
@@ -137,15 +118,12 @@ export const verifyUserOtp = createAsyncThunk(
         }
         return response.data;
       }
-      return rejectWithValue(response.reason);
+      return rejectWithValue(response.msg);
     } catch (error: any) {
-      return rejectWithValue(
-        error.response?.data?.reason || "Verification failed",
-      );
+      return rejectWithValue(getErrorMsg(error));
     }
   },
 );
-
 
 export const verifyResetToken = createAsyncThunk(
   "auth/verifyResetToken",
@@ -153,11 +131,11 @@ export const verifyResetToken = createAsyncThunk(
     try {
       const response = await AuthService.verifyResetToken(token);
       if (response.success) return true;
-      return rejectWithValue(response.reason || "INVALID_TOKEN");
+      return rejectWithValue(response.msg);
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.reason || "INVALID_TOKEN");
+      return rejectWithValue(getErrorMsg(error));
     }
-  }
+  },
 );
 
 export const requestPasswordResetLink = createAsyncThunk(
@@ -166,22 +144,25 @@ export const requestPasswordResetLink = createAsyncThunk(
     try {
       const response = await AuthService.forgotPassword(email);
       if (response.success) return true;
-      return rejectWithValue(response.reason || "FAILED");
+      return rejectWithValue(response.msg);
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.reason || "FAILED");
+      return rejectWithValue(getErrorMsg(error));
     }
-  }
+  },
 );
 
 export const submitPasswordReset = createAsyncThunk(
   "auth/submitPasswordReset",
-  async ({ password, token }: { password: string; token: string }, { rejectWithValue }) => {
+  async (
+    { password, token }: { password: string; token: string },
+    { rejectWithValue },
+  ) => {
     try {
       const response = await AuthService.resetPassword(password, token);
       if (response.success) return true;
-      return rejectWithValue(response.reason || "FAILED");
+      return rejectWithValue(response.msg);
     } catch (error: any) {
-      return rejectWithValue(error.response?.data?.reason || "FAILED");
+      return rejectWithValue(getErrorMsg(error));
     }
-  }
+  },
 );

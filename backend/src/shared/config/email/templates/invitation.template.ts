@@ -13,7 +13,7 @@ export function invitationTemplate(orgName: string, token: string) {
       <p>Click the button below to complete your registration setup and accept your invitation access keys:</p>
       
       <div style="margin: 24px 0;">
-        <a href="${CLIENT_URL}/organization/invitation-accept?token=${token}" style="
+        <a href="${CLIENT_URL}/invitation/accept?token=${token}" style="
           background-color: #0070f3;
           color: white;
           padding: 12px 24px;

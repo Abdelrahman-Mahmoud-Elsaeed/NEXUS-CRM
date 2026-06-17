@@ -1,14 +1,26 @@
 import { Router } from "express";
-import leadRoutes from "./leads/leads.routes";
-import tagRoutes from "./tags/tags.routes";
-import { authMiddleware, requireWorkspace } from "@/shared/middlewares";
+import { ContactController } from "./contacts.controller";
+import { asyncHandler } from "@/shared/utils/asyncHandler.util";
+import { authMiddleware, requireWorkspace, validate } from "@/shared/middlewares";
+import { createContactSchema, getContactsSchema } from "./contacts.validators";
 
 const router = Router();
+const contactController = new ContactController();
 
-router.use(authMiddleware);
-router.use(requireWorkspace);
+router.get(
+  "/",
+  authMiddleware,
+  requireWorkspace,
+  validate(getContactsSchema),
+  asyncHandler(contactController.getContacts),
+);
 
-router.use("/", leadRoutes);
-router.use("/", tagRoutes);
+router.post(
+  "/",
+  authMiddleware,
+  requireWorkspace,
+  validate(createContactSchema),
+  asyncHandler(contactController.createContact),
+);
 
 export default router;

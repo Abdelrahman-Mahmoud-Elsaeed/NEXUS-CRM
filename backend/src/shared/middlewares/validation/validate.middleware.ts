@@ -6,30 +6,33 @@ export const validate = (schema: ZodTypeAny) => {
     req: Request,
     res: Response,
     next: NextFunction,
-  ): Promise<void> => {
+  ) => {
     try {
-      const parsed = (await schema.parseAsync(req)) as Record<string, any>;
+      const parsed = await schema.parseAsync(req);
+      const data = parsed as Record<string, any>;
 
-      req.body = parsed.body;
-      req.params = parsed.params;
-
-      if (parsed.query) {
+      req.body = data.body || {};
+      req.params = data.params || {};
+      if (data.query) {
         Object.keys(req.query).forEach((key) => delete req.query[key]);
-        Object.assign(req.query, parsed.query);
+        Object.assign(req.query, data.query);
       }
+
       return next();
     } catch (error) {
       if (error instanceof ZodError) {
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
+          statusCode: 400,
           reason: "VALIDATION_ERROR",
+          msg: "Request validation failed.",
           errors: {
             formErrors: error.format()._errors,
             fieldErrors: error.flatten().fieldErrors,
           },
         });
-        return;
       }
+
       return next(error);
     }
   };

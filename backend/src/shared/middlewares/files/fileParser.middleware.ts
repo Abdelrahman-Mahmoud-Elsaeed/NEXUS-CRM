@@ -23,31 +23,37 @@ export const parseUploadedFile = (options: UploadOptions = {}) => {
         if (error instanceof MulterError) {
           switch (error.code) {
             case "LIMIT_FILE_SIZE":
-              res.status(400).json({
+              return res.status(400).json({
                 success: false,
+                statusCode: 400,
                 reason: "FILE_TOO_LARGE",
+                msg: "File size exceeds the allowed limit.",
               });
-              return;
+
             case "LIMIT_UNEXPECTED_FILE":
-              res.status(400).json({
+              return res.status(400).json({
                 success: false,
-                reason: `INVALID_FORM_FIELD_NAME: Expecting '${fieldName}'`,
+                statusCode: 400,
+                reason: "INVALID_FORM_FIELD_NAME",
+                msg: `Invalid field name. Expected '${fieldName}'.`,
               });
-              return;
+
             default:
-              res.status(400).json({
+              return res.status(400).json({
                 success: false,
-                reason: `UPLOAD_PARSE_ERROR_${error.code}`,
+                statusCode: 400,
+                reason: "UPLOAD_PARSE_ERROR",
+                msg: `Upload error: ${error.code}`,
               });
-              return;
           }
         }
 
-        res.status(500).json({
+        return res.status(500).json({
           success: false,
+          statusCode: 500,
           reason: "FILE_PARSING_FAILED",
+          msg: "Failed to process uploaded file.",
         });
-        return;
       }
 
       return next();

@@ -9,9 +9,7 @@ const strictEmail = z
   .trim()
   .email("Please enter a valid email address");
 
-const strictUuid = z
-  .string()
-  .uuid("Invalid identifier context");
+const strictUuid = z.string().uuid("Invalid identifier context");
 
 export const roleEnum = z.nativeEnum(Role, {
   message: "Role must be a valid membership tier",
@@ -22,7 +20,6 @@ export const getUserOrganizationsSchema = z.object({
     userId: strictUuid,
   }),
 });
-
 
 export const inviteUserSchema = z.object({
   params: z.object({
@@ -42,39 +39,9 @@ export const getWorkspaceInvitationsSchema = z.object({
   organizationId: strictUuid,
 });
 
-export const getWorkspaceInviteByTokenSchema = z.object({
-  params: z.object({
-    id: strictUuid,
-    token: z.string().min(1, "Invitation token is required"),
-  }),
-  organizationId: strictUuid,
-});
-
-
-export const acceptInviteSchema = z.object({
-  user: z.object({
-    userId: strictUuid,
-  }),
-  body: z.object({
-    token: z
-      .string()
-      .trim()
-      .min(1, "Invitation token string is required"),
-  }),
-});
-
 export const switchOrganizationSchema = z.object({
   body: z.object({
     organizationId: z.string().uuid("Invalid organization identifier"),
-  }),
-});
-
-export const getOrganizationMembersSchema = z.object({
-  user: z.object({
-    userId: strictUuid,
-  }),
-  params: z.object({
-    id: strictUuid,
   }),
 });
 
@@ -94,4 +61,3 @@ export const updateOrgNameSchema = z.object({
 export type UpdateOrgNameDto = z.infer<typeof updateOrgNameSchema>;
 
 export type InviteUserDto = z.infer<typeof inviteUserSchema>;
-export type AcceptInviteDto = z.infer<typeof acceptInviteSchema>;

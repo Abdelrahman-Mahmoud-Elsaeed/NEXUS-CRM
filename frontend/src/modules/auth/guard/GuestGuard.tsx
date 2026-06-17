@@ -8,7 +8,9 @@ import { initializeAuth } from "../store/auth.actions";
 
 export default function GuestGuard() {
   const dispatch = useDispatch<any>();
-  const { isAuthenticated, status } = useSelector((state: RootState) => state.auth);
+  const { isAuthenticated, status } = useSelector(
+    (state: RootState) => state.auth,
+  );
 
   useEffect(() => {
     if (status === "idle") {
@@ -25,6 +27,13 @@ export default function GuestGuard() {
   }
 
   if (isAuthenticated) {
+    const hasPendingInvitation =
+      localStorage.getItem("accept_invitation") === "true";
+
+    if (hasPendingInvitation) {
+      return <Navigate to="/accept-invitation" replace />;
+    }
+
     return <Navigate to="/" replace />;
   }
 

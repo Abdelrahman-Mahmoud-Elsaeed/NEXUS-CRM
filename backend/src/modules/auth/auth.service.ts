@@ -39,6 +39,7 @@ export class AuthService {
         success: false,
         statusCode: 409,
         reason: "EMAIL_IS_USED",
+        msg: "This email is already registered. Please sign in or use a different email.",
       };
     }
 
@@ -72,6 +73,7 @@ export class AuthService {
         success: false,
         statusCode: 404,
         reason: "INVITATION_NOT_FOUND",
+        msg: "This invitation is invalid or has expired.",
       };
     }
 
@@ -80,6 +82,7 @@ export class AuthService {
         success: false,
         statusCode: 409,
         reason: "INVITATION_ALREADY_USED",
+        msg: "This invitation has already been used.",
       };
     }
 
@@ -88,6 +91,7 @@ export class AuthService {
         success: false,
         statusCode: 410,
         reason: "INVITATION_EXPIRED",
+        msg: "This invitation has expired. Please request a new invitation.",
       };
     }
 
@@ -164,6 +168,7 @@ export class AuthService {
         success: false,
         statusCode: 401,
         reason: "INVALID_CREDENTIALS",
+        msg: "Invalid email or password.",
       };
     }
 
@@ -173,6 +178,7 @@ export class AuthService {
         success: false,
         statusCode: 401,
         reason: "INVALID_CREDENTIALS",
+        msg: "Invalid email or password.",
       };
     }
 
@@ -186,7 +192,7 @@ export class AuthService {
         success: false,
         statusCode: 403,
         reason: "EMAIL_NOT_VERIFIED",
-        data: mapUser(user)
+        data: mapUser(user),
       };
     }
 
@@ -209,17 +215,14 @@ export class AuthService {
         success: false,
         statusCode: 404,
         reason: "USER_NOT_FOUND",
+        msg: "User not found.",
       };
     }
 
     const token = generateResetToken();
     await storeResetToken(user.id, token, 60 * 15);
 
-    emailService.sendResetPassword(
-      user.email,
-      user.name || "User",
-      token,
-    );
+    emailService.sendResetPassword(user.email, user.name || "User", token);
 
     return {
       success: true,
@@ -239,6 +242,7 @@ export class AuthService {
         success: false,
         statusCode: 400,
         reason: "INVALID_TOKEN",
+        msg: "Invalid or missing token.",
       };
     }
 
@@ -257,6 +261,7 @@ export class AuthService {
         success: false,
         statusCode: 404,
         reason: "USER_NOT_FOUND",
+        msg: "User not found.",
       };
     }
 
@@ -266,6 +271,7 @@ export class AuthService {
         success: false,
         statusCode: 400,
         reason: "PASSWORD_REUSE_NOT_ALLOWED",
+        msg: "New password must be different from your current password.",
       };
     }
 
@@ -276,6 +282,7 @@ export class AuthService {
           success: false,
           statusCode: 400,
           reason: "PASSWORD_REUSE_NOT_ALLOWED",
+          msg: "You cannot reuse a previously used password.",
         };
       }
     }
@@ -311,7 +318,11 @@ export class AuthService {
       return {
         success: false,
         statusCode: 400,
-        reason: otpResult.reason 
+        reason: otpResult.reason,
+        msg:
+          otpResult.reason === "OTP_EXPIRED"
+            ? "OTP has expired. Please request a new one."
+            : "Invalid OTP. Please try again.",
       };
     }
 
@@ -361,6 +372,7 @@ export class AuthService {
         success: false,
         statusCode: 400,
         reason: "INVALID_TOKEN",
+        msg: "Invalid or missing token.",
       };
     }
 

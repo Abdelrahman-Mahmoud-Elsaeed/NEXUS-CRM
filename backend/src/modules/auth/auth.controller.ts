@@ -15,6 +15,7 @@ export class AuthController {
       return res.status(result.statusCode).json({
         success: false,
         reason: result.reason,
+        msg: result.msg
       });
     }
 
@@ -41,6 +42,7 @@ export class AuthController {
       res.status(serviceResult.statusCode).json({
         success: false,
         reason: serviceResult.reason,
+        msg: serviceResult.msg
       });
       return;
     }
@@ -88,6 +90,7 @@ export class AuthController {
       return res.status(result.statusCode).json({
         success: false,
         reason: result.reason,
+        msg: result.msg
       });
     }
 
@@ -114,6 +117,7 @@ export class AuthController {
       return res.status(result.statusCode).json({
         success: false,
         reason: result.reason,
+        msg: result.msg
       });
     }
 
@@ -130,6 +134,8 @@ export class AuthController {
       return res.status(result.statusCode).json({
         success: false,
         reason: result.reason,
+        msg: result.msg
+
       });
     }
 
@@ -148,6 +154,8 @@ export class AuthController {
       return res.status(result.statusCode).json({
         success: false,
         reason: result.reason,
+        msg: result.msg
+
       });
     }
 
@@ -183,6 +191,8 @@ export class AuthController {
       return res.status(result.statusCode).json({
         success: false,
         reason: result.reason,
+        msg: result.msg
+
       });
     }
 
@@ -214,6 +224,7 @@ export class AuthController {
       return res.status(result.statusCode).json({
         success: false,
         reason: result.reason,
+        msg: result.msg
       });
     }
 
