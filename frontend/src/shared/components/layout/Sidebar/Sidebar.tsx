@@ -31,8 +31,16 @@ import {
 export function Sidebar() {
   const location = useLocation();
 
+  // Helper utility to calculate sub-route matches safely
+  const checkIsActive = (to: string) => {
+    if (to === "/") {
+      return location.pathname === "/";
+    }
+    return location.pathname === to || location.pathname.startsWith(`${to}/`);
+  };
+
   const getLinkClass = (to: string) => {
-    const isActive = location.pathname === to;
+    const isActive = checkIsActive(to);
     return cn(
       "flex items-center gap-3 px-3 py-1.5 rounded-lg transition-all duration-200 group w-full text-left",
       isActive
@@ -42,7 +50,7 @@ export function Sidebar() {
   };
 
   const getIconClass = (to: string) => {
-    const isActive = location.pathname === to;
+    const isActive = checkIsActive(to);
     return cn(
       "h-4 w-4 transition-colors shrink-0",
       isActive
@@ -50,7 +58,6 @@ export function Sidebar() {
         : "text-on-surface-variant dark:text-surface-variant group-hover:text-primary",
     );
   };
-
   return (
     <nav className="hidden md:flex h-full bg-surface-container-low dark:bg-inverse-surface flex-col py-2 px-2 w-64  border-outline-variant dark:border-outline z-20 font-sans ">
       {/* Logo Branding — Condensed vertical spacing */}
@@ -142,7 +149,10 @@ export function Sidebar() {
           <p className="font-label-sm text-[11px] text-outline px-3 mb-1 uppercase tracking-wider opacity-85">
             Team & Management
           </p>
-          <Link to="/organization/team" className={getLinkClass("/organization/team")}>
+          <Link
+            to="/organization/team"
+            className={getLinkClass("/organization/team")}
+          >
             <Users className={getIconClass("/organization/team")} />
             <span className="font-label-md text-label-md">Team & Access</span>
           </Link>

@@ -17,8 +17,8 @@ import { selectInvitations } from "@/modules/invitation/store/invitations.slice"
 
 
 const ROLE_OPTIONS: RoleSelectOption[] = [
-  { label: "Member", value: "MEMBER" },
-  { label: "Admin", value: "ADMIN" },
+  { label: "Member", value: "Member" },
+  { label: "Admin", value: "Admin" },
 ];
 
 const getInvitationStatus = (invitation: InvitationDto) => {
@@ -83,7 +83,7 @@ export function useInvitationsView(): UseInvitationsViewResult {
       resolver: zodResolver(invitationFormSchema),
       defaultValues: {
         email: "",
-        role: "MEMBER",
+        role: "Member",
       },
       mode: "onTouched",
     });

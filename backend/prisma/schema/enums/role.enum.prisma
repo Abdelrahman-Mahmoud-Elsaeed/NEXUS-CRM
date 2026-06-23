@@ -1,20 +1,20 @@
 enum Role {
-  OWNER
-  ADMIN
+  Owner
+  Admin
 
-  SALES_MANAGER
-  SALES_AGENT
+  SalesManager
+  SalesAgent
 
-  SUPPORT_MANAGER
-  SUPPORT_AGENT
+  SupportManager
+  SupportAgent
 
-  MARKETING_MANAGER
-  MARKETING_AGENT
+  MarketingManager
+  MarketingAgent
 
   HR
 
-  ACCOUNTANT
+  Accountant
 
-  VIEWER
-  MEMBER
+  Viewer
+  Member
 }

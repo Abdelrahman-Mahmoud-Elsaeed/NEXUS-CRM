@@ -51,6 +51,7 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  ContactChannel: 'ContactChannel',
   Automation: 'Automation',
   Company: 'Company',
   Contact: 'Contact',
@@ -84,6 +85,18 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const ContactChannelScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  value: 'value',
+  contactId: 'contactId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContactChannelScalarFieldEnum = (typeof ContactChannelScalarFieldEnum)[keyof typeof ContactChannelScalarFieldEnum]
+
+
 export const AutomationScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -105,7 +118,20 @@ export const CompanyScalarFieldEnum = {
   id: 'id',
   name: 'name',
   domain: 'domain',
+  industry: 'industry',
+  phone: 'phone',
+  address: 'address',
   logoUrl: 'logoUrl',
+  status: 'status',
+  source: 'source',
+  employeeCount: 'employeeCount',
+  annualRevenue: 'annualRevenue',
+  linkedin: 'linkedin',
+  twitter: 'twitter',
+  instagram: 'instagram',
+  whatsapp: 'whatsapp',
+  email: 'email',
+  notes: 'notes',
   organizationId: 'organizationId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -132,7 +158,6 @@ export const ContactScalarFieldEnum = {
   organizationId: 'organizationId',
   createdById: 'createdById',
   assignedToId: 'assignedToId',
-  channels: 'channels',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

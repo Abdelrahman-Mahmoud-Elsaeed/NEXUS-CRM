@@ -82,8 +82,8 @@ export class InvitationService {
       email: invitation.email,
       workspaceName: invitation.organization.name,
       inviterName: invitation.invitedBy?.name ?? null,
-      inviterRole: inviterRole?.role || "MEMBER",
-      assignedRole: invitation.role || "MEMBER",
+      inviterRole: inviterRole?.role || "Member",
+      assignedRole: invitation.role || "Member",
       token: invitation.token,
       expiresAt: invitation.expiresAt,
       isExistingUser: invitation.isExistingUser,
@@ -114,7 +114,7 @@ export class InvitationService {
 
     if (
       !inviterMembership ||
-      !["OWNER", "ADMIN"].includes(inviterMembership.role)
+      !["Owner", "Admin"].includes(inviterMembership.role)
     ) {
       return {
         success: false,

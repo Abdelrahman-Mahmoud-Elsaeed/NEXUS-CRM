@@ -18,18 +18,18 @@ export type ApiResponse<T, E extends string = string> =
 // Enums & Constants
 // ==========================================
 export const Role = {
-  OWNER: "OWNER",
-  ADMIN: "ADMIN",
-  SALES_MANAGER: "SALES_MANAGER",
-  SALES_AGENT: "SALES_AGENT",
-  SUPPORT_MANAGER: "SUPPORT_MANAGER",
-  SUPPORT_AGENT: "SUPPORT_AGENT",
-  MARKETING_MANAGER: "MARKETING_MANAGER",
-  MARKETING_AGENT: "MARKETING_AGENT",
+  Owner: "Owner",
+  Admin: "Admin",
+  SalesManager: "Sales Manager",
+  SalesAgent: "Sales Agent",
+  SupportManager: "Support Manager",
+  SupportAgent: "Support Agent",
+  MarketingManager: "Marketing Manager",
+  MarketingAgent: "Marketing Agent",
   HR: "HR",
-  ACCOUNTANT: "ACCOUNTANT",
-  VIEWER: "VIEWER",
-  MEMBER: "MEMBER",
+  Accountant: "Accountant",
+  Viewer: "Viewer",
+  Member: "Member",
 } as const;
 
 export type Role = (typeof Role)[keyof typeof Role];

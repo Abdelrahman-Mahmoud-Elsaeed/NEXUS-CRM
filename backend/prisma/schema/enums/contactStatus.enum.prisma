@@ -1,5 +1,5 @@
 enum ContactStatus {
-  ACTIVE
-  PROSPECT
-  INACTIVE
+  Active
+  Prospect
+  Inactive
 }

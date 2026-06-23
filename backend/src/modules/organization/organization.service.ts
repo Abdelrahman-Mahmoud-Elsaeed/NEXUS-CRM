@@ -49,7 +49,7 @@ export class OrganizationService {
       };
     }
 
-    if (!["OWNER", "ADMIN"].includes(membership.role)) {
+    if (!["Owner", "Admin"].includes(membership.role)) {
       return {
         success: false,
         statusCode: 403,

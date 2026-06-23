@@ -1,5 +1,5 @@
 enum TaskPriority {
-  LOW
-  MEDIUM
-  HIGH
+  Low
+  Medium
+  High
 }

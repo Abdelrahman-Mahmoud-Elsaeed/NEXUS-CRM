@@ -18,6 +18,11 @@ export { Prisma }
 export * as $Enums from './enums'
 export * from './enums';
 /**
+ * Model ContactChannel
+ * 
+ */
+export type ContactChannel = Prisma.ContactChannelModel
+/**
  * Model Automation
  * 
  */

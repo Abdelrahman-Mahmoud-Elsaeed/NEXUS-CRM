@@ -25,7 +25,7 @@ const getErrorMsg = (error: unknown, fallback: string) => {
 export const createWorkspaceInvitation = createAsyncThunk(
   "invitations/create",
   async (
-    payload: { orgId: string; email: string; role: "MEMBER" | "ADMIN" },
+    payload: { orgId: string; email: string; role: "Member" | "Admin" },
     { rejectWithValue },
   ) => {
     try {

@@ -14,7 +14,7 @@ export interface Organization {
   id: string;
   name: string;
   avatar: string | null;
-  role: "OWNER" | "ADMIN" | "MEMBER";
+  role: "Owner" | "Admin" | "Member";
   createdAt: string;
 }
 
@@ -35,13 +35,13 @@ export interface OrganizationMember {
   userId: string;
   name: string;
   email: string;
-  role: "OWNER" | "ADMIN" | "MEMBER";
+  role: "Owner" | "Admin" | "Member";
   avatar: string | null;
 }
 
 export interface InviteUserRequestDto {
   email: string;
-  role: "ADMIN" | "MEMBER";
+  role: "Admin" | "Member";
 }
 
 export interface AcceptInviteRequestDto {

@@ -52,7 +52,7 @@ const clearWorkspacePersistence = () => {
 const handleIncomingOrgs = (
   state: OrgState,
   organizations: any[],
-  defaultRole: "OWNER" | "MEMBER" = "MEMBER",
+  defaultRole: "Owner" | "Member" = "Member",
 ) => {
   state.organizations = organizations.map((org: any) => ({
     id: org.id,
@@ -99,7 +99,7 @@ export const orgSlice = createSlice({
         state.status = "succeeded";
 
         const payloadData = action.payload || { organizations: [] };
-        handleIncomingOrgs(state, payloadData.organizations, "MEMBER");
+        handleIncomingOrgs(state, payloadData.organizations, "Member");
       })
       .addCase(fetchUserOrganizations.rejected, (state, action) => {
         state.status = "failed";
@@ -138,14 +138,14 @@ export const orgSlice = createSlice({
         handleIncomingOrgs(
           state,
           action.payload.user.organizations || [],
-          "OWNER",
+          "Owner",
         );
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         handleIncomingOrgs(
           state,
           action.payload.user.organizations || [],
-          "MEMBER",
+          "Member",
         );
       })
       .addCase(initializeAuth.fulfilled, (state) => {

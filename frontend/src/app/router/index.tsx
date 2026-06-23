@@ -23,8 +23,13 @@ import SetupWorkspace from "@/modules/auth/pages/SetupWorkspace/SetupWorkspace";
 import Dashboard from "@/modules/dashboard/pages/Dashboard";
 import { InvitationAcceptGateway } from "@/modules/invitation/guard/InvitationAcceptGateway";
 import TeamManagement from "@/modules/team/page/TeamManagement";
-import { Contacts } from "@/modules/contact/page/Contacts";
-import { Companies } from "@/modules/companie/page/Companies";
+import { Contacts } from "@/modules/contacts/page/Contacts";
+import { ContactDetails } from "@/modules/contacts/page/ContactDetails";
+import { Companies } from "@/modules/companies/page/Companies";
+import { CompanyDetails } from "@/modules/companies/page/CompanyDetails";
+import { CompanyDeals } from "@/modules/companies/page/CompanyDeals";
+import { Deals } from "@/modules/deals/page/Deals";
+import { DealDetails } from "@/modules/deals/page/DealDetails";
 
 
 export const router = createBrowserRouter([
@@ -121,14 +126,28 @@ export const router = createBrowserRouter([
             element: <Contacts />,
           },
           {
+            path: "/contacts/:id",
+            element: <ContactDetails />,
+          },
+          {
             path: "/companies",
             element: <Companies/>,
           },
           {
+            path: "/companies/:id",
+            element: <CompanyDetails />,
+          },
+          {
+            path: "/companies/:companyId/deals",
+            element: <CompanyDeals />,
+          },
+          {
             path: "/deals",
-            element: (
-              <div className="p-6">Interactive Deals Kanban Board Pipeline</div>
-            ),
+            element: <Deals />,
+          },
+          {
+            path: "/deals/:id",
+            element: <DealDetails />,
           },
           {
             path: "/tasks",

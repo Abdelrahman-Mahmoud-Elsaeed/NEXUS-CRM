@@ -1,0 +1,14 @@
+model ContactChannel {
+  id        String      @id @default(uuid()) @db.Uuid
+  type      ChannelType
+  value     String
+
+  contactId String      @map("contact_id") @db.Uuid
+  contact   Contact     @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+
+  @@unique([contactId, type])
+  @@map("contact_channels")
+}

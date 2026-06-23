@@ -12,7 +12,7 @@ export const createUserQuery = (
       name: data.name,
       organizations: {
         create: {
-          role: "OWNER",
+          role: "Owner",
           organization: {
             create: {
               name: `${data.name}'s Organization`,

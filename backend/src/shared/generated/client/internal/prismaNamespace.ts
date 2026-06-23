@@ -384,6 +384,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  ContactChannel: 'ContactChannel',
   Automation: 'Automation',
   Company: 'Company',
   Contact: 'Contact',
@@ -414,10 +415,84 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "automation" | "company" | "contact" | "contactTag" | "deal" | "file" | "invitation" | "organization" | "organizationUser" | "passwordHistory" | "pipeline" | "pipelineStage" | "tag" | "task" | "user"
+    modelProps: "contactChannel" | "automation" | "company" | "contact" | "contactTag" | "deal" | "file" | "invitation" | "organization" | "organizationUser" | "passwordHistory" | "pipeline" | "pipelineStage" | "tag" | "task" | "user"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    ContactChannel: {
+      payload: Prisma.$ContactChannelPayload<ExtArgs>
+      fields: Prisma.ContactChannelFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ContactChannelFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContactChannelPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ContactChannelFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContactChannelPayload>
+        }
+        findFirst: {
+          args: Prisma.ContactChannelFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContactChannelPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ContactChannelFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContactChannelPayload>
+        }
+        findMany: {
+          args: Prisma.ContactChannelFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContactChannelPayload>[]
+        }
+        create: {
+          args: Prisma.ContactChannelCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContactChannelPayload>
+        }
+        createMany: {
+          args: Prisma.ContactChannelCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ContactChannelCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContactChannelPayload>[]
+        }
+        delete: {
+          args: Prisma.ContactChannelDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContactChannelPayload>
+        }
+        update: {
+          args: Prisma.ContactChannelUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContactChannelPayload>
+        }
+        deleteMany: {
+          args: Prisma.ContactChannelDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ContactChannelUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ContactChannelUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContactChannelPayload>[]
+        }
+        upsert: {
+          args: Prisma.ContactChannelUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ContactChannelPayload>
+        }
+        aggregate: {
+          args: Prisma.ContactChannelAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContactChannel>
+        }
+        groupBy: {
+          args: Prisma.ContactChannelGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContactChannelGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ContactChannelCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ContactChannelCountAggregateOutputType> | number
+        }
+      }
+    }
     Automation: {
       payload: Prisma.$AutomationPayload<ExtArgs>
       fields: Prisma.AutomationFieldRefs
@@ -1567,6 +1642,18 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const ContactChannelScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  value: 'value',
+  contactId: 'contactId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ContactChannelScalarFieldEnum = (typeof ContactChannelScalarFieldEnum)[keyof typeof ContactChannelScalarFieldEnum]
+
+
 export const AutomationScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -1588,7 +1675,20 @@ export const CompanyScalarFieldEnum = {
   id: 'id',
   name: 'name',
   domain: 'domain',
+  industry: 'industry',
+  phone: 'phone',
+  address: 'address',
   logoUrl: 'logoUrl',
+  status: 'status',
+  source: 'source',
+  employeeCount: 'employeeCount',
+  annualRevenue: 'annualRevenue',
+  linkedin: 'linkedin',
+  twitter: 'twitter',
+  instagram: 'instagram',
+  whatsapp: 'whatsapp',
+  email: 'email',
+  notes: 'notes',
   organizationId: 'organizationId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1615,7 +1715,6 @@ export const ContactScalarFieldEnum = {
   organizationId: 'organizationId',
   createdById: 'createdById',
   assignedToId: 'assignedToId',
-  channels: 'channels',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1849,6 +1948,34 @@ export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
 
 
 /**
+ * Reference to a field of type 'ChannelType'
+ */
+export type EnumChannelTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChannelType'>
+    
+
+
+/**
+ * Reference to a field of type 'ChannelType[]'
+ */
+export type ListEnumChannelTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChannelType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime'
+ */
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'DateTime[]'
+ */
+export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -1870,16 +1997,30 @@ export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$Prisma
 
 
 /**
- * Reference to a field of type 'DateTime'
+ * Reference to a field of type 'Int'
  */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
 /**
- * Reference to a field of type 'DateTime[]'
+ * Reference to a field of type 'Int[]'
  */
-export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt'
+ */
+export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt[]'
+ */
+export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
     
 
 
@@ -1936,20 +2077,6 @@ export type EnumDealStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$Prism
  * Reference to a field of type 'DealStatus[]'
  */
 export type ListEnumDealStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DealStatus[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -2118,6 +2245,7 @@ export type PrismaClientOptions = ({
   queryPlanCacheMaxSize?: number
 }
 export type GlobalOmitConfig = {
+  contactChannel?: Prisma.ContactChannelOmit
   automation?: Prisma.AutomationOmit
   company?: Prisma.CompanyOmit
   contact?: Prisma.ContactOmit

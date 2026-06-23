@@ -31,7 +31,7 @@ export const invitationFormSchema = z.object({
     .trim()
     .min(1, "Email is required")
     .email("Enter a valid email address"),
-  role: z.enum(["MEMBER", "ADMIN"]),
+  role: z.enum(["Member", "Admin"]),
 });
 
 export const memberInviteFormSchema = invitationFormSchema; // Reusable structural match

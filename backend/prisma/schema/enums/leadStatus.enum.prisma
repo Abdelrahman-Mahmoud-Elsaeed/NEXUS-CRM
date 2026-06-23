@@ -1,9 +1,9 @@
 enum LeadStatus {
-  NEW
-  CONTACTED
-  QUALIFIED
-  PROPOSAL_SENT
-  NEGOTIATION
-  WON
-  LOST
+  New
+  Contacted
+  Qualified
+  ProposalSent
+  Negotiation
+  Won
+  Lost
 }

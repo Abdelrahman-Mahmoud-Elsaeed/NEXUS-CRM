@@ -32,7 +32,7 @@ router.post(
   "/:id/invites",
   requireWorkspace,
   validate(inviteUserSchema),
-  requireRole(["OWNER", "ADMIN"]),
+  requireRole(["Owner", "Admin"]),
   asyncHandler(controller.inviteUser),
 );
 

@@ -10,77 +10,90 @@
 */
 
 export const TaskPriority = {
-  LOW: 'LOW',
-  MEDIUM: 'MEDIUM',
-  HIGH: 'HIGH'
+  Low: 'Low',
+  Medium: 'Medium',
+  High: 'High'
 } as const
 
 export type TaskPriority = (typeof TaskPriority)[keyof typeof TaskPriority]
 
 
 export const TaskStatus = {
-  PENDING: 'PENDING',
-  IN_PROGRESS: 'IN_PROGRESS',
-  COMPLETED: 'COMPLETED',
-  SKIPPED: 'SKIPPED'
+  Pending: 'Pending',
+  InProgress: 'InProgress',
+  Completed: 'Completed',
+  Skipped: 'Skipped'
 } as const
 
 export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
 
 
+export const ChannelType = {
+  Email: 'Email',
+  AlternativeEmail: 'AlternativeEmail',
+  Phone: 'Phone',
+  WhatsApp: 'WhatsApp',
+  LinkedIn: 'LinkedIn',
+  Instagram: 'Instagram',
+  Twitter: 'Twitter'
+} as const
+
+export type ChannelType = (typeof ChannelType)[keyof typeof ChannelType]
+
+
 export const ContactStatus = {
-  ACTIVE: 'ACTIVE',
-  PROSPECT: 'PROSPECT',
-  INACTIVE: 'INACTIVE'
+  Active: 'Active',
+  Prospect: 'Prospect',
+  Inactive: 'Inactive'
 } as const
 
 export type ContactStatus = (typeof ContactStatus)[keyof typeof ContactStatus]
 
 
 export const DealStatus = {
-  OPEN: 'OPEN',
-  WON: 'WON',
-  LOST: 'LOST'
+  Open: 'Open',
+  Won: 'Won',
+  Lost: 'Lost'
 } as const
 
 export type DealStatus = (typeof DealStatus)[keyof typeof DealStatus]
 
 
 export const LeadPriority = {
-  LOW: 'LOW',
-  MEDIUM: 'MEDIUM',
-  HIGH: 'HIGH'
+  Low: 'Low',
+  Medium: 'Medium',
+  High: 'High'
 } as const
 
 export type LeadPriority = (typeof LeadPriority)[keyof typeof LeadPriority]
 
 
 export const LeadStatus = {
-  NEW: 'NEW',
-  CONTACTED: 'CONTACTED',
-  QUALIFIED: 'QUALIFIED',
-  PROPOSAL_SENT: 'PROPOSAL_SENT',
-  NEGOTIATION: 'NEGOTIATION',
-  WON: 'WON',
-  LOST: 'LOST'
+  New: 'New',
+  Contacted: 'Contacted',
+  Qualified: 'Qualified',
+  ProposalSent: 'ProposalSent',
+  Negotiation: 'Negotiation',
+  Won: 'Won',
+  Lost: 'Lost'
 } as const
 
 export type LeadStatus = (typeof LeadStatus)[keyof typeof LeadStatus]
 
 
 export const Role = {
-  OWNER: 'OWNER',
-  ADMIN: 'ADMIN',
-  SALES_MANAGER: 'SALES_MANAGER',
-  SALES_AGENT: 'SALES_AGENT',
-  SUPPORT_MANAGER: 'SUPPORT_MANAGER',
-  SUPPORT_AGENT: 'SUPPORT_AGENT',
-  MARKETING_MANAGER: 'MARKETING_MANAGER',
-  MARKETING_AGENT: 'MARKETING_AGENT',
+  Owner: 'Owner',
+  Admin: 'Admin',
+  SalesManager: 'SalesManager',
+  SalesAgent: 'SalesAgent',
+  SupportManager: 'SupportManager',
+  SupportAgent: 'SupportAgent',
+  MarketingManager: 'MarketingManager',
+  MarketingAgent: 'MarketingAgent',
   HR: 'HR',
-  ACCOUNTANT: 'ACCOUNTANT',
-  VIEWER: 'VIEWER',
-  MEMBER: 'MEMBER'
+  Accountant: 'Accountant',
+  Viewer: 'Viewer',
+  Member: 'Member'
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]

@@ -126,7 +126,7 @@ export class AuthService {
         data: {
           userId: newUser.id,
           organizationId: personalOrg.id,
-          role: "OWNER",
+          role: "Owner",
         },
       });
 

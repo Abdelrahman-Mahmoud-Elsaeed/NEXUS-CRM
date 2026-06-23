@@ -17,8 +17,8 @@ import { selectInvitations } from "@/modules/invitation/store/invitations.slice"
 import { createWorkspaceInvitation } from "@/modules/invitation/store/invitations.actions";
 
 const ROLE_OPTIONS: MemberRoleOption[] = [
-  { label: "Member", value: "MEMBER" },
-  { label: "Admin", value: "ADMIN" },
+  { label: "Member", value: "Member" },
+  { label: "Admin", value: "Admin" },
 ];
 
 export function useMembersView() {
@@ -46,7 +46,7 @@ export function useMembersView() {
   const { register, handleSubmit, reset, formState } =
     useForm<MemberInviteFormValues>({
       resolver: zodResolver(memberInviteFormSchema),
-      defaultValues: { email: "", role: "MEMBER" },
+      defaultValues: { email: "", role: "Member" },
       mode: "onTouched", 
     });
 
@@ -78,7 +78,7 @@ export function useMembersView() {
       if (createWorkspaceInvitation.fulfilled.match(result)) {
         reset({
           email: "",
-          role: "MEMBER",
+          role: "Member",
         });
 
         setFormKey((prev) => prev + 1);

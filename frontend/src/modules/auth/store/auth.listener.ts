@@ -1,8 +1,8 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
 import { logout } from "./auth.slice";
 import { signupUser, loginUser, initializeAuth } from "./auth.actions";
-import { fetchUserOrganizations, configureWorkspace } from "@/modules/organization/store/org.actions";
-import { setOrganization } from "@/modules/organization/store/org.slice";
+import { fetchUserOrganizations, configureWorkspace } from "@/modules/team/store/org.actions";
+import { setOrganization } from "@/modules/team/store/org.slice";
 import type { RootState } from "@/app/store";
 
 export const authListenerMiddleware = createListenerMiddleware();

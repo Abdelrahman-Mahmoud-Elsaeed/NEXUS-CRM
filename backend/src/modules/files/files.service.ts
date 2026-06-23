@@ -11,6 +11,10 @@ import crypto from "crypto";
 import he from "he";
 
 export class FilesService {
+  private getImageCacheControl(mimeType: string): string | undefined {
+    return mimeType.startsWith("image/") ? "31536000" : undefined;
+  }
+
   async uploadFile(
     userId: string,
     organizationId: string,
@@ -29,6 +33,7 @@ export class FilesService {
       .from(CRM_BUCKET)
       .upload(storagePath, fileBuffer, {
         contentType: mimeType,
+        cacheControl: this.getImageCacheControl(mimeType),
         upsert: false,
       });
 

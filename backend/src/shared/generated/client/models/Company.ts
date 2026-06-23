@@ -20,15 +20,40 @@ export type CompanyModel = runtime.Types.Result.DefaultSelection<Prisma.$Company
 
 export type AggregateCompany = {
   _count: CompanyCountAggregateOutputType | null
+  _avg: CompanyAvgAggregateOutputType | null
+  _sum: CompanySumAggregateOutputType | null
   _min: CompanyMinAggregateOutputType | null
   _max: CompanyMaxAggregateOutputType | null
+}
+
+export type CompanyAvgAggregateOutputType = {
+  employeeCount: number | null
+  annualRevenue: number | null
+}
+
+export type CompanySumAggregateOutputType = {
+  employeeCount: number | null
+  annualRevenue: bigint | null
 }
 
 export type CompanyMinAggregateOutputType = {
   id: string | null
   name: string | null
   domain: string | null
+  industry: string | null
+  phone: string | null
+  address: string | null
   logoUrl: string | null
+  status: string | null
+  source: string | null
+  employeeCount: number | null
+  annualRevenue: bigint | null
+  linkedin: string | null
+  twitter: string | null
+  instagram: string | null
+  whatsapp: string | null
+  email: string | null
+  notes: string | null
   organizationId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -38,7 +63,20 @@ export type CompanyMaxAggregateOutputType = {
   id: string | null
   name: string | null
   domain: string | null
+  industry: string | null
+  phone: string | null
+  address: string | null
   logoUrl: string | null
+  status: string | null
+  source: string | null
+  employeeCount: number | null
+  annualRevenue: bigint | null
+  linkedin: string | null
+  twitter: string | null
+  instagram: string | null
+  whatsapp: string | null
+  email: string | null
+  notes: string | null
   organizationId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -48,7 +86,20 @@ export type CompanyCountAggregateOutputType = {
   id: number
   name: number
   domain: number
+  industry: number
+  phone: number
+  address: number
   logoUrl: number
+  status: number
+  source: number
+  employeeCount: number
+  annualRevenue: number
+  linkedin: number
+  twitter: number
+  instagram: number
+  whatsapp: number
+  email: number
+  notes: number
   organizationId: number
   createdAt: number
   updatedAt: number
@@ -56,11 +107,34 @@ export type CompanyCountAggregateOutputType = {
 }
 
 
+export type CompanyAvgAggregateInputType = {
+  employeeCount?: true
+  annualRevenue?: true
+}
+
+export type CompanySumAggregateInputType = {
+  employeeCount?: true
+  annualRevenue?: true
+}
+
 export type CompanyMinAggregateInputType = {
   id?: true
   name?: true
   domain?: true
+  industry?: true
+  phone?: true
+  address?: true
   logoUrl?: true
+  status?: true
+  source?: true
+  employeeCount?: true
+  annualRevenue?: true
+  linkedin?: true
+  twitter?: true
+  instagram?: true
+  whatsapp?: true
+  email?: true
+  notes?: true
   organizationId?: true
   createdAt?: true
   updatedAt?: true
@@ -70,7 +144,20 @@ export type CompanyMaxAggregateInputType = {
   id?: true
   name?: true
   domain?: true
+  industry?: true
+  phone?: true
+  address?: true
   logoUrl?: true
+  status?: true
+  source?: true
+  employeeCount?: true
+  annualRevenue?: true
+  linkedin?: true
+  twitter?: true
+  instagram?: true
+  whatsapp?: true
+  email?: true
+  notes?: true
   organizationId?: true
   createdAt?: true
   updatedAt?: true
@@ -80,7 +167,20 @@ export type CompanyCountAggregateInputType = {
   id?: true
   name?: true
   domain?: true
+  industry?: true
+  phone?: true
+  address?: true
   logoUrl?: true
+  status?: true
+  source?: true
+  employeeCount?: true
+  annualRevenue?: true
+  linkedin?: true
+  twitter?: true
+  instagram?: true
+  whatsapp?: true
+  email?: true
+  notes?: true
   organizationId?: true
   createdAt?: true
   updatedAt?: true
@@ -125,6 +225,18 @@ export type CompanyAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: CompanyAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: CompanySumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: CompanyMinAggregateInputType
@@ -155,6 +267,8 @@ export type CompanyGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: CompanyCountAggregateInputType | true
+  _avg?: CompanyAvgAggregateInputType
+  _sum?: CompanySumAggregateInputType
   _min?: CompanyMinAggregateInputType
   _max?: CompanyMaxAggregateInputType
 }
@@ -163,11 +277,26 @@ export type CompanyGroupByOutputType = {
   id: string
   name: string
   domain: string | null
+  industry: string | null
+  phone: string | null
+  address: string | null
   logoUrl: string | null
+  status: string
+  source: string
+  employeeCount: number | null
+  annualRevenue: bigint | null
+  linkedin: string | null
+  twitter: string | null
+  instagram: string | null
+  whatsapp: string | null
+  email: string | null
+  notes: string | null
   organizationId: string
   createdAt: Date
   updatedAt: Date
   _count: CompanyCountAggregateOutputType | null
+  _avg: CompanyAvgAggregateOutputType | null
+  _sum: CompanySumAggregateOutputType | null
   _min: CompanyMinAggregateOutputType | null
   _max: CompanyMaxAggregateOutputType | null
 }
@@ -194,26 +323,52 @@ export type CompanyWhereInput = {
   id?: Prisma.UuidFilter<"Company"> | string
   name?: Prisma.StringFilter<"Company"> | string
   domain?: Prisma.StringNullableFilter<"Company"> | string | null
+  industry?: Prisma.StringNullableFilter<"Company"> | string | null
+  phone?: Prisma.StringNullableFilter<"Company"> | string | null
+  address?: Prisma.StringNullableFilter<"Company"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Company"> | string | null
+  status?: Prisma.StringFilter<"Company"> | string
+  source?: Prisma.StringFilter<"Company"> | string
+  employeeCount?: Prisma.IntNullableFilter<"Company"> | number | null
+  annualRevenue?: Prisma.BigIntNullableFilter<"Company"> | bigint | number | null
+  linkedin?: Prisma.StringNullableFilter<"Company"> | string | null
+  twitter?: Prisma.StringNullableFilter<"Company"> | string | null
+  instagram?: Prisma.StringNullableFilter<"Company"> | string | null
+  whatsapp?: Prisma.StringNullableFilter<"Company"> | string | null
+  email?: Prisma.StringNullableFilter<"Company"> | string | null
+  notes?: Prisma.StringNullableFilter<"Company"> | string | null
   organizationId?: Prisma.UuidFilter<"Company"> | string
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   contacts?: Prisma.ContactListRelationFilter
-  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   deals?: Prisma.DealListRelationFilter
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
 }
 
 export type CompanyOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   domain?: Prisma.SortOrderInput | Prisma.SortOrder
+  industry?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  employeeCount?: Prisma.SortOrderInput | Prisma.SortOrder
+  annualRevenue?: Prisma.SortOrderInput | Prisma.SortOrder
+  linkedin?: Prisma.SortOrderInput | Prisma.SortOrder
+  twitter?: Prisma.SortOrderInput | Prisma.SortOrder
+  instagram?: Prisma.SortOrderInput | Prisma.SortOrder
+  whatsapp?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   contacts?: Prisma.ContactOrderByRelationAggregateInput
-  organization?: Prisma.OrganizationOrderByWithRelationInput
   deals?: Prisma.DealOrderByRelationAggregateInput
+  organization?: Prisma.OrganizationOrderByWithRelationInput
 }
 
 export type CompanyWhereUniqueInput = Prisma.AtLeast<{
@@ -223,26 +378,54 @@ export type CompanyWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.CompanyWhereInput[]
   NOT?: Prisma.CompanyWhereInput | Prisma.CompanyWhereInput[]
   name?: Prisma.StringFilter<"Company"> | string
+  industry?: Prisma.StringNullableFilter<"Company"> | string | null
+  phone?: Prisma.StringNullableFilter<"Company"> | string | null
+  address?: Prisma.StringNullableFilter<"Company"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Company"> | string | null
+  status?: Prisma.StringFilter<"Company"> | string
+  source?: Prisma.StringFilter<"Company"> | string
+  employeeCount?: Prisma.IntNullableFilter<"Company"> | number | null
+  annualRevenue?: Prisma.BigIntNullableFilter<"Company"> | bigint | number | null
+  linkedin?: Prisma.StringNullableFilter<"Company"> | string | null
+  twitter?: Prisma.StringNullableFilter<"Company"> | string | null
+  instagram?: Prisma.StringNullableFilter<"Company"> | string | null
+  whatsapp?: Prisma.StringNullableFilter<"Company"> | string | null
+  email?: Prisma.StringNullableFilter<"Company"> | string | null
+  notes?: Prisma.StringNullableFilter<"Company"> | string | null
   organizationId?: Prisma.UuidFilter<"Company"> | string
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   contacts?: Prisma.ContactListRelationFilter
-  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   deals?: Prisma.DealListRelationFilter
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
 }, "id" | "domain">
 
 export type CompanyOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   domain?: Prisma.SortOrderInput | Prisma.SortOrder
+  industry?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  address?: Prisma.SortOrderInput | Prisma.SortOrder
   logoUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  employeeCount?: Prisma.SortOrderInput | Prisma.SortOrder
+  annualRevenue?: Prisma.SortOrderInput | Prisma.SortOrder
+  linkedin?: Prisma.SortOrderInput | Prisma.SortOrder
+  twitter?: Prisma.SortOrderInput | Prisma.SortOrder
+  instagram?: Prisma.SortOrderInput | Prisma.SortOrder
+  whatsapp?: Prisma.SortOrderInput | Prisma.SortOrder
+  email?: Prisma.SortOrderInput | Prisma.SortOrder
+  notes?: Prisma.SortOrderInput | Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.CompanyCountOrderByAggregateInput
+  _avg?: Prisma.CompanyAvgOrderByAggregateInput
   _max?: Prisma.CompanyMaxOrderByAggregateInput
   _min?: Prisma.CompanyMinOrderByAggregateInput
+  _sum?: Prisma.CompanySumOrderByAggregateInput
 }
 
 export type CompanyScalarWhereWithAggregatesInput = {
@@ -252,7 +435,20 @@ export type CompanyScalarWhereWithAggregatesInput = {
   id?: Prisma.UuidWithAggregatesFilter<"Company"> | string
   name?: Prisma.StringWithAggregatesFilter<"Company"> | string
   domain?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
+  industry?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
+  address?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
   logoUrl?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
+  status?: Prisma.StringWithAggregatesFilter<"Company"> | string
+  source?: Prisma.StringWithAggregatesFilter<"Company"> | string
+  employeeCount?: Prisma.IntNullableWithAggregatesFilter<"Company"> | number | null
+  annualRevenue?: Prisma.BigIntNullableWithAggregatesFilter<"Company"> | bigint | number | null
+  linkedin?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
+  twitter?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
+  instagram?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
+  whatsapp?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
+  email?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
+  notes?: Prisma.StringNullableWithAggregatesFilter<"Company"> | string | null
   organizationId?: Prisma.UuidWithAggregatesFilter<"Company"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Company"> | Date | string
@@ -262,19 +458,45 @@ export type CompanyCreateInput = {
   id?: string
   name: string
   domain?: string | null
+  industry?: string | null
+  phone?: string | null
+  address?: string | null
   logoUrl?: string | null
+  status?: string
+  source?: string
+  employeeCount?: number | null
+  annualRevenue?: bigint | number | null
+  linkedin?: string | null
+  twitter?: string | null
+  instagram?: string | null
+  whatsapp?: string | null
+  email?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   contacts?: Prisma.ContactCreateNestedManyWithoutCompanyInput
-  organization: Prisma.OrganizationCreateNestedOneWithoutCompaniesInput
   deals?: Prisma.DealCreateNestedManyWithoutCompanyInput
+  organization: Prisma.OrganizationCreateNestedOneWithoutCompaniesInput
 }
 
 export type CompanyUncheckedCreateInput = {
   id?: string
   name: string
   domain?: string | null
+  industry?: string | null
+  phone?: string | null
+  address?: string | null
   logoUrl?: string | null
+  status?: string
+  source?: string
+  employeeCount?: number | null
+  annualRevenue?: bigint | number | null
+  linkedin?: string | null
+  twitter?: string | null
+  instagram?: string | null
+  whatsapp?: string | null
+  email?: string | null
+  notes?: string | null
   organizationId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -286,19 +508,45 @@ export type CompanyUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  annualRevenue?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  linkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contacts?: Prisma.ContactUpdateManyWithoutCompanyNestedInput
-  organization?: Prisma.OrganizationUpdateOneRequiredWithoutCompaniesNestedInput
   deals?: Prisma.DealUpdateManyWithoutCompanyNestedInput
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutCompaniesNestedInput
 }
 
 export type CompanyUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  annualRevenue?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  linkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -310,7 +558,20 @@ export type CompanyCreateManyInput = {
   id?: string
   name: string
   domain?: string | null
+  industry?: string | null
+  phone?: string | null
+  address?: string | null
   logoUrl?: string | null
+  status?: string
+  source?: string
+  employeeCount?: number | null
+  annualRevenue?: bigint | number | null
+  linkedin?: string | null
+  twitter?: string | null
+  instagram?: string | null
+  whatsapp?: string | null
+  email?: string | null
+  notes?: string | null
   organizationId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -320,7 +581,20 @@ export type CompanyUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  annualRevenue?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  linkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -329,7 +603,20 @@ export type CompanyUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  annualRevenue?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  linkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -339,17 +626,48 @@ export type CompanyCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   domain?: Prisma.SortOrder
+  industry?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  employeeCount?: Prisma.SortOrder
+  annualRevenue?: Prisma.SortOrder
+  linkedin?: Prisma.SortOrder
+  twitter?: Prisma.SortOrder
+  instagram?: Prisma.SortOrder
+  whatsapp?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type CompanyAvgOrderByAggregateInput = {
+  employeeCount?: Prisma.SortOrder
+  annualRevenue?: Prisma.SortOrder
 }
 
 export type CompanyMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   domain?: Prisma.SortOrder
+  industry?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  employeeCount?: Prisma.SortOrder
+  annualRevenue?: Prisma.SortOrder
+  linkedin?: Prisma.SortOrder
+  twitter?: Prisma.SortOrder
+  instagram?: Prisma.SortOrder
+  whatsapp?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -359,10 +677,28 @@ export type CompanyMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   domain?: Prisma.SortOrder
+  industry?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
+  address?: Prisma.SortOrder
   logoUrl?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  source?: Prisma.SortOrder
+  employeeCount?: Prisma.SortOrder
+  annualRevenue?: Prisma.SortOrder
+  linkedin?: Prisma.SortOrder
+  twitter?: Prisma.SortOrder
+  instagram?: Prisma.SortOrder
+  whatsapp?: Prisma.SortOrder
+  email?: Prisma.SortOrder
+  notes?: Prisma.SortOrder
   organizationId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type CompanySumOrderByAggregateInput = {
+  employeeCount?: Prisma.SortOrder
+  annualRevenue?: Prisma.SortOrder
 }
 
 export type CompanyNullableScalarRelationFilter = {
@@ -378,6 +714,22 @@ export type CompanyListRelationFilter = {
 
 export type CompanyOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type NullableBigIntFieldUpdateOperationsInput = {
+  set?: bigint | number | null
+  increment?: bigint | number
+  decrement?: bigint | number
+  multiply?: bigint | number
+  divide?: bigint | number
 }
 
 export type CompanyCreateNestedOneWithoutContactsInput = {
@@ -458,18 +810,44 @@ export type CompanyCreateWithoutContactsInput = {
   id?: string
   name: string
   domain?: string | null
+  industry?: string | null
+  phone?: string | null
+  address?: string | null
   logoUrl?: string | null
+  status?: string
+  source?: string
+  employeeCount?: number | null
+  annualRevenue?: bigint | number | null
+  linkedin?: string | null
+  twitter?: string | null
+  instagram?: string | null
+  whatsapp?: string | null
+  email?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
-  organization: Prisma.OrganizationCreateNestedOneWithoutCompaniesInput
   deals?: Prisma.DealCreateNestedManyWithoutCompanyInput
+  organization: Prisma.OrganizationCreateNestedOneWithoutCompaniesInput
 }
 
 export type CompanyUncheckedCreateWithoutContactsInput = {
   id?: string
   name: string
   domain?: string | null
+  industry?: string | null
+  phone?: string | null
+  address?: string | null
   logoUrl?: string | null
+  status?: string
+  source?: string
+  employeeCount?: number | null
+  annualRevenue?: bigint | number | null
+  linkedin?: string | null
+  twitter?: string | null
+  instagram?: string | null
+  whatsapp?: string | null
+  email?: string | null
+  notes?: string | null
   organizationId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -496,18 +874,44 @@ export type CompanyUpdateWithoutContactsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  annualRevenue?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  linkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  organization?: Prisma.OrganizationUpdateOneRequiredWithoutCompaniesNestedInput
   deals?: Prisma.DealUpdateManyWithoutCompanyNestedInput
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutCompaniesNestedInput
 }
 
 export type CompanyUncheckedUpdateWithoutContactsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  annualRevenue?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  linkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -518,7 +922,20 @@ export type CompanyCreateWithoutDealsInput = {
   id?: string
   name: string
   domain?: string | null
+  industry?: string | null
+  phone?: string | null
+  address?: string | null
   logoUrl?: string | null
+  status?: string
+  source?: string
+  employeeCount?: number | null
+  annualRevenue?: bigint | number | null
+  linkedin?: string | null
+  twitter?: string | null
+  instagram?: string | null
+  whatsapp?: string | null
+  email?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   contacts?: Prisma.ContactCreateNestedManyWithoutCompanyInput
@@ -529,7 +946,20 @@ export type CompanyUncheckedCreateWithoutDealsInput = {
   id?: string
   name: string
   domain?: string | null
+  industry?: string | null
+  phone?: string | null
+  address?: string | null
   logoUrl?: string | null
+  status?: string
+  source?: string
+  employeeCount?: number | null
+  annualRevenue?: bigint | number | null
+  linkedin?: string | null
+  twitter?: string | null
+  instagram?: string | null
+  whatsapp?: string | null
+  email?: string | null
+  notes?: string | null
   organizationId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -556,7 +986,20 @@ export type CompanyUpdateWithoutDealsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  annualRevenue?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  linkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contacts?: Prisma.ContactUpdateManyWithoutCompanyNestedInput
@@ -567,7 +1010,20 @@ export type CompanyUncheckedUpdateWithoutDealsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  annualRevenue?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  linkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -578,7 +1034,20 @@ export type CompanyCreateWithoutOrganizationInput = {
   id?: string
   name: string
   domain?: string | null
+  industry?: string | null
+  phone?: string | null
+  address?: string | null
   logoUrl?: string | null
+  status?: string
+  source?: string
+  employeeCount?: number | null
+  annualRevenue?: bigint | number | null
+  linkedin?: string | null
+  twitter?: string | null
+  instagram?: string | null
+  whatsapp?: string | null
+  email?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   contacts?: Prisma.ContactCreateNestedManyWithoutCompanyInput
@@ -589,7 +1058,20 @@ export type CompanyUncheckedCreateWithoutOrganizationInput = {
   id?: string
   name: string
   domain?: string | null
+  industry?: string | null
+  phone?: string | null
+  address?: string | null
   logoUrl?: string | null
+  status?: string
+  source?: string
+  employeeCount?: number | null
+  annualRevenue?: bigint | number | null
+  linkedin?: string | null
+  twitter?: string | null
+  instagram?: string | null
+  whatsapp?: string | null
+  email?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutCompanyInput
@@ -629,7 +1111,20 @@ export type CompanyScalarWhereInput = {
   id?: Prisma.UuidFilter<"Company"> | string
   name?: Prisma.StringFilter<"Company"> | string
   domain?: Prisma.StringNullableFilter<"Company"> | string | null
+  industry?: Prisma.StringNullableFilter<"Company"> | string | null
+  phone?: Prisma.StringNullableFilter<"Company"> | string | null
+  address?: Prisma.StringNullableFilter<"Company"> | string | null
   logoUrl?: Prisma.StringNullableFilter<"Company"> | string | null
+  status?: Prisma.StringFilter<"Company"> | string
+  source?: Prisma.StringFilter<"Company"> | string
+  employeeCount?: Prisma.IntNullableFilter<"Company"> | number | null
+  annualRevenue?: Prisma.BigIntNullableFilter<"Company"> | bigint | number | null
+  linkedin?: Prisma.StringNullableFilter<"Company"> | string | null
+  twitter?: Prisma.StringNullableFilter<"Company"> | string | null
+  instagram?: Prisma.StringNullableFilter<"Company"> | string | null
+  whatsapp?: Prisma.StringNullableFilter<"Company"> | string | null
+  email?: Prisma.StringNullableFilter<"Company"> | string | null
+  notes?: Prisma.StringNullableFilter<"Company"> | string | null
   organizationId?: Prisma.UuidFilter<"Company"> | string
   createdAt?: Prisma.DateTimeFilter<"Company"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Company"> | Date | string
@@ -639,7 +1134,20 @@ export type CompanyCreateManyOrganizationInput = {
   id?: string
   name: string
   domain?: string | null
+  industry?: string | null
+  phone?: string | null
+  address?: string | null
   logoUrl?: string | null
+  status?: string
+  source?: string
+  employeeCount?: number | null
+  annualRevenue?: bigint | number | null
+  linkedin?: string | null
+  twitter?: string | null
+  instagram?: string | null
+  whatsapp?: string | null
+  email?: string | null
+  notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -648,7 +1156,20 @@ export type CompanyUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  annualRevenue?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  linkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contacts?: Prisma.ContactUpdateManyWithoutCompanyNestedInput
@@ -659,7 +1180,20 @@ export type CompanyUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  annualRevenue?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  linkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutCompanyNestedInput
@@ -670,7 +1204,20 @@ export type CompanyUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  address?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  employeeCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  annualRevenue?: Prisma.NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  linkedin?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  twitter?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsapp?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -719,13 +1266,26 @@ export type CompanySelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   id?: boolean
   name?: boolean
   domain?: boolean
+  industry?: boolean
+  phone?: boolean
+  address?: boolean
   logoUrl?: boolean
+  status?: boolean
+  source?: boolean
+  employeeCount?: boolean
+  annualRevenue?: boolean
+  linkedin?: boolean
+  twitter?: boolean
+  instagram?: boolean
+  whatsapp?: boolean
+  email?: boolean
+  notes?: boolean
   organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   contacts?: boolean | Prisma.Company$contactsArgs<ExtArgs>
-  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   deals?: boolean | Prisma.Company$dealsArgs<ExtArgs>
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CompanyCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["company"]>
 
@@ -733,7 +1293,20 @@ export type CompanySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   name?: boolean
   domain?: boolean
+  industry?: boolean
+  phone?: boolean
+  address?: boolean
   logoUrl?: boolean
+  status?: boolean
+  source?: boolean
+  employeeCount?: boolean
+  annualRevenue?: boolean
+  linkedin?: boolean
+  twitter?: boolean
+  instagram?: boolean
+  whatsapp?: boolean
+  email?: boolean
+  notes?: boolean
   organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -744,7 +1317,20 @@ export type CompanySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   id?: boolean
   name?: boolean
   domain?: boolean
+  industry?: boolean
+  phone?: boolean
+  address?: boolean
   logoUrl?: boolean
+  status?: boolean
+  source?: boolean
+  employeeCount?: boolean
+  annualRevenue?: boolean
+  linkedin?: boolean
+  twitter?: boolean
+  instagram?: boolean
+  whatsapp?: boolean
+  email?: boolean
+  notes?: boolean
   organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -755,17 +1341,30 @@ export type CompanySelectScalar = {
   id?: boolean
   name?: boolean
   domain?: boolean
+  industry?: boolean
+  phone?: boolean
+  address?: boolean
   logoUrl?: boolean
+  status?: boolean
+  source?: boolean
+  employeeCount?: boolean
+  annualRevenue?: boolean
+  linkedin?: boolean
+  twitter?: boolean
+  instagram?: boolean
+  whatsapp?: boolean
+  email?: boolean
+  notes?: boolean
   organizationId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type CompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "domain" | "logoUrl" | "organizationId" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
+export type CompanyOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "domain" | "industry" | "phone" | "address" | "logoUrl" | "status" | "source" | "employeeCount" | "annualRevenue" | "linkedin" | "twitter" | "instagram" | "whatsapp" | "email" | "notes" | "organizationId" | "createdAt" | "updatedAt", ExtArgs["result"]["company"]>
 export type CompanyInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contacts?: boolean | Prisma.Company$contactsArgs<ExtArgs>
-  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   deals?: boolean | Prisma.Company$dealsArgs<ExtArgs>
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.CompanyCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CompanyIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -779,14 +1378,27 @@ export type $CompanyPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Company"
   objects: {
     contacts: Prisma.$ContactPayload<ExtArgs>[]
-    organization: Prisma.$OrganizationPayload<ExtArgs>
     deals: Prisma.$DealPayload<ExtArgs>[]
+    organization: Prisma.$OrganizationPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     name: string
     domain: string | null
+    industry: string | null
+    phone: string | null
+    address: string | null
     logoUrl: string | null
+    status: string
+    source: string
+    employeeCount: number | null
+    annualRevenue: bigint | null
+    linkedin: string | null
+    twitter: string | null
+    instagram: string | null
+    whatsapp: string | null
+    email: string | null
+    notes: string | null
     organizationId: string
     createdAt: Date
     updatedAt: Date
@@ -1185,8 +1797,8 @@ readonly fields: CompanyFieldRefs;
 export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   contacts<T extends Prisma.Company$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   deals<T extends Prisma.Company$dealsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Company$dealsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1219,7 +1831,20 @@ export interface CompanyFieldRefs {
   readonly id: Prisma.FieldRef<"Company", 'String'>
   readonly name: Prisma.FieldRef<"Company", 'String'>
   readonly domain: Prisma.FieldRef<"Company", 'String'>
+  readonly industry: Prisma.FieldRef<"Company", 'String'>
+  readonly phone: Prisma.FieldRef<"Company", 'String'>
+  readonly address: Prisma.FieldRef<"Company", 'String'>
   readonly logoUrl: Prisma.FieldRef<"Company", 'String'>
+  readonly status: Prisma.FieldRef<"Company", 'String'>
+  readonly source: Prisma.FieldRef<"Company", 'String'>
+  readonly employeeCount: Prisma.FieldRef<"Company", 'Int'>
+  readonly annualRevenue: Prisma.FieldRef<"Company", 'BigInt'>
+  readonly linkedin: Prisma.FieldRef<"Company", 'String'>
+  readonly twitter: Prisma.FieldRef<"Company", 'String'>
+  readonly instagram: Prisma.FieldRef<"Company", 'String'>
+  readonly whatsapp: Prisma.FieldRef<"Company", 'String'>
+  readonly email: Prisma.FieldRef<"Company", 'String'>
+  readonly notes: Prisma.FieldRef<"Company", 'String'>
   readonly organizationId: Prisma.FieldRef<"Company", 'String'>
   readonly createdAt: Prisma.FieldRef<"Company", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Company", 'DateTime'>

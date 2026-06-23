@@ -48,6 +48,7 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.data) {
+      console.log(error.response.data)
       const data = error.response.data;
 
       if (data.success === false && data.reason) {

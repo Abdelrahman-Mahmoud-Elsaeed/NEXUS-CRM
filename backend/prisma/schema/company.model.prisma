@@ -1,17 +1,33 @@
 model Company {
-  id             String         @id @default(uuid()) @db.Uuid
+  id             String    @id @default(uuid()) @db.Uuid
   name           String
-  domain         String?        @unique
-  logoUrl        String?        @map("logo_url")
-  
-  contacts       Contact[]
+  domain         String?   @unique
+  industry       String?
+  phone          String?
+  address        String?
+  logoUrl        String?   @map("logo_url")
 
-  organizationId String         @db.Uuid @map("organization_id")
-  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  status         String    @default("Lead")
+  source         String    @default("Manual")
+  employeeCount  Int?      @map("employee_count")
+  annualRevenue  BigInt?   @map("annual_revenue")
+
+  linkedin       String?   @map("linkedin")
+  twitter        String?   @map("twitter")
+  instagram      String?   @map("instagram")
+  whatsapp       String?   @map("whatsapp")
+  email          String?   @map("email")
+
+  notes          String?   @db.Text
+
+  contacts       Contact[]
   deals          Deal[]
-  
-  createdAt      DateTime       @default(now()) @map("created_at")
-  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  organizationId String    @db.Uuid @map("organization_id")
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
 
   @@map("companies")
 }

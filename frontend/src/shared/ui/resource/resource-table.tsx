@@ -39,7 +39,7 @@ export function ResourceTable<T extends { id: string }>({
               <Checkbox
                 checked={allSelected}
                 onCheckedChange={onToggleSelectAll}
-                className="rounded border-outline-variant data-[state=checked]:bg-primary"
+                className="rounded border-outline-variant text-white data-[state=checked]:bg-primary"
               />
             </TableHead>
             {columns.map((col, idx) => (
@@ -55,44 +55,60 @@ export function ResourceTable<T extends { id: string }>({
                 {col.header}
               </TableHead>
             ))}
-            {rowActionsRender && <TableHead className="text-right px-6 py-3 font-medium font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Actions</TableHead>}
+            {rowActionsRender && (
+              <TableHead className="text-right px-6 py-3 font-medium font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">
+                Actions
+              </TableHead>
+            )}
           </TableRow>
         </TableHeader>
         <TableBody className="divide-y divide-outline-variant/50 bg-surface font-table-data text-table-data text-on-background">
           {safeData.map((item) => {
             if (!item || !item.id) return null;
             const isSelected = selectedIds.has(item.id);
-
             return (
               <TableRow
                 key={item.id}
                 className={cn(
-                  "hover:bg-surface-container-low/50 transition-colors group border-b border-outline-variant/50",
-                  isSelected && "border-l-2 border-primary bg-primary-container/5 relative"
+                  "transition-all group border-b border-outline-variant/50",
+                  !isSelected && "hover:bg-surface-container-low/50",
+                  isSelected && "border-l-2 border-primary bg-primary-container/8 relative"
                 )}
               >
-                <TableCell className="text-center align-middle px-6 py-3">
+                <TableCell className="text-center align-middle px-6 py-3 w-12">
                   <Checkbox
                     checked={isSelected}
                     onCheckedChange={() => onToggleSelect(item.id)}
-                    className="rounded border-outline-variant data-[state=checked]:bg-primary"
+                    className={cn(
+                      "rounded border-outline-variant text-white transition-opacity duration-150 data-[state=checked]:bg-primary",
+                      /* Blends away until row hover, unless checked */
+                      !isSelected && "opacity-0 group-hover:opacity-100"
+                    )}
                   />
                 </TableCell>
+                
                 {columns.map((col, idx) => (
                   <TableCell
                     key={idx}
                     className={cn(
-                      "px-6 py-3 align-middle",
+                      "px-6 py-3 align-middle transition-colors",
                       col.cellAlignment === "center" && "text-center",
                       col.cellAlignment === "right" && "text-right"
                     )}
                   >
+                    {/* The individual layout wrapper logic is determined cleanly inside your column configurations */}
                     {col.render(item)}
                   </TableCell>
                 ))}
+
                 {rowActionsRender && (
                   <TableCell className="text-right align-middle px-6 py-3">
-                    <div className={cn("flex items-center justify-end gap-1.5 transition-opacity", isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100")}>
+                    <div
+                      className={cn(
+                        "flex items-center justify-end gap-1.5 transition-opacity duration-150",
+                        isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                      )}
+                    >
                       {rowActionsRender(item, isSelected)}
                     </div>
                   </TableCell>

@@ -11,8 +11,8 @@ model Contact {
   companyId String?  @map("company_id") @db.Uuid
   company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
 
-  status   ContactStatus @default(PROSPECT)
-  priority LeadPriority  @default(MEDIUM)
+  status   ContactStatus @default(Prospect)
+  priority LeadPriority  @default(Medium)
   source   String        @default("Manual")
   notes    String?       @db.Text
 
@@ -28,14 +28,16 @@ model Contact {
   assignedToId String? @map("assigned_to_id") @db.Uuid
   assignee     User?   @relation("ContactAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
 
-  channels  String[]     @default([])
-  
-  deals     Deal[]
-  tasks     Task[]
-  tags      ContactTag[]
+  channels ContactChannel[]
 
-  createdAt DateTime     @default(now()) @map("created_at")
-  updatedAt DateTime     @updatedAt @map("updated_at")
+  deals Deal[]
+  tasks Task[]
+  tags  ContactTag[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("contacts")
 }
+
+

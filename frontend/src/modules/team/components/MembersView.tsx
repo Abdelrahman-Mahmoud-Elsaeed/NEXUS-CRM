@@ -230,7 +230,7 @@ export default function MembersView() {
                       <td className="px-6 py-3.5 whitespace-nowrap">
                         <span
                           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-wide ${
-                            member.role === "OWNER"
+                            member.role === "Owner"
                               ? "bg-primary/10 text-primary border border-primary/20"
                               : "bg-surface-container-highest text-on-surface-variant border border-outline-variant"
                           }`}
@@ -251,7 +251,7 @@ export default function MembersView() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            disabled={member.role === "OWNER"}
+                            disabled={member.role === "Owner"}
                             className="h-8 w-8 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-lg transition-all disabled:opacity-30"
                             title="Change role"
                           >
@@ -260,7 +260,7 @@ export default function MembersView() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            disabled={member.role === "OWNER"}
+                            disabled={member.role === "Owner"}
                             className="h-8 w-8 text-on-surface-variant hover:text-error hover:bg-error/10 rounded-lg transition-all disabled:opacity-30"
                             title="Remove member"
                           >

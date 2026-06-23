@@ -86,7 +86,6 @@ export type ContactCountAggregateOutputType = {
   organizationId: number
   createdById: number
   assignedToId: number
-  channels: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -155,7 +154,6 @@ export type ContactCountAggregateInputType = {
   organizationId?: true
   createdById?: true
   assignedToId?: true
-  channels?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -251,7 +249,6 @@ export type ContactGroupByOutputType = {
   organizationId: string
   createdById: string | null
   assignedToId: string | null
-  channels: string[]
   createdAt: Date
   updatedAt: Date
   _count: ContactCountAggregateOutputType | null
@@ -295,7 +292,6 @@ export type ContactWhereInput = {
   organizationId?: Prisma.UuidFilter<"Contact"> | string
   createdById?: Prisma.UuidNullableFilter<"Contact"> | string | null
   assignedToId?: Prisma.UuidNullableFilter<"Contact"> | string | null
-  channels?: Prisma.StringNullableListFilter<"Contact">
   createdAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
   company?: Prisma.XOR<Prisma.CompanyNullableScalarRelationFilter, Prisma.CompanyWhereInput> | null
@@ -303,6 +299,7 @@ export type ContactWhereInput = {
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   creator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   assignee?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  channels?: Prisma.ContactChannelListRelationFilter
   deals?: Prisma.DealListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   tags?: Prisma.ContactTagListRelationFilter
@@ -326,7 +323,6 @@ export type ContactOrderByWithRelationInput = {
   organizationId?: Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   assignedToId?: Prisma.SortOrderInput | Prisma.SortOrder
-  channels?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   company?: Prisma.CompanyOrderByWithRelationInput
@@ -334,6 +330,7 @@ export type ContactOrderByWithRelationInput = {
   organization?: Prisma.OrganizationOrderByWithRelationInput
   creator?: Prisma.UserOrderByWithRelationInput
   assignee?: Prisma.UserOrderByWithRelationInput
+  channels?: Prisma.ContactChannelOrderByRelationAggregateInput
   deals?: Prisma.DealOrderByRelationAggregateInput
   tasks?: Prisma.TaskOrderByRelationAggregateInput
   tags?: Prisma.ContactTagOrderByRelationAggregateInput
@@ -360,7 +357,6 @@ export type ContactWhereUniqueInput = Prisma.AtLeast<{
   organizationId?: Prisma.UuidFilter<"Contact"> | string
   createdById?: Prisma.UuidNullableFilter<"Contact"> | string | null
   assignedToId?: Prisma.UuidNullableFilter<"Contact"> | string | null
-  channels?: Prisma.StringNullableListFilter<"Contact">
   createdAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
   company?: Prisma.XOR<Prisma.CompanyNullableScalarRelationFilter, Prisma.CompanyWhereInput> | null
@@ -368,6 +364,7 @@ export type ContactWhereUniqueInput = Prisma.AtLeast<{
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   creator?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   assignee?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  channels?: Prisma.ContactChannelListRelationFilter
   deals?: Prisma.DealListRelationFilter
   tasks?: Prisma.TaskListRelationFilter
   tags?: Prisma.ContactTagListRelationFilter
@@ -391,7 +388,6 @@ export type ContactOrderByWithAggregationInput = {
   organizationId?: Prisma.SortOrder
   createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   assignedToId?: Prisma.SortOrderInput | Prisma.SortOrder
-  channels?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ContactCountOrderByAggregateInput
@@ -420,7 +416,6 @@ export type ContactScalarWhereWithAggregatesInput = {
   organizationId?: Prisma.UuidWithAggregatesFilter<"Contact"> | string
   createdById?: Prisma.UuidNullableWithAggregatesFilter<"Contact"> | string | null
   assignedToId?: Prisma.UuidNullableWithAggregatesFilter<"Contact"> | string | null
-  channels?: Prisma.StringNullableListFilter<"Contact">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Contact"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Contact"> | Date | string
 }
@@ -438,7 +433,6 @@ export type ContactCreateInput = {
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   company?: Prisma.CompanyCreateNestedOneWithoutContactsInput
@@ -446,6 +440,7 @@ export type ContactCreateInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedContactsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedContactsInput
+  channels?: Prisma.ContactChannelCreateNestedManyWithoutContactInput
   deals?: Prisma.DealCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagCreateNestedManyWithoutContactInput
@@ -469,9 +464,9 @@ export type ContactUncheckedCreateInput = {
   organizationId: string
   createdById?: string | null
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  channels?: Prisma.ContactChannelUncheckedCreateNestedManyWithoutContactInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagUncheckedCreateNestedManyWithoutContactInput
@@ -490,7 +485,6 @@ export type ContactUpdateInput = {
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneWithoutContactsNestedInput
@@ -498,6 +492,7 @@ export type ContactUpdateInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedContactsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedContactsNestedInput
+  channels?: Prisma.ContactChannelUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUpdateManyWithoutContactNestedInput
@@ -521,9 +516,9 @@ export type ContactUncheckedUpdateInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  channels?: Prisma.ContactChannelUncheckedUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUncheckedUpdateManyWithoutContactNestedInput
@@ -547,7 +542,6 @@ export type ContactCreateManyInput = {
   organizationId: string
   createdById?: string | null
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -565,7 +559,6 @@ export type ContactUpdateManyMutationInput = {
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -588,9 +581,13 @@ export type ContactUncheckedUpdateManyInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ContactScalarRelationFilter = {
+  is?: Prisma.ContactWhereInput
+  isNot?: Prisma.ContactWhereInput
 }
 
 export type ContactListRelationFilter = {
@@ -601,14 +598,6 @@ export type ContactListRelationFilter = {
 
 export type ContactOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
-}
-
-export type StringNullableListFilter<$PrismaModel = never> = {
-  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
-  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
-  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
 }
 
 export type ContactCountOrderByAggregateInput = {
@@ -629,7 +618,6 @@ export type ContactCountOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
   assignedToId?: Prisma.SortOrder
-  channels?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -678,14 +666,23 @@ export type ContactMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type ContactScalarRelationFilter = {
-  is?: Prisma.ContactWhereInput
-  isNot?: Prisma.ContactWhereInput
-}
-
 export type ContactNullableScalarRelationFilter = {
   is?: Prisma.ContactWhereInput | null
   isNot?: Prisma.ContactWhereInput | null
+}
+
+export type ContactCreateNestedOneWithoutChannelsInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutChannelsInput, Prisma.ContactUncheckedCreateWithoutChannelsInput>
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutChannelsInput
+  connect?: Prisma.ContactWhereUniqueInput
+}
+
+export type ContactUpdateOneRequiredWithoutChannelsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutChannelsInput, Prisma.ContactUncheckedCreateWithoutChannelsInput>
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutChannelsInput
+  upsert?: Prisma.ContactUpsertWithoutChannelsInput
+  connect?: Prisma.ContactWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContactUpdateToOneWithWhereWithoutChannelsInput, Prisma.ContactUpdateWithoutChannelsInput>, Prisma.ContactUncheckedUpdateWithoutChannelsInput>
 }
 
 export type ContactCreateNestedManyWithoutCompanyInput = {
@@ -730,21 +727,12 @@ export type ContactUncheckedUpdateManyWithoutCompanyNestedInput = {
   deleteMany?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
 }
 
-export type ContactCreatechannelsInput = {
-  set: string[]
-}
-
 export type EnumContactStatusFieldUpdateOperationsInput = {
   set?: $Enums.ContactStatus
 }
 
 export type EnumLeadPriorityFieldUpdateOperationsInput = {
   set?: $Enums.LeadPriority
-}
-
-export type ContactUpdatechannelsInput = {
-  set?: string[]
-  push?: string | string[]
 }
 
 export type ContactCreateNestedOneWithoutTagsInput = {
@@ -959,6 +947,122 @@ export type ContactUncheckedUpdateManyWithoutCreatorNestedInput = {
   deleteMany?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
 }
 
+export type ContactCreateWithoutChannelsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  jobTitle?: string | null
+  website?: string | null
+  avatarUrl?: string | null
+  initials?: string | null
+  status?: $Enums.ContactStatus
+  priority?: $Enums.LeadPriority
+  source?: string
+  notes?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  company?: Prisma.CompanyCreateNestedOneWithoutContactsInput
+  pipelineStage?: Prisma.PipelineStageCreateNestedOneWithoutContactsInput
+  organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
+  creator?: Prisma.UserCreateNestedOneWithoutCreatedContactsInput
+  assignee?: Prisma.UserCreateNestedOneWithoutAssignedContactsInput
+  deals?: Prisma.DealCreateNestedManyWithoutPrimaryContactInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutContactInput
+  tags?: Prisma.ContactTagCreateNestedManyWithoutContactInput
+}
+
+export type ContactUncheckedCreateWithoutChannelsInput = {
+  id?: string
+  name: string
+  email: string
+  phone?: string | null
+  jobTitle?: string | null
+  website?: string | null
+  avatarUrl?: string | null
+  initials?: string | null
+  companyId?: string | null
+  status?: $Enums.ContactStatus
+  priority?: $Enums.LeadPriority
+  source?: string
+  notes?: string | null
+  pipelineStageId?: string | null
+  organizationId: string
+  createdById?: string | null
+  assignedToId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  deals?: Prisma.DealUncheckedCreateNestedManyWithoutPrimaryContactInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutContactInput
+  tags?: Prisma.ContactTagUncheckedCreateNestedManyWithoutContactInput
+}
+
+export type ContactCreateOrConnectWithoutChannelsInput = {
+  where: Prisma.ContactWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContactCreateWithoutChannelsInput, Prisma.ContactUncheckedCreateWithoutChannelsInput>
+}
+
+export type ContactUpsertWithoutChannelsInput = {
+  update: Prisma.XOR<Prisma.ContactUpdateWithoutChannelsInput, Prisma.ContactUncheckedUpdateWithoutChannelsInput>
+  create: Prisma.XOR<Prisma.ContactCreateWithoutChannelsInput, Prisma.ContactUncheckedCreateWithoutChannelsInput>
+  where?: Prisma.ContactWhereInput
+}
+
+export type ContactUpdateToOneWithWhereWithoutChannelsInput = {
+  where?: Prisma.ContactWhereInput
+  data: Prisma.XOR<Prisma.ContactUpdateWithoutChannelsInput, Prisma.ContactUncheckedUpdateWithoutChannelsInput>
+}
+
+export type ContactUpdateWithoutChannelsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  initials?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContactStatusFieldUpdateOperationsInput | $Enums.ContactStatus
+  priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  company?: Prisma.CompanyUpdateOneWithoutContactsNestedInput
+  pipelineStage?: Prisma.PipelineStageUpdateOneWithoutContactsNestedInput
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
+  creator?: Prisma.UserUpdateOneWithoutCreatedContactsNestedInput
+  assignee?: Prisma.UserUpdateOneWithoutAssignedContactsNestedInput
+  deals?: Prisma.DealUpdateManyWithoutPrimaryContactNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutContactNestedInput
+  tags?: Prisma.ContactTagUpdateManyWithoutContactNestedInput
+}
+
+export type ContactUncheckedUpdateWithoutChannelsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  jobTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  website?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  initials?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContactStatusFieldUpdateOperationsInput | $Enums.ContactStatus
+  priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  deals?: Prisma.DealUncheckedUpdateManyWithoutPrimaryContactNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutContactNestedInput
+  tags?: Prisma.ContactTagUncheckedUpdateManyWithoutContactNestedInput
+}
+
 export type ContactCreateWithoutCompanyInput = {
   id?: string
   name: string
@@ -972,13 +1076,13 @@ export type ContactCreateWithoutCompanyInput = {
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   pipelineStage?: Prisma.PipelineStageCreateNestedOneWithoutContactsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedContactsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedContactsInput
+  channels?: Prisma.ContactChannelCreateNestedManyWithoutContactInput
   deals?: Prisma.DealCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagCreateNestedManyWithoutContactInput
@@ -1001,9 +1105,9 @@ export type ContactUncheckedCreateWithoutCompanyInput = {
   organizationId: string
   createdById?: string | null
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  channels?: Prisma.ContactChannelUncheckedCreateNestedManyWithoutContactInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagUncheckedCreateNestedManyWithoutContactInput
@@ -1056,7 +1160,6 @@ export type ContactScalarWhereInput = {
   organizationId?: Prisma.UuidFilter<"Contact"> | string
   createdById?: Prisma.UuidNullableFilter<"Contact"> | string | null
   assignedToId?: Prisma.UuidNullableFilter<"Contact"> | string | null
-  channels?: Prisma.StringNullableListFilter<"Contact">
   createdAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
 }
@@ -1074,7 +1177,6 @@ export type ContactCreateWithoutTagsInput = {
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   company?: Prisma.CompanyCreateNestedOneWithoutContactsInput
@@ -1082,6 +1184,7 @@ export type ContactCreateWithoutTagsInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedContactsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedContactsInput
+  channels?: Prisma.ContactChannelCreateNestedManyWithoutContactInput
   deals?: Prisma.DealCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskCreateNestedManyWithoutContactInput
 }
@@ -1104,9 +1207,9 @@ export type ContactUncheckedCreateWithoutTagsInput = {
   organizationId: string
   createdById?: string | null
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  channels?: Prisma.ContactChannelUncheckedCreateNestedManyWithoutContactInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutContactInput
 }
@@ -1140,7 +1243,6 @@ export type ContactUpdateWithoutTagsInput = {
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneWithoutContactsNestedInput
@@ -1148,6 +1250,7 @@ export type ContactUpdateWithoutTagsInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedContactsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedContactsNestedInput
+  channels?: Prisma.ContactChannelUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutContactNestedInput
 }
@@ -1170,9 +1273,9 @@ export type ContactUncheckedUpdateWithoutTagsInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  channels?: Prisma.ContactChannelUncheckedUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutContactNestedInput
 }
@@ -1190,7 +1293,6 @@ export type ContactCreateWithoutDealsInput = {
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   company?: Prisma.CompanyCreateNestedOneWithoutContactsInput
@@ -1198,6 +1300,7 @@ export type ContactCreateWithoutDealsInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedContactsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedContactsInput
+  channels?: Prisma.ContactChannelCreateNestedManyWithoutContactInput
   tasks?: Prisma.TaskCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagCreateNestedManyWithoutContactInput
 }
@@ -1220,9 +1323,9 @@ export type ContactUncheckedCreateWithoutDealsInput = {
   organizationId: string
   createdById?: string | null
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  channels?: Prisma.ContactChannelUncheckedCreateNestedManyWithoutContactInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagUncheckedCreateNestedManyWithoutContactInput
 }
@@ -1256,7 +1359,6 @@ export type ContactUpdateWithoutDealsInput = {
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneWithoutContactsNestedInput
@@ -1264,6 +1366,7 @@ export type ContactUpdateWithoutDealsInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedContactsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedContactsNestedInput
+  channels?: Prisma.ContactChannelUpdateManyWithoutContactNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUpdateManyWithoutContactNestedInput
 }
@@ -1286,9 +1389,9 @@ export type ContactUncheckedUpdateWithoutDealsInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  channels?: Prisma.ContactChannelUncheckedUpdateManyWithoutContactNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUncheckedUpdateManyWithoutContactNestedInput
 }
@@ -1306,13 +1409,13 @@ export type ContactCreateWithoutOrganizationInput = {
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   company?: Prisma.CompanyCreateNestedOneWithoutContactsInput
   pipelineStage?: Prisma.PipelineStageCreateNestedOneWithoutContactsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedContactsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedContactsInput
+  channels?: Prisma.ContactChannelCreateNestedManyWithoutContactInput
   deals?: Prisma.DealCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagCreateNestedManyWithoutContactInput
@@ -1335,9 +1438,9 @@ export type ContactUncheckedCreateWithoutOrganizationInput = {
   pipelineStageId?: string | null
   createdById?: string | null
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  channels?: Prisma.ContactChannelUncheckedCreateNestedManyWithoutContactInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagUncheckedCreateNestedManyWithoutContactInput
@@ -1382,13 +1485,13 @@ export type ContactCreateWithoutPipelineStageInput = {
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   company?: Prisma.CompanyCreateNestedOneWithoutContactsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedContactsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedContactsInput
+  channels?: Prisma.ContactChannelCreateNestedManyWithoutContactInput
   deals?: Prisma.DealCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagCreateNestedManyWithoutContactInput
@@ -1411,9 +1514,9 @@ export type ContactUncheckedCreateWithoutPipelineStageInput = {
   organizationId: string
   createdById?: string | null
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  channels?: Prisma.ContactChannelUncheckedCreateNestedManyWithoutContactInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagUncheckedCreateNestedManyWithoutContactInput
@@ -1458,7 +1561,6 @@ export type ContactCreateWithoutTasksInput = {
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   company?: Prisma.CompanyCreateNestedOneWithoutContactsInput
@@ -1466,6 +1568,7 @@ export type ContactCreateWithoutTasksInput = {
   organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedContactsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedContactsInput
+  channels?: Prisma.ContactChannelCreateNestedManyWithoutContactInput
   deals?: Prisma.DealCreateNestedManyWithoutPrimaryContactInput
   tags?: Prisma.ContactTagCreateNestedManyWithoutContactInput
 }
@@ -1488,9 +1591,9 @@ export type ContactUncheckedCreateWithoutTasksInput = {
   organizationId: string
   createdById?: string | null
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  channels?: Prisma.ContactChannelUncheckedCreateNestedManyWithoutContactInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutPrimaryContactInput
   tags?: Prisma.ContactTagUncheckedCreateNestedManyWithoutContactInput
 }
@@ -1524,7 +1627,6 @@ export type ContactUpdateWithoutTasksInput = {
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneWithoutContactsNestedInput
@@ -1532,6 +1634,7 @@ export type ContactUpdateWithoutTasksInput = {
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedContactsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedContactsNestedInput
+  channels?: Prisma.ContactChannelUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUpdateManyWithoutPrimaryContactNestedInput
   tags?: Prisma.ContactTagUpdateManyWithoutContactNestedInput
 }
@@ -1554,9 +1657,9 @@ export type ContactUncheckedUpdateWithoutTasksInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  channels?: Prisma.ContactChannelUncheckedUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutPrimaryContactNestedInput
   tags?: Prisma.ContactTagUncheckedUpdateManyWithoutContactNestedInput
 }
@@ -1574,13 +1677,13 @@ export type ContactCreateWithoutAssigneeInput = {
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   company?: Prisma.CompanyCreateNestedOneWithoutContactsInput
   pipelineStage?: Prisma.PipelineStageCreateNestedOneWithoutContactsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   creator?: Prisma.UserCreateNestedOneWithoutCreatedContactsInput
+  channels?: Prisma.ContactChannelCreateNestedManyWithoutContactInput
   deals?: Prisma.DealCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagCreateNestedManyWithoutContactInput
@@ -1603,9 +1706,9 @@ export type ContactUncheckedCreateWithoutAssigneeInput = {
   pipelineStageId?: string | null
   organizationId: string
   createdById?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  channels?: Prisma.ContactChannelUncheckedCreateNestedManyWithoutContactInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagUncheckedCreateNestedManyWithoutContactInput
@@ -1634,13 +1737,13 @@ export type ContactCreateWithoutCreatorInput = {
   priority?: $Enums.LeadPriority
   source?: string
   notes?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   company?: Prisma.CompanyCreateNestedOneWithoutContactsInput
   pipelineStage?: Prisma.PipelineStageCreateNestedOneWithoutContactsInput
   organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   assignee?: Prisma.UserCreateNestedOneWithoutAssignedContactsInput
+  channels?: Prisma.ContactChannelCreateNestedManyWithoutContactInput
   deals?: Prisma.DealCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagCreateNestedManyWithoutContactInput
@@ -1663,9 +1766,9 @@ export type ContactUncheckedCreateWithoutCreatorInput = {
   pipelineStageId?: string | null
   organizationId: string
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
+  channels?: Prisma.ContactChannelUncheckedCreateNestedManyWithoutContactInput
   deals?: Prisma.DealUncheckedCreateNestedManyWithoutPrimaryContactInput
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutContactInput
   tags?: Prisma.ContactTagUncheckedCreateNestedManyWithoutContactInput
@@ -1730,7 +1833,6 @@ export type ContactCreateManyCompanyInput = {
   organizationId: string
   createdById?: string | null
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1748,13 +1850,13 @@ export type ContactUpdateWithoutCompanyInput = {
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pipelineStage?: Prisma.PipelineStageUpdateOneWithoutContactsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedContactsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedContactsNestedInput
+  channels?: Prisma.ContactChannelUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUpdateManyWithoutContactNestedInput
@@ -1777,9 +1879,9 @@ export type ContactUncheckedUpdateWithoutCompanyInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  channels?: Prisma.ContactChannelUncheckedUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUncheckedUpdateManyWithoutContactNestedInput
@@ -1802,7 +1904,6 @@ export type ContactUncheckedUpdateManyWithoutCompanyInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1824,7 +1925,6 @@ export type ContactCreateManyOrganizationInput = {
   pipelineStageId?: string | null
   createdById?: string | null
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1842,13 +1942,13 @@ export type ContactUpdateWithoutOrganizationInput = {
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneWithoutContactsNestedInput
   pipelineStage?: Prisma.PipelineStageUpdateOneWithoutContactsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedContactsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedContactsNestedInput
+  channels?: Prisma.ContactChannelUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUpdateManyWithoutContactNestedInput
@@ -1871,9 +1971,9 @@ export type ContactUncheckedUpdateWithoutOrganizationInput = {
   pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  channels?: Prisma.ContactChannelUncheckedUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUncheckedUpdateManyWithoutContactNestedInput
@@ -1896,7 +1996,6 @@ export type ContactUncheckedUpdateManyWithoutOrganizationInput = {
   pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1918,7 +2017,6 @@ export type ContactCreateManyPipelineStageInput = {
   organizationId: string
   createdById?: string | null
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1936,13 +2034,13 @@ export type ContactUpdateWithoutPipelineStageInput = {
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneWithoutContactsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedContactsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedContactsNestedInput
+  channels?: Prisma.ContactChannelUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUpdateManyWithoutContactNestedInput
@@ -1965,9 +2063,9 @@ export type ContactUncheckedUpdateWithoutPipelineStageInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  channels?: Prisma.ContactChannelUncheckedUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUncheckedUpdateManyWithoutContactNestedInput
@@ -1990,7 +2088,6 @@ export type ContactUncheckedUpdateManyWithoutPipelineStageInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2012,7 +2109,6 @@ export type ContactCreateManyAssigneeInput = {
   pipelineStageId?: string | null
   organizationId: string
   createdById?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2034,7 +2130,6 @@ export type ContactCreateManyCreatorInput = {
   pipelineStageId?: string | null
   organizationId: string
   assignedToId?: string | null
-  channels?: Prisma.ContactCreatechannelsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -2052,13 +2147,13 @@ export type ContactUpdateWithoutAssigneeInput = {
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneWithoutContactsNestedInput
   pipelineStage?: Prisma.PipelineStageUpdateOneWithoutContactsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   creator?: Prisma.UserUpdateOneWithoutCreatedContactsNestedInput
+  channels?: Prisma.ContactChannelUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUpdateManyWithoutContactNestedInput
@@ -2081,9 +2176,9 @@ export type ContactUncheckedUpdateWithoutAssigneeInput = {
   pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  channels?: Prisma.ContactChannelUncheckedUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUncheckedUpdateManyWithoutContactNestedInput
@@ -2106,7 +2201,6 @@ export type ContactUncheckedUpdateManyWithoutAssigneeInput = {
   pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2124,13 +2218,13 @@ export type ContactUpdateWithoutCreatorInput = {
   priority?: Prisma.EnumLeadPriorityFieldUpdateOperationsInput | $Enums.LeadPriority
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   company?: Prisma.CompanyUpdateOneWithoutContactsNestedInput
   pipelineStage?: Prisma.PipelineStageUpdateOneWithoutContactsNestedInput
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   assignee?: Prisma.UserUpdateOneWithoutAssignedContactsNestedInput
+  channels?: Prisma.ContactChannelUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUpdateManyWithoutContactNestedInput
@@ -2153,9 +2247,9 @@ export type ContactUncheckedUpdateWithoutCreatorInput = {
   pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  channels?: Prisma.ContactChannelUncheckedUpdateManyWithoutContactNestedInput
   deals?: Prisma.DealUncheckedUpdateManyWithoutPrimaryContactNestedInput
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutContactNestedInput
   tags?: Prisma.ContactTagUncheckedUpdateManyWithoutContactNestedInput
@@ -2178,7 +2272,6 @@ export type ContactUncheckedUpdateManyWithoutCreatorInput = {
   pipelineStageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedToId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  channels?: Prisma.ContactUpdatechannelsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2189,12 +2282,14 @@ export type ContactUncheckedUpdateManyWithoutCreatorInput = {
  */
 
 export type ContactCountOutputType = {
+  channels: number
   deals: number
   tasks: number
   tags: number
 }
 
 export type ContactCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  channels?: boolean | ContactCountOutputTypeCountChannelsArgs
   deals?: boolean | ContactCountOutputTypeCountDealsArgs
   tasks?: boolean | ContactCountOutputTypeCountTasksArgs
   tags?: boolean | ContactCountOutputTypeCountTagsArgs
@@ -2208,6 +2303,13 @@ export type ContactCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
    * Select specific fields to fetch from the ContactCountOutputType
    */
   select?: Prisma.ContactCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ContactCountOutputType without action
+ */
+export type ContactCountOutputTypeCountChannelsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ContactChannelWhereInput
 }
 
 /**
@@ -2250,7 +2352,6 @@ export type ContactSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   organizationId?: boolean
   createdById?: boolean
   assignedToId?: boolean
-  channels?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   company?: boolean | Prisma.Contact$companyArgs<ExtArgs>
@@ -2258,6 +2359,7 @@ export type ContactSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.Contact$creatorArgs<ExtArgs>
   assignee?: boolean | Prisma.Contact$assigneeArgs<ExtArgs>
+  channels?: boolean | Prisma.Contact$channelsArgs<ExtArgs>
   deals?: boolean | Prisma.Contact$dealsArgs<ExtArgs>
   tasks?: boolean | Prisma.Contact$tasksArgs<ExtArgs>
   tags?: boolean | Prisma.Contact$tagsArgs<ExtArgs>
@@ -2282,7 +2384,6 @@ export type ContactSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   organizationId?: boolean
   createdById?: boolean
   assignedToId?: boolean
-  channels?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   company?: boolean | Prisma.Contact$companyArgs<ExtArgs>
@@ -2310,7 +2411,6 @@ export type ContactSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   organizationId?: boolean
   createdById?: boolean
   assignedToId?: boolean
-  channels?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   company?: boolean | Prisma.Contact$companyArgs<ExtArgs>
@@ -2338,18 +2438,18 @@ export type ContactSelectScalar = {
   organizationId?: boolean
   createdById?: boolean
   assignedToId?: boolean
-  channels?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ContactOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "jobTitle" | "website" | "avatarUrl" | "initials" | "companyId" | "status" | "priority" | "source" | "notes" | "pipelineStageId" | "organizationId" | "createdById" | "assignedToId" | "channels" | "createdAt" | "updatedAt", ExtArgs["result"]["contact"]>
+export type ContactOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "jobTitle" | "website" | "avatarUrl" | "initials" | "companyId" | "status" | "priority" | "source" | "notes" | "pipelineStageId" | "organizationId" | "createdById" | "assignedToId" | "createdAt" | "updatedAt", ExtArgs["result"]["contact"]>
 export type ContactInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   company?: boolean | Prisma.Contact$companyArgs<ExtArgs>
   pipelineStage?: boolean | Prisma.Contact$pipelineStageArgs<ExtArgs>
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   creator?: boolean | Prisma.Contact$creatorArgs<ExtArgs>
   assignee?: boolean | Prisma.Contact$assigneeArgs<ExtArgs>
+  channels?: boolean | Prisma.Contact$channelsArgs<ExtArgs>
   deals?: boolean | Prisma.Contact$dealsArgs<ExtArgs>
   tasks?: boolean | Prisma.Contact$tasksArgs<ExtArgs>
   tags?: boolean | Prisma.Contact$tagsArgs<ExtArgs>
@@ -2378,6 +2478,7 @@ export type $ContactPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     organization: Prisma.$OrganizationPayload<ExtArgs>
     creator: Prisma.$UserPayload<ExtArgs> | null
     assignee: Prisma.$UserPayload<ExtArgs> | null
+    channels: Prisma.$ContactChannelPayload<ExtArgs>[]
     deals: Prisma.$DealPayload<ExtArgs>[]
     tasks: Prisma.$TaskPayload<ExtArgs>[]
     tags: Prisma.$ContactTagPayload<ExtArgs>[]
@@ -2400,7 +2501,6 @@ export type $ContactPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     organizationId: string
     createdById: string | null
     assignedToId: string | null
-    channels: string[]
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["contact"]>
@@ -2802,6 +2902,7 @@ export interface Prisma__ContactClient<T, Null = never, ExtArgs extends runtime.
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   creator<T extends Prisma.Contact$creatorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$creatorArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   assignee<T extends Prisma.Contact$assigneeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$assigneeArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  channels<T extends Prisma.Contact$channelsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$channelsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactChannelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   deals<T extends Prisma.Contact$dealsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$dealsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DealPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tasks<T extends Prisma.Contact$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tags<T extends Prisma.Contact$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2851,7 +2952,6 @@ export interface ContactFieldRefs {
   readonly organizationId: Prisma.FieldRef<"Contact", 'String'>
   readonly createdById: Prisma.FieldRef<"Contact", 'String'>
   readonly assignedToId: Prisma.FieldRef<"Contact", 'String'>
-  readonly channels: Prisma.FieldRef<"Contact", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"Contact", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Contact", 'DateTime'>
 }
@@ -3328,6 +3428,30 @@ export type Contact$assigneeArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Contact.channels
+ */
+export type Contact$channelsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ContactChannel
+   */
+  select?: Prisma.ContactChannelSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ContactChannel
+   */
+  omit?: Prisma.ContactChannelOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ContactChannelInclude<ExtArgs> | null
+  where?: Prisma.ContactChannelWhereInput
+  orderBy?: Prisma.ContactChannelOrderByWithRelationInput | Prisma.ContactChannelOrderByWithRelationInput[]
+  cursor?: Prisma.ContactChannelWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContactChannelScalarFieldEnum | Prisma.ContactChannelScalarFieldEnum[]
 }
 
 /**

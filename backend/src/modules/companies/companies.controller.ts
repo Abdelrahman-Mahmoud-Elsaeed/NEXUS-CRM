@@ -24,10 +24,50 @@ export class CompanyController {
     });
   }
 
+  async getCompany(req: Request, res: Response): Promise<Response> {
+    const orgId = req.organizationId!;
+    const companyId = req.params.id as string;
+
+    const result = await companyService.getCompany(orgId, companyId);
+
+    if (!result.success) {
+      return res.status(result.statusCode).json({
+        success: false,
+        reason: result.reason,
+        msg: result.msg,
+      });
+    }
+
+    return res.status(result.statusCode).json({
+      success: true,
+      data: result.data,
+    });
+  }
+
   async createCompany(req: Request, res: Response): Promise<Response> {
     const orgId = req.organizationId!;
-    
+
     const result = await companyService.createCompany(orgId, req.body);
+
+    if (!result.success) {
+      return res.status(result.statusCode).json({
+        success: false,
+        reason: result.reason,
+        msg: result.msg,
+      });
+    }
+
+    return res.status(result.statusCode).json({
+      success: true,
+      data: result.data,
+    });
+  }
+
+  async updateCompany(req: Request, res: Response): Promise<Response> {
+    const orgId = req.organizationId!;
+    const companyId = req.params.id as string;
+
+    const result = await companyService.updateCompany(orgId, companyId, req.body);
 
     if (!result.success) {
       return res.status(result.statusCode).json({

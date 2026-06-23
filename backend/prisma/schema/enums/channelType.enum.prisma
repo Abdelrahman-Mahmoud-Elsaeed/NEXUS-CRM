@@ -1,0 +1,9 @@
+enum ChannelType {
+  Email
+  AlternativeEmail
+  Phone
+  WhatsApp
+  LinkedIn
+  Instagram
+  Twitter
+}
