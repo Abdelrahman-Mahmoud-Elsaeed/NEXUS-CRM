@@ -1,0 +1,27 @@
+{
+  "name": "nexus-crm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docker": "cd docker && docker compose up -d",
+    "backend": "cd backend && npm install && npm run dev",
+    "frontend": "cd frontend && npm install && npm run dev",
+    "dev": "npm install && npm run docker && concurrently \"npm run backend\" \"npm run frontend\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abdelrahman-Mahmoud-Elsaeed/NEXUS-CRM.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Abdelrahman-Mahmoud-Elsaeed/NEXUS-CRM/issues"
+  },
+  "homepage": "https://github.com/Abdelrahman-Mahmoud-Elsaeed/NEXUS-CRM#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}

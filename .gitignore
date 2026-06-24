@@ -1,6 +1,19 @@
 # =========================
 # ROOT
 # =========================
+
+node_modules/
+dist/
+build/
+.angular/
+.cache/
+.vite/
+coverage/
+.eslintcache
+.cursor/
+.agents/
+
+
 .DS_Store
 Thumbs.db
 *.log
